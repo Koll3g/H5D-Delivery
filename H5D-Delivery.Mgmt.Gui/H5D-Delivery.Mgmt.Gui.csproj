@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>H5D_Delivery.Mgmt.Gui</RootNamespace>
+    <UserSecretsId>30d2f2ca-78ce-409d-9bc3-0d6999cae338</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\H5D-Delivery.Mgmt.Backend\H5D-Delivery.Mgmt.Backend.csproj" />
+  </ItemGroup>
+
+</Project>

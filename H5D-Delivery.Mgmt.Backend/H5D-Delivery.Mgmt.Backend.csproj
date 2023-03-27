@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>H5D_Delivery.Mgmt.Backend</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Customer\" />
+    <Folder Include="Delivery\" />
+    <Folder Include="Robot\" />
+    <Folder Include="Order\" />
+    <Folder Include="Stock\" />
+    <Folder Include="Product\" />
+  </ItemGroup>
+
+</Project>
