@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H5D-Delivery.Mgmt.Gui", "H5
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H5D-Delivery.Tracking.Gui", "H5D-Delivery.Tracking.Gui\H5D-Delivery.Tracking.Gui.csproj", "{B85A83D5-D9FC-4DEC-AD91-0FE4D9252423}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H5D-Delivery.Mgmt.Backend.UnitTests", "H5D-Delivery.Mgmt.Backend.UnitTests\H5D-Delivery.Mgmt.Backend.UnitTests.csproj", "{6BA957CB-CE48-4176-A923-19B8A55EA139}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H5D-Delivery.Tracking.Backend.UnitTests", "H5D-Delivery.Tracking.Backend.UnitTests\H5D-Delivery.Tracking.Backend.UnitTests.csproj", "{166D03B2-CD03-43B8-90E9-57E7750357E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{B85A83D5-D9FC-4DEC-AD91-0FE4D9252423}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B85A83D5-D9FC-4DEC-AD91-0FE4D9252423}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B85A83D5-D9FC-4DEC-AD91-0FE4D9252423}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BA957CB-CE48-4176-A923-19B8A55EA139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BA957CB-CE48-4176-A923-19B8A55EA139}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BA957CB-CE48-4176-A923-19B8A55EA139}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BA957CB-CE48-4176-A923-19B8A55EA139}.Release|Any CPU.Build.0 = Release|Any CPU
+		{166D03B2-CD03-43B8-90E9-57E7750357E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{166D03B2-CD03-43B8-90E9-57E7750357E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{166D03B2-CD03-43B8-90E9-57E7750357E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{166D03B2-CD03-43B8-90E9-57E7750357E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
