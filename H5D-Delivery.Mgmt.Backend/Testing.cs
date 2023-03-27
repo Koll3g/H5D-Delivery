@@ -2,18 +2,18 @@
 {
     public class Testing
     {
-        public string GetSomething()
+        public static string GetSomething()
         {
             Console.WriteLine("GetSomething called");
             return "this is a string for testing purposes";
         }
 
-        public void TriggerSomething()
+        public static void TriggerSomething()
         {
             Console.WriteLine("TriggerSomething called");
         }
 
-        public TestCustomer GetTestCustomer(int age, string firstname, string lastname)
+        public static TestCustomer GetTestCustomer(int age, string firstname, string lastname)
         {
             Console.WriteLine("GetTestCustomer called");
             return new TestCustomer(age, firstname, lastname);

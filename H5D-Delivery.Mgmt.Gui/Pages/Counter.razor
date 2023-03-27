@@ -1,4 +1,5 @@
 ﻿@page "/counter"
+@using H5D_Delivery.Mgmt.Backend
 
 <PageTitle>Counter</PageTitle>
 
@@ -14,5 +15,6 @@
     private void IncrementCount()
     {
         currentCount++;
+        Testing.TriggerSomething();
     }
 }
