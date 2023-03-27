@@ -18,6 +18,11 @@
             Console.WriteLine("GetTestCustomer called");
             return new TestCustomer(age, firstname, lastname);
         }
+
+        public static void SendString(string text)
+        {
+            Console.WriteLine(text);
+        }
     }
 
     public class TestCustomer
