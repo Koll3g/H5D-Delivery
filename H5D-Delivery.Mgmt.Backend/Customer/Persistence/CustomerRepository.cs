@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using H5D_Delivery.Mgmt.Backend.Customer.Domain;
 
 namespace H5D_Delivery.Mgmt.Backend.Customer.Persistence
 {
-    internal class FakeCustomerPersistenceService : ICustomerPersistenceService
+    public class CustomerRepository : ICustomerRepository
     {
+
     }
 }

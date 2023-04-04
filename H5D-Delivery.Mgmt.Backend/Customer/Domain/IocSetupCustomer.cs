@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace H5D_Delivery.Mgmt.Backend.Customer.Domain
 {
-    public static class IocCustomer
+    public static class IocSetupCustomer
     {
         public static IContainer SetupContainer()
         {
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterType<FakeCustomerPersistenceService>().As<ICustomerPersistenceService>();
+            containerBuilder.RegisterType<FakeCustomerRepository>().As<ICustomerRepository>();
             var container = containerBuilder.Build();
             return container;
         }

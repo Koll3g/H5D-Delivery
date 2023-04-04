@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ParcelTracker\" />
+    <Compile Remove="ParcelTracker\**" />
+    <EmbeddedResource Remove="ParcelTracker\**" />
+    <None Remove="ParcelTracker\**" />
   </ItemGroup>
 
 </Project>
