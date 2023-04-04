@@ -9,7 +9,14 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Domain
 {
     internal class CustomerService
     {
-        private readonly IContainer iocContainer = IocSetupCustomer.SetupContainer();
+        private readonly IContainer _iocContainer;
 
+        private readonly ICustomerRepository _customerRepository;
+
+        public CustomerService(IContainer iocContainer)
+        {
+            _iocContainer = iocContainer;
+            _customerRepository = _iocContainer.Resolve<ICustomerRepository>();
+        }
     }
 }

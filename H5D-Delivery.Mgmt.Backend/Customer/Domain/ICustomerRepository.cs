@@ -10,7 +10,7 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Domain
     {
         IEnumerable<Customer> GetAll(Guid id);
 
-        Customer Get(Guid id);
+        Customer? Get(Guid id);
 
         void Update(Customer customer);
 

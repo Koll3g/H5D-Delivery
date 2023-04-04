@@ -23,7 +23,7 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Domain
             PhoneNumber = phoneNumber;
         }
 
-        public bool Equals(Customer x, Customer y)
+        public bool Equals(Customer? x, Customer? y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;
