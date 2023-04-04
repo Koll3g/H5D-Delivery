@@ -37,6 +37,11 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Persistence
         public Domain.Customer? Get(Guid id)
         {
             var customer = _customerList.Find((x) => x.Id.Equals(id));
+
+            if (customer == null)
+            {
+                throw new KeyNotFoundException($"User with id {id} not found");
+            }
             return customer;
         }
 
