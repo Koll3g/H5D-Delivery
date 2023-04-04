@@ -8,12 +8,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Customer\" />
-    <Folder Include="Delivery\" />
-    <Folder Include="Robot\" />
-    <Folder Include="Order\" />
-    <Folder Include="Stock\" />
-    <Folder Include="Product\" />
+    <Compile Remove="Delivery\**" />
+    <Compile Remove="Order\**" />
+    <Compile Remove="Product\**" />
+    <Compile Remove="Robot\**" />
+    <Compile Remove="Stock\**" />
+    <EmbeddedResource Remove="Delivery\**" />
+    <EmbeddedResource Remove="Order\**" />
+    <EmbeddedResource Remove="Product\**" />
+    <EmbeddedResource Remove="Robot\**" />
+    <EmbeddedResource Remove="Stock\**" />
+    <None Remove="Delivery\**" />
+    <None Remove="Order\**" />
+    <None Remove="Product\**" />
+    <None Remove="Robot\**" />
+    <None Remove="Stock\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="7.0.0" />
   </ItemGroup>
 
 </Project>
