@@ -1,28 +1,28 @@
 ﻿using Autofac;
-using H5D_Delivery.Mgmt.Backend.Customer.Domain;
 using H5D_Delivery.Mgmt.Backend.Customer.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using H5D_Delivery.Mgmt.Backend.Customer.Domain;
+using H5D_Delivery.Mgmt.Backend.Product.Domain;
 
 namespace H5D_Delivery.Mgmt.Backend.Shared
 {
     public class IocSetup
     {
-        public IContainer GetProdContainer()
+        public IContainer GetContainer()
         {
-            var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterType<FakeCustomerRepository>().As<ICustomerRepository>();
-            var container = containerBuilder.Build();
-            return container;
+            //After implementation of repo, switch to real repositories
+            return GetFakeContainer();
         }
 
         public IContainer GetFakeContainer()
         {
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterType<FakeCustomerRepository>().As<ICustomerRepository>();
+            containerBuilder.RegisterType<FakeCustomerRepository>().As<IProductRepository>();
             var container = containerBuilder.Build();
             return container;
         }

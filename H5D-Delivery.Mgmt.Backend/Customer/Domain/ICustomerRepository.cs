@@ -1,21 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using H5D_Delivery.Mgmt.Backend.Shared;
 
 namespace H5D_Delivery.Mgmt.Backend.Customer.Domain
 {
-    public interface ICustomerRepository
+    public interface ICustomerRepository : IRepositoryBase<Customer>
     {
-        IEnumerable<Customer> GetAll(Guid id);
 
-        Customer? Get(Guid id);
-
-        void Update(Customer customer);
-
-        void Delete(Guid id);
-
-        void Create(Customer customer);
     }
 }

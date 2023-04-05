@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using H5D_Delivery.Mgmt.Backend.Customer.Domain;
+﻿using H5D_Delivery.Mgmt.Backend.Customer.Domain;
 
 namespace H5D_Delivery.Mgmt.Backend.Customer.Persistence
 {
     public class FakeCustomerRepository : ICustomerRepository
     {
-        private readonly List<Domain.Customer> _customerList;
+        public List<Domain.Customer> CustomerList { get; }
 
         public FakeCustomerRepository()
         {
-            _customerList = FillCustomerList();
+            CustomerList = FillCustomerList();
         }
 
         private static List<Domain.Customer> FillCustomerList()
@@ -29,14 +23,14 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Persistence
 
         }
 
-        public IEnumerable<Domain.Customer> GetAll(Guid id)
+        public IEnumerable<Domain.Customer> GetAll()
         {
-            return _customerList;
+            return CustomerList;
         }
 
         public Domain.Customer? Get(Guid id)
         {
-            var customer = _customerList.Find((x) => x.Id.Equals(id));
+            var customer = CustomerList.Find((x) => x.Id.Equals(id));
 
             if (customer == null)
             {
@@ -47,11 +41,11 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Persistence
 
         public void Update(Domain.Customer customer)
         {
-            var index = _customerList.IndexOf(customer);
+            var index = CustomerList.IndexOf(customer);
 
             if (index == -1)
             {
-                _customerList[index] = customer;
+                CustomerList[index] = customer;
             }
             else
             {
@@ -61,10 +55,10 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Persistence
 
         public void Delete(Guid id)
         {
-            var customer = _customerList.Find((x) => x.Id.Equals(id));
+            var customer = CustomerList.Find((x) => x.Id.Equals(id));
             if (customer != null)
             {
-                _customerList.Remove(customer);
+                CustomerList.Remove(customer);
             }
             else
             {
@@ -74,7 +68,7 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Persistence
 
         public void Create(Domain.Customer customer)
         {
-            _customerList.Add(customer);
+            CustomerList.Add(customer);
         }
     }
 }

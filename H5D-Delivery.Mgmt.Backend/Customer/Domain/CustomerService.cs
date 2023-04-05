@@ -1,30 +1,24 @@
-﻿using Autofac;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
+using Autofac;
 using H5D_Delivery.Mgmt.Backend.Customer.Exceptions;
-using System.Net;
 
 namespace H5D_Delivery.Mgmt.Backend.Customer.Domain
 {
     public class CustomerService
     {
         private readonly ICustomerRepository _customerRepository;
-        private static readonly string addressPattern = @"^Zbw-Strasse [1-4]$";
-        private static readonly string phonePattern = @"^\d*$";
-        private static readonly string emailPattern = @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$";
+        private const string AddressPattern = @"^Zbw-Strasse [1-4]$";
+        private const string PhonePattern = @"^\d*$";
+        private const string EmailPattern = @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$";
 
-        public CustomerService(IContainer iocContainer)
+        public CustomerService(ICustomerRepository customerRepository)
         {
-            _customerRepository = iocContainer.Resolve<ICustomerRepository>();
+            _customerRepository = customerRepository;
         }
 
-        public IEnumerable<Customer> GetAll(Guid id)
+        public IEnumerable<Customer> GetAll()
         {
-            return _customerRepository.GetAll(id);
+            return _customerRepository.GetAll();
         }
 
         public Customer? Get(Guid id)
@@ -55,17 +49,17 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Domain
         {
             if (!IsAddressValid(customer.Address))
             {
-                throw new AddressInvalidException($"Address must have format {addressPattern}");
+                throw new AddressInvalidException($"Address must have format {AddressPattern}");
             }
 
             if (!IsEMailValid(customer.EMail))
             {
-                throw new EmailInvalidException($"E-Mail must have format {emailPattern}");
+                throw new EmailInvalidException($"E-Mail must have format {EmailPattern}");
             }
 
             if (!IsPhoneNumberValid(customer.PhoneNumber))
             {
-                throw new EmailInvalidException($"E-Mail must have format {emailPattern}");
+                throw new EmailInvalidException($"E-Mail must have format {EmailPattern}");
             }
 
             return true;
@@ -73,19 +67,19 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Domain
 
         private static bool IsAddressValid(string address)
         {
-            var regex = new Regex(addressPattern);
+            var regex = new Regex(AddressPattern);
             return regex.IsMatch(address);
         }
 
         private static bool IsEMailValid(string email)
         {
-            var regex = new Regex(emailPattern);
+            var regex = new Regex(EmailPattern);
             return regex.IsMatch(email);
         }
 
         private static bool IsPhoneNumberValid(string phoneNumber)
         {
-            var regex = new Regex(phonePattern);
+            var regex = new Regex(PhonePattern);
             return regex.IsMatch(phoneNumber);
         }
     }
