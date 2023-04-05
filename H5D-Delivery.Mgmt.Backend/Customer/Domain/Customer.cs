@@ -16,5 +16,10 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Domain
             EMail = eMail;
             PhoneNumber = phoneNumber;
         }
+
+        public override string ToString()
+        {
+            return $"{Id}, {Name}, {Address}, {EMail}, {PhoneNumber}";
+        }
     }
 }

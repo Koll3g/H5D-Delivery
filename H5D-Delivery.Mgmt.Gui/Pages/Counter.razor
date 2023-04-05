@@ -1,5 +1,8 @@
 ﻿@page "/counter"
 @using H5D_Delivery.Mgmt.Backend
+@using H5D_Delivery.Mgmt.Backend.Customer.Domain
+@using H5D_Delivery.Mgmt.Backend.Shared
+@using Autofac
 
 <PageTitle>Counter</PageTitle>
 
@@ -9,12 +12,34 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
+<p>Test Message: @testMessage</p>
+
+<button class="btn btn-primary" @onclick="ShowSomething">Show Something</button>
+
+<p>Customer Object: @customer</p>
+
+<button class="btn btn-primary" @onclick="ShowCustomer">Show Customer</button>
+
 @code {
     private int currentCount = 0;
+    private string testMessage = string.Empty;
+    private Customer? customer;
 
     private void IncrementCount()
     {
         currentCount++;
         Testing.TriggerSomething();
+    }
+
+    private void ShowSomething()
+    {
+        testMessage = Testing.GetSomething();
+    }
+
+    private void ShowCustomer()
+    {
+        var customerService = new CustomerService(new IocSetup().GetContainer().Resolve<ICustomerRepository>());
+        var customers = customerService.GetAll();
+        customer = customers.First();
     }
 }

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using H5D_Delivery.Mgmt.Backend.Customer.Domain;
 using H5D_Delivery.Mgmt.Backend.Product.Domain;
+using H5D_Delivery.Mgmt.Backend.Product.Persistence;
 
 namespace H5D_Delivery.Mgmt.Backend.Shared
 {
@@ -22,7 +23,7 @@ namespace H5D_Delivery.Mgmt.Backend.Shared
         {
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterType<FakeCustomerRepository>().As<ICustomerRepository>();
-            containerBuilder.RegisterType<FakeCustomerRepository>().As<IProductRepository>();
+            containerBuilder.RegisterType<FakeProductRepository>().As<IProductRepository>();
             var container = containerBuilder.Build();
             return container;
         }

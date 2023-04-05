@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H5D-Delivery.Mgmt.Backend.U
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H5D-Delivery.Tracking.Backend.UnitTests", "H5D-Delivery.Tracking.Backend.UnitTests\H5D-Delivery.Tracking.Backend.UnitTests.csproj", "{166D03B2-CD03-43B8-90E9-57E7750357E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H5D-Delivery.RoboSim", "H5D-Delivery.RoboSim\H5D-Delivery.RoboSim.csproj", "{8BD2FB2C-5494-4E64-A1AA-6E1A81FE6D55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H5D-Delivery.RoboSim", "H5D-Delivery.RoboSim\H5D-Delivery.RoboSim.csproj", "{8BD2FB2C-5494-4E64-A1AA-6E1A81FE6D55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
