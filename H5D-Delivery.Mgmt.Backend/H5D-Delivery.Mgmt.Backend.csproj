@@ -11,15 +11,12 @@
     <Compile Remove="Delivery\**" />
     <Compile Remove="Order\**" />
     <Compile Remove="Robot\**" />
-    <Compile Remove="Stock\**" />
     <EmbeddedResource Remove="Delivery\**" />
     <EmbeddedResource Remove="Order\**" />
     <EmbeddedResource Remove="Robot\**" />
-    <EmbeddedResource Remove="Stock\**" />
     <None Remove="Delivery\**" />
     <None Remove="Order\**" />
     <None Remove="Robot\**" />
-    <None Remove="Stock\**" />
   </ItemGroup>
 
   <ItemGroup>
