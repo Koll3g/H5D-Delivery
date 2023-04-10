@@ -8,6 +8,7 @@ namespace H5D_Delivery.Mgmt.Backend.Shared
 {
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : DbItem
     {
+
         public void Create(T dbItem)
         {
             throw new NotImplementedException();

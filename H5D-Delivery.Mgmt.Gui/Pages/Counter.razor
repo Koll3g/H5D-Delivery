@@ -3,6 +3,7 @@
 @using H5D_Delivery.Mgmt.Backend.Customer.Domain
 @using H5D_Delivery.Mgmt.Backend.Shared
 @using Autofac
+@using H5D_Delivery.Mgmt.Backend.Customer.Persistence
 
 <PageTitle>Counter</PageTitle>
 
@@ -16,14 +17,21 @@
 
 <button class="btn btn-primary" @onclick="ShowSomething">Show Something</button>
 
-<p>Customer Object: @customer</p>
+
+@foreach (var customer in customers)
+{
+    <p>@customer</p>
+}
+
 
 <button class="btn btn-primary" @onclick="ShowCustomer">Show Customer</button>
+
+<button class="btn btn-primary" @onclick="SaveCustomer">Save Customer</button>
 
 @code {
     private int currentCount = 0;
     private string testMessage = string.Empty;
-    private Customer? customer;
+    private IEnumerable<Customer> customers = new List<Customer>();
 
     private void IncrementCount()
     {
@@ -38,8 +46,14 @@
 
     private void ShowCustomer()
     {
-        var customerService = new CustomerService(new IocSetup().GetContainer().Resolve<ICustomerRepository>());
-        var customers = customerService.GetAll();
-        customer = customers.First();
+        var customerService = new CustomerService(new CustomerRepository(new CustomerContext()));
+        customers = customerService.GetAll();
+    }
+
+    private void SaveCustomer()
+    {
+        var service = new CustomerService(new CustomerRepository(new CustomerContext()));
+        var customer = new Backend.Customer.Domain.Customer(new Guid(), "Hans", "Zbw-Strasse 4", "ich@gmail.com", "46574841");
+        service.Create(customer);
     }
 }

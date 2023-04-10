@@ -16,7 +16,7 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Domain
             _customerRepository = customerRepository;
         }
 
-        public IEnumerable<Customer> GetAll()
+        public IEnumerable<Customer>? GetAll()
         {
             return _customerRepository.GetAll();
         }

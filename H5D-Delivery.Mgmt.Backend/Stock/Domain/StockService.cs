@@ -10,12 +10,12 @@ namespace H5D_Delivery.Mgmt.Backend.Stock.Domain
     {
         public IEnumerable<StockItem> GetAll()
         {
-
+            throw new NotImplementedException();
         }
 
         public StockItem? Get(Guid id)
         {
-
+            throw new NotImplementedException();
         }
 
         public void Update(StockItem stockItem)

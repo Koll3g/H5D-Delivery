@@ -8,7 +8,7 @@ namespace H5D_Delivery.Mgmt.Backend.Shared
 {
     public interface IRepositoryBase <T> where T : DbItem
     {
-        IEnumerable<T> GetAll();
+        IEnumerable<T>? GetAll();
 
         T? Get(Guid id);
 
