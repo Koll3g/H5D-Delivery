@@ -15,18 +15,19 @@ namespace H5D_Delivery.Mgmt.Backend.Shared
     {
         public IContainer GetContainer()
         {
-            var containerBuilder = new ContainerBuilder();
+            //var containerBuilder = new ContainerBuilder();
 
-            containerBuilder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
-            containerBuilder.RegisterType<CustomerService>().As<CustomerService>();
-            containerBuilder.RegisterType<CustomerContext>().As<CustomerContext>();
+            //containerBuilder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
+            //containerBuilder.RegisterType<CustomerService>().As<CustomerService>();
+            //containerBuilder.RegisterType<CustomerContext>().As<CustomerContext>();
 
-            containerBuilder.RegisterType<ProductRepository>().As<IProductRepository>();
-            containerBuilder.RegisterType<ProductContext>().As<ProductContext>();
-            containerBuilder.RegisterType<ProductService>().As<ProductService>();
+            //containerBuilder.RegisterType<ProductRepository>().As<IProductRepository>();
+            //containerBuilder.RegisterType<ProductContext>().As<ProductContext>();
+            //containerBuilder.RegisterType<ProductService>().As<ProductService>();
 
-            var container = containerBuilder.Build();
-            return container;
+            //var container = containerBuilder.Build();
+            //return container;
+            return GetFakeContainer();
         }
 
         public IContainer GetFakeContainer()

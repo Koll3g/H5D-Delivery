@@ -2,7 +2,7 @@
 
 namespace H5D_Delivery.Mgmt.Backend.Customer.Persistence
 {
-    public class FakeCustomerRepository
+    public class FakeCustomerRepository : ICustomerRepository
     {
         public List<Domain.Customer> CustomerList { get; }
 
