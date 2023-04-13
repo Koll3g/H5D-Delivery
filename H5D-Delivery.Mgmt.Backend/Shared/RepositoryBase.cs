@@ -15,8 +15,8 @@ namespace H5D_Delivery.Mgmt.Backend.Shared
         protected RepositoryBase(DbContextBase<T> dbContext)
         {
             _dbContext = dbContext;
-            _dbContext.Database.EnsureCreated();
             _dbContext.Database.Migrate();
+            //_dbContext.Database.EnsureCreated();
         }
 
         public IEnumerable<T>? GetAll()

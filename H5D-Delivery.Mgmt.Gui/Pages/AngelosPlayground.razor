@@ -2,47 +2,64 @@
 @using H5D_Delivery.Mgmt.Backend.Customer.Domain
 @using H5D_Delivery.Mgmt.Backend.Shared
 @using Autofac
+@using H5D_Delivery.Mgmt.Backend.Product.Domain
 
 
 <h3>Angelo's Playground</h3>
 
-@if (_customers == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var customer in _customers)
+    {
         <tr>
-            <th>Id</th>
-            <th>Name</th>
+            <td>@customer.Id</td>
+            <td>@customer.Name</td>
         </tr>
-        </thead>
-        <tbody>
-        @foreach (var customer in _customers)
-        {
-            <tr>
-                <td>@customer.Id</td>
-                <td>@customer.Name</td>
-            </tr>
-        }
-        </tbody>
-    </table>
-}
+    }
+    </tbody>
+</table>
 
-<button class="btn btn-primary" @onclick="GetAllCustomers">Refresh</button>
-<button class="btn btn-primary" @onclick="SaveCustomer">Add Customer</button>
+<button class="btn btn-primary" @onclick="AddCustomer">Add Customer</button>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var product in _products)
+    {
+        <tr>
+            <td>@product.Id</td>
+            <td>@product.Name</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<button class="btn btn-primary" @onclick="AddProduct">Add Product</button>
 
 @code {
     private readonly CustomerService _customerService;
     private IEnumerable<Customer> _customers = new List<Customer>();
 
+    private readonly ProductService _productService;
+    private IEnumerable<Product> _products = new List<Product>();
+
     public AngelosPlayground()
     {
         _customerService = new IocSetup().GetContainer().Resolve<CustomerService>();
+        _productService = new IocSetup().GetContainer().Resolve<ProductService>();
         GetAllCustomers();
-        Console.WriteLine("Page constructed");
+        GetAllProducts();
     }
 
     public void GetAllCustomers()
@@ -54,10 +71,26 @@ else
         }
     }
 
-    private void SaveCustomer()
+    private void AddCustomer()
     {
         var customer = new Backend.Customer.Domain.Customer(new Guid(), "Hans", "Zbw-Strasse 4", "ich@gmail.com", "46574841");
         _customerService.Create(customer);
+    }
+
+
+    public void GetAllProducts()
+    {
+        var products = _productService.GetAll();
+        if (products != null)
+        {
+            _products = products;
+        }
+    }
+
+    private void AddProduct()
+    {
+        var product = new Product(new Guid(), "Messer");
+        _productService.Create(product);
     }
 
 }

@@ -15,7 +15,7 @@ namespace H5D_Delivery.Mgmt.Backend.Shared
         {
             if (!optionsBuilder.IsConfigured)
             {
-                string connection = "Data Source = localhost,1433; ; Database=H5D-Db;User Id=sa; Password=123456789;TrustServerCertificate=True";
+                string connection = "Data Source = localhost,1433; ; Database=H5D-Db;User Id=sa; Password=H@a123456789;TrustServerCertificate=True";
 
                 optionsBuilder.UseSqlServer(connection);
                 optionsBuilder.LogTo(Console.WriteLine);
