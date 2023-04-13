@@ -1,0 +1,63 @@
+﻿@page "/angelosPlayground"
+@using H5D_Delivery.Mgmt.Backend.Customer.Domain
+@using H5D_Delivery.Mgmt.Backend.Shared
+@using Autofac
+
+
+<h3>Angelo's Playground</h3>
+
+@if (_customers == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var customer in _customers)
+        {
+            <tr>
+                <td>@customer.Id</td>
+                <td>@customer.Name</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+<button class="btn btn-primary" @onclick="GetAllCustomers">Refresh</button>
+<button class="btn btn-primary" @onclick="SaveCustomer">Add Customer</button>
+
+@code {
+    private readonly CustomerService _customerService;
+    private IEnumerable<Customer> _customers = new List<Customer>();
+
+    public AngelosPlayground()
+    {
+        _customerService = new IocSetup().GetContainer().Resolve<CustomerService>();
+        GetAllCustomers();
+        Console.WriteLine("Page constructed");
+    }
+
+    public void GetAllCustomers()
+    {
+        var customers = _customerService.GetAll();
+        if (customers != null)
+        {
+            _customers = customers;
+        }
+    }
+
+    private void SaveCustomer()
+    {
+        var customer = new Backend.Customer.Domain.Customer(new Guid(), "Hans", "Zbw-Strasse 4", "ich@gmail.com", "46574841");
+        _customerService.Create(customer);
+    }
+
+}

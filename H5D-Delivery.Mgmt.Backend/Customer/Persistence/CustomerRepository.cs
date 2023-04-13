@@ -22,6 +22,10 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Persistence
         public Domain.Customer? Get(Guid id)
         {
             var customer = _customerContext.Customers?.Find(id);
+            if (customer == null)
+            {
+                throw new KeyNotFoundException();
+            }
             return customer;
         }
 
@@ -34,13 +38,20 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Persistence
         public void Delete(Guid id)
         {
             var customer = Get(id);
-            if (customer != null) _customerContext.Customers?.Remove(customer);
+            if (customer != null)
+            {
+                _customerContext.Customers?.Remove(customer);
+            }
+            else
+            {
+                throw new KeyNotFoundException();
+            }
             _customerContext.SaveChanges();
         }
 
         public void Create(Domain.Customer customer)
         {
-            _customerContext.Customers?.Add(customer);
+            _customerContext.Customers?.Add(customer); 
             _customerContext.SaveChanges();
         }
     }

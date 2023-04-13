@@ -26,7 +26,6 @@
 
 <button class="btn btn-primary" @onclick="ShowCustomer">Show Customer</button>
 
-<button class="btn btn-primary" @onclick="SaveCustomer">Save Customer</button>
 
 @code {
     private int currentCount = 0;
@@ -50,10 +49,5 @@
         customers = customerService.GetAll();
     }
 
-    private void SaveCustomer()
-    {
-        var service = new CustomerService(new CustomerRepository(new CustomerContext()));
-        var customer = new Backend.Customer.Domain.Customer(new Guid(), "Hans", "Zbw-Strasse 4", "ich@gmail.com", "46574841");
-        service.Create(customer);
-    }
+
 }

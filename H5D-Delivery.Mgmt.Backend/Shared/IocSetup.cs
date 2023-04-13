@@ -15,8 +15,13 @@ namespace H5D_Delivery.Mgmt.Backend.Shared
     {
         public IContainer GetContainer()
         {
-            //After implementation of repo, switch to real repositories
-            return GetFakeContainer();
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
+            containerBuilder.RegisterType<CustomerService>().As<CustomerService>();
+            containerBuilder.RegisterType<CustomerContext>().As<CustomerContext>();
+            //containerBuilder.RegisterType<FakeProductRepository>().As<IProductRepository>();
+            var container = containerBuilder.Build();
+            return container;
         }
 
         public IContainer GetFakeContainer()

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace H5D_Delivery.Mgmt.Backend.Stock.Domain
 {
-    public class StockService : IStockRepository
+    public class StockService
     {
         public IEnumerable<StockItem> GetAll()
         {

@@ -8,7 +8,7 @@ using H5D_Delivery.Mgmt.Backend.Shared;
 
 namespace H5D_Delivery.Mgmt.Backend.Product.Persistence
 {
-    public class ProductRepository : RepositoryBase<Domain.Product>,IProductRepository
+    public class ProductRepository
     {
 
     }

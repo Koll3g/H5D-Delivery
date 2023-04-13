@@ -32,7 +32,7 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Persistence
                 //string Corina: @"Server=.;Database=AuftragsverwaltungHistory;Trusted_Connection=True;";
 
                 //DATABASE MUSS ZWINGEND - AuftragsverwaltungHistory - HEISSEN!
-                string connection = @"Server=.;Database=H5D-Db;User Id=testuser; Password=1234;TrustServerCertificate=True";
+                string connection = "Data Source = localhost,1433; ; Database=H5D-Db;User Id=sa; Password=123456789;TrustServerCertificate=True";
 
                 optionsBuilder.UseSqlServer(connection);
                 optionsBuilder.LogTo(Console.WriteLine);
