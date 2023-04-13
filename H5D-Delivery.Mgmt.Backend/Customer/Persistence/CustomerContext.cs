@@ -27,11 +27,6 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Persistence
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //string Thomas: @"Server=.;Database=Auftragsverwaltung;Trusted_Connection=True;";
-                //string Angelo: @"Server=KOLLEG-MPC\ZBW;Database=Auftragsverwaltung;Trusted_Connection=True;";
-                //string Corina: @"Server=.;Database=AuftragsverwaltungHistory;Trusted_Connection=True;";
-
-                //DATABASE MUSS ZWINGEND - AuftragsverwaltungHistory - HEISSEN!
                 string connection = "Data Source = localhost,1433; ; Database=H5D-Db;User Id=sa; Password=123456789;TrustServerCertificate=True";
 
                 optionsBuilder.UseSqlServer(connection);
