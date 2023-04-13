@@ -1,16 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using H5D_Delivery.Mgmt.Backend.Shared;
+using Microsoft.EntityFrameworkCore;
 
 namespace H5D_Delivery.Mgmt.Backend.Customer.Persistence
 {
-    public sealed class CustomerContext : DbContext
+    public sealed class CustomerContext : DbContextBase<Domain.Customer>
     {
-        public DbSet<Domain.Customer>? Customers { get; set; }
-
-        public CustomerContext()
-        {
-            Database.EnsureCreated();
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             var customer = modelBuilder.Entity<Domain.Customer>();
@@ -19,20 +13,9 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Persistence
             customer.Property(x => x.Address);
             customer.Property(x => x.EMail);
             customer.Property(x => x.PhoneNumber);
+            customer.ToTable("Customers");
 
             base.OnModelCreating(modelBuilder);
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                string connection = "Data Source = localhost,1433; ; Database=H5D-Db;User Id=sa; Password=123456789;TrustServerCertificate=True";
-
-                optionsBuilder.UseSqlServer(connection);
-                optionsBuilder.LogTo(Console.WriteLine);
-            }
-
         }
     }
 }

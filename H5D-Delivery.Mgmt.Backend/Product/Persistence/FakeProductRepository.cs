@@ -8,7 +8,7 @@ using H5D_Delivery.Mgmt.Backend.Product.Domain;
 
 namespace H5D_Delivery.Mgmt.Backend.Product.Persistence
 {
-    public class FakeProductRepository
+    public class FakeProductRepository : IProductRepository
     {
         public List<Domain.Product> ProductList { get; }
 
