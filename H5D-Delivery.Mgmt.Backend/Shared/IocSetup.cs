@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using H5D_Delivery.Mgmt.Backend.Customer.Domain;
 using H5D_Delivery.Mgmt.Backend.Product.Domain;
 using H5D_Delivery.Mgmt.Backend.Product.Persistence;
+using H5D_Delivery.Mgmt.Backend.Stock.Domain;
+using H5D_Delivery.Mgmt.Backend.Stock.Persistence;
 
 namespace H5D_Delivery.Mgmt.Backend.Shared
 {
@@ -15,19 +17,24 @@ namespace H5D_Delivery.Mgmt.Backend.Shared
     {
         public IContainer GetContainer()
         {
-            //var containerBuilder = new ContainerBuilder();
+            var containerBuilder = new ContainerBuilder();
 
-            //containerBuilder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
-            //containerBuilder.RegisterType<CustomerService>().As<CustomerService>();
-            //containerBuilder.RegisterType<CustomerContext>().As<CustomerContext>();
+            containerBuilder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
+            containerBuilder.RegisterType<CustomerService>().As<CustomerService>();
+            containerBuilder.RegisterType<CustomerContext>().As<CustomerContext>();
 
-            //containerBuilder.RegisterType<ProductRepository>().As<IProductRepository>();
-            //containerBuilder.RegisterType<ProductContext>().As<ProductContext>();
-            //containerBuilder.RegisterType<ProductService>().As<ProductService>();
+            containerBuilder.RegisterType<ProductRepository>().As<IProductRepository>();
+            containerBuilder.RegisterType<ProductContext>().As<ProductContext>();
+            containerBuilder.RegisterType<ProductService>().As<ProductService>();
 
-            //var container = containerBuilder.Build();
-            //return container;
-            return GetFakeContainer();
+            containerBuilder.RegisterType<StockRepository>().As<IStockRepository>();
+            containerBuilder.RegisterType<StockContext>().As<StockContext>();
+            containerBuilder.RegisterType<StockService>().As<StockService>();
+
+            var container = containerBuilder.Build();
+
+            return container;
+            //return GetFakeContainer();
         }
 
         public IContainer GetFakeContainer()

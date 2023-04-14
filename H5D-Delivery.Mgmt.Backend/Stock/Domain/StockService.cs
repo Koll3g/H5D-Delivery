@@ -1,4 +1,5 @@
-﻿using System;
+﻿using H5D_Delivery.Mgmt.Backend.Stock.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,29 +9,36 @@ namespace H5D_Delivery.Mgmt.Backend.Stock.Domain
 {
     public class StockService
     {
-        public IEnumerable<StockItem> GetAll()
+        private readonly IStockRepository _stockRepository;
+
+        public StockService(IStockRepository stockRepository)
         {
-            throw new NotImplementedException();
+            _stockRepository = stockRepository;
+        }
+
+        public IEnumerable<StockItem>? GetAll()
+        {
+            return _stockRepository.GetAll();
         }
 
         public StockItem? Get(Guid id)
         {
-            throw new NotImplementedException();
+            return _stockRepository.Get(id);
         }
 
         public void Update(StockItem stockItem)
         {
-
+            _stockRepository.Update(stockItem);
         }
 
         public void Delete(Guid id)
         {
-
+            _stockRepository.Delete(id);
         }
 
         public void Create(StockItem stockItem)
         {
-
+            _stockRepository.Create(stockItem);
         }
     }
 }
