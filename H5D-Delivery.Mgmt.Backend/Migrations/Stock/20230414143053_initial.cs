@@ -11,20 +11,9 @@ namespace H5D_Delivery.Mgmt.Backend.Migrations.Stock
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Product",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Product", x => x.Id);
-                });
 
             migrationBuilder.CreateTable(
-                name: "StockItems",
+                name: "StockItem",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -34,9 +23,9 @@ namespace H5D_Delivery.Mgmt.Backend.Migrations.Stock
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StockItems", x => x.Id);
+                    table.PrimaryKey("PK_StockItem", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_StockItems_Product_ProductId",
+                        name: "FK_StockItem_Product_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Product",
                         principalColumn: "Id",
@@ -44,8 +33,8 @@ namespace H5D_Delivery.Mgmt.Backend.Migrations.Stock
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_StockItems_ProductId",
-                table: "StockItems",
+                name: "IX_StockItem_ProductId",
+                table: "StockItem",
                 column: "ProductId");
         }
 
@@ -53,10 +42,7 @@ namespace H5D_Delivery.Mgmt.Backend.Migrations.Stock
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "StockItems");
-
-            migrationBuilder.DropTable(
-                name: "Product");
+                name: "StockItem");
         }
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace H5D_Delivery.Mgmt.Backend.Migrations
 {
     [DbContext(typeof(CustomerContext))]
-    [Migration("20230413201629_Initial")]
-    partial class Initial
+    [Migration("20230414143014_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -13,7 +13,7 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Persistence
             customer.Property(x => x.Address);
             customer.Property(x => x.EMail);
             customer.Property(x => x.PhoneNumber);
-            customer.ToTable("Customers");
+            customer.ToTable("Customer");
 
             base.OnModelCreating(modelBuilder);
         }

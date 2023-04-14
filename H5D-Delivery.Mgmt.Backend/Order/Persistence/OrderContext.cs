@@ -26,7 +26,7 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Persistence
             order.Navigation(x => x.Product).AutoInclude();
             order.Navigation(x => x.Customer).AutoInclude();
 
-            order.ToTable("Orders");
+            order.ToTable("Order");
 
             base.OnModelCreating(modelBuilder);
         }

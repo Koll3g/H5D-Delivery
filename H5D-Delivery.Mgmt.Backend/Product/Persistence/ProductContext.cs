@@ -15,7 +15,7 @@ namespace H5D_Delivery.Mgmt.Backend.Product.Persistence
             var product = modelBuilder.Entity<Domain.Product>();
             product.HasKey(x => x.Id);
             product.Property(x => x.Name);
-            product.ToTable("Products");
+            product.ToTable("Product");
 
             base.OnModelCreating(modelBuilder);
         }

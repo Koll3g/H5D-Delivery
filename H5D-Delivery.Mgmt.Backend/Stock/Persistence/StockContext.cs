@@ -19,7 +19,7 @@ namespace H5D_Delivery.Mgmt.Backend.Stock.Persistence
             stockItem.Property(x => x.Amount);
             stockItem.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId);
             stockItem.Navigation(x => x.Product).AutoInclude();
-            stockItem.ToTable("StockItems");
+            stockItem.ToTable("StockItem");
 
             base.OnModelCreating(modelBuilder);
         }

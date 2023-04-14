@@ -1,9 +1,11 @@
 ﻿@page "/angelosPlayground"
 @using H5D_Delivery.Mgmt.Backend.Customer.Domain
-@using H5D_Delivery.Mgmt.Backend.Shared
+@using H5D_Delivery.Mgmt.Backend.Shared.IoC
 @using Autofac
+@using H5D_Delivery.Mgmt.Backend.Order.Domain
 @using H5D_Delivery.Mgmt.Backend.Product.Domain
 @using H5D_Delivery.Mgmt.Backend.Stock.Domain
+@using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal
 
 
 <h3>Angelo's Playground</h3>
@@ -47,28 +49,61 @@
     </tbody>
 </table>
 
+<button class="btn btn-primary" @onclick="AddProduct">Add Product</button>
+
 <h4>Stock Items</h4>
 <table class="table">
     <thead>
-        <tr>
-            <th>Id</th>
-            <th>Id Product</th>
-            <th>Product Name</th>
-        </tr>
+    <tr>
+        <th>Id</th>
+        <th>Id Product</th>
+        <th>Product Name</th>
+    </tr>
     </thead>
     <tbody>
-        @foreach (var stockItem in _stockItems)
-        {
-            <tr>
-                <td>@stockItem.Id</td>
-                <td>@stockItem.Product.Id</td>
-                <td>@stockItem.Product.Name</td>
-            </tr>
-        }
+    @foreach (var stockItem in _stockItems)
+    {
+        <tr>
+            <td>@stockItem.Id</td>
+            <td>@stockItem.ProductId</td>
+            <td>@stockItem.Product.Name</td>
+        </tr>
+    }
     </tbody>
 </table>
 
 <button class="btn btn-primary" @onclick="AddStockItem">Add StockItem</button>
+
+<h4>Orders</h4>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Id Product</th>
+        <th>Product Name</th>
+        <th>Id Customer</th>
+        <th>Customer Name</th>
+        <th>Amount</th>
+        <th>Earliest Delivery</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var order in _orders)
+    {
+        <tr>
+            <td>@order.Id</td>
+            <td>@order.Product.Id</td>
+            <td>@order.Product.Name</td>
+            <td>@order.Customer.Id</td>
+            <td>@order.Customer.Name</td>
+            <td>@order.Amount</td>
+            <td>@order.EarliestDeliveryTime</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<button class="btn btn-primary" @onclick="AddOrder">Add Order</button>
 
 @code {
     private readonly CustomerService _customerService;
@@ -80,15 +115,21 @@
     private readonly StockService _stockService;
     private IEnumerable<StockItem> _stockItems = new List<StockItem>();
 
+    private readonly OrderService _orderService;
+    private IEnumerable<Order> _orders = new List<Order>();
+
     public AngelosPlayground()
     {
         var iocContainer = new IocSetup().GetContainer();
         _customerService = iocContainer.Resolve<CustomerService>();
         _productService = iocContainer.Resolve<ProductService>();
         _stockService = iocContainer.Resolve<StockService>();
+        _orderService = iocContainer.Resolve<OrderService>();
+
         GetAllCustomers();
         GetAllProducts();
         GetAllStockItems();
+        GetAllOrders();
     }
 
     public void GetAllCustomers()
@@ -142,4 +183,24 @@
         _stockService.Create(stockItem);
     }
 
+    public void GetAllOrders()
+    {
+        var orders = _orderService.GetAll();
+        if (orders != null)
+        {
+            _orders = orders;
+        }
+    }
+
+    private void AddOrder()
+    {
+        var product = _productService.GetAll()?.First();
+        var customer = _customerService.GetAll()?.First();
+        if (product == null || customer == null)
+        {
+            return;
+        }
+        var order = new Order(new Guid(), product.Id, customer.Id, 1, new DateTime(2023, 04, 14, 10, 0, 0), new DateTime(2023, 04, 14, 12, 0, 0), Priority.Normal, DeliveryType.Deposit);
+        _orderService.Create(order);
+    }
 }
