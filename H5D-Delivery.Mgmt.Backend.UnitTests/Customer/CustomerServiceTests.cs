@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using Autofac;
-using FakeItEasy;
+﻿using FakeItEasy;
 using H5D_Delivery.Mgmt.Backend.Customer.Domain;
 using H5D_Delivery.Mgmt.Backend.Customer.Exceptions;
-using H5D_Delivery.Mgmt.Backend.Shared;
 
 namespace H5D_Delivery.Mgmt.Backend.UnitTests.Customer
 {
