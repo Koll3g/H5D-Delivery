@@ -9,13 +9,10 @@
 
   <ItemGroup>
     <Compile Remove="Delivery\**" />
-    <Compile Remove="Order\**" />
     <Compile Remove="Robot\**" />
     <EmbeddedResource Remove="Delivery\**" />
-    <EmbeddedResource Remove="Order\**" />
     <EmbeddedResource Remove="Robot\**" />
     <None Remove="Delivery\**" />
-    <None Remove="Order\**" />
     <None Remove="Robot\**" />
   </ItemGroup>
 
@@ -31,6 +28,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Shared\Persistence\" />
   </ItemGroup>
 
 </Project>
