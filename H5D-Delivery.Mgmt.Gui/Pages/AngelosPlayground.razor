@@ -103,6 +103,7 @@
 </table>
 
 <button class="btn btn-primary" @onclick="AddOrder">Add Order</button>
+<button class="btn btn-primary" @onclick="DeleteOrder">Delete Order</button>
 
 @code {
     private readonly CustomerService _customerService;
@@ -201,5 +202,11 @@
         }
         var order = new Order(new Guid(), product.Id, customer.Id, 1, new DateTime(2023, 04, 14, 10, 0, 0), new DateTime(2023, 04, 14, 12, 0, 0), Priority.Normal, DeliveryType.Deposit);
         _orderService.Create(order);
+    }
+
+    private void DeleteOrder()
+    {
+        var order = _orderService.GetAll()?.First();
+        _orderService.Delete(order.Id);
     }
 }
