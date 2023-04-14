@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace H5D_Delivery.Mgmt.Backend.Shared
+namespace H5D_Delivery.Mgmt.Backend.Shared.Persistence
 {
     public class DbContextBase<T> : DbContext where T : DbItem
     {

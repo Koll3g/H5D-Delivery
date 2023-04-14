@@ -6,12 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using H5D_Delivery.Mgmt.Backend.Customer.Domain;
+using H5D_Delivery.Mgmt.Backend.Order.Domain;
+using H5D_Delivery.Mgmt.Backend.Order.Persistence;
 using H5D_Delivery.Mgmt.Backend.Product.Domain;
 using H5D_Delivery.Mgmt.Backend.Product.Persistence;
 using H5D_Delivery.Mgmt.Backend.Stock.Domain;
 using H5D_Delivery.Mgmt.Backend.Stock.Persistence;
 
-namespace H5D_Delivery.Mgmt.Backend.Shared
+namespace H5D_Delivery.Mgmt.Backend.Shared.IoC
 {
     public class IocSetup
     {
@@ -31,10 +33,13 @@ namespace H5D_Delivery.Mgmt.Backend.Shared
             containerBuilder.RegisterType<StockContext>().As<StockContext>();
             containerBuilder.RegisterType<StockService>().As<StockService>();
 
+            containerBuilder.RegisterType<OrderRepository>().As<IOrderRepository>();
+            containerBuilder.RegisterType<OrderContext>().As<OrderContext>();
+            containerBuilder.RegisterType<OrderService>().As<OrderService>();
+
             var container = containerBuilder.Build();
 
             return container;
-            //return GetFakeContainer();
         }
 
         public IContainer GetFakeContainer()

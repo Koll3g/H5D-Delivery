@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace H5D_Delivery.Mgmt.Backend.Shared
+namespace H5D_Delivery.Mgmt.Backend.Shared.Persistence
 {
-    public interface IRepositoryBase <T> where T : DbItem
+    public interface IRepositoryBase<T> where T : DbItem
     {
         IEnumerable<T>? GetAll();
 

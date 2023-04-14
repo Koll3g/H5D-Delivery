@@ -1,4 +1,4 @@
-﻿using H5D_Delivery.Mgmt.Backend.Shared;
+﻿using H5D_Delivery.Mgmt.Backend.Shared.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace H5D_Delivery.Mgmt.Backend.Customer.Persistence

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using H5D_Delivery.Mgmt.Backend.Customer.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace H5D_Delivery.Mgmt.Backend.Shared
+namespace H5D_Delivery.Mgmt.Backend.Shared.Persistence
 {
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : DbItem
     {
