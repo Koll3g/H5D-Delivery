@@ -1,6 +1,4 @@
 using H5D_Delivery.Tracking.Gui.Data;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 
 namespace H5D_Delivery.Tracking.Gui
 {

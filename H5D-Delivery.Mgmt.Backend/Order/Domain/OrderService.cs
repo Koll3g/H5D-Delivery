@@ -1,5 +1,4 @@
-﻿using System;
-using H5D_Delivery.Mgmt.Backend.Order.Exceptions;
+﻿using H5D_Delivery.Mgmt.Backend.Order.Exceptions;
 
 namespace H5D_Delivery.Mgmt.Backend.Order.Domain
 {

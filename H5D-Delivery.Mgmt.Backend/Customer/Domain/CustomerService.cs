@@ -1,5 +1,4 @@
 ﻿using System.Text.RegularExpressions;
-using Autofac;
 using H5D_Delivery.Mgmt.Backend.Customer.Exceptions;
 
 namespace H5D_Delivery.Mgmt.Backend.Customer.Domain
