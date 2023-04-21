@@ -14,6 +14,8 @@
     <tr>
         <th>Id</th>
         <th>Name</th>
+        <th>Button</th>
+        <th>Checkbox</th>
     </tr>
     </thead>
     <tbody>
@@ -22,12 +24,24 @@
         <tr>
             <td>@customer.Id</td>
             <td>@customer.Name</td>
+            <td>
+                <button class="btn btn-primary" @onclick="() => HandleButtonClick(customer)">Button</button>
+            </td>
+            <td>
+                    <input type="checkbox" @onchange="(args) => HandleCheckBox(customer, args.Value.ToString().ToLower())" />
+            </td>
         </tr>
     }
     </tbody>
 </table>
 
 <button class="btn btn-primary" @onclick="AddCustomer">Add Customer</button>
+<p>@_outputText</p>
+<button class="btn btn-primary" @onclick="ShowHideDemo">Show/Hide Demo</button>
+@if (_show)
+{
+    <p>Show/Hide Demo</p>
+}
 
 <h4>Products</h4>
 <table class="table">
@@ -118,6 +132,10 @@
     private readonly OrderService _orderService;
     private IEnumerable<Order> _orders = new List<Order>();
 
+    private string _outputText = "";
+    private bool _show = false;
+    private List<Guid> _selectedCustomers = new List<Guid>();
+
     public AngelosPlayground()
     {
         var iocContainer = new IocSetup().GetContainer();
@@ -147,6 +165,35 @@
         _customerService.Create(customer);
     }
 
+    private void HandleButtonClick(Customer customer)
+    {
+        _outputText = $"Button of Id {customer.Id} was pressed.";
+    }
+
+    private void ShowHideDemo()
+    {
+        if (_show)
+        {
+            _show = false;
+        }
+        else
+        {
+            _show = true;
+        }
+    }
+
+    private void HandleCheckBox(Customer customer, string? checkBoxState)
+    {
+        if (checkBoxState == null)
+        {
+            return;
+        }
+
+        if (checkBoxState == "true")
+        {
+            _selectedCustomers.Add(customer.Id);
+        }
+    }
 
     public void GetAllProducts()
     {
