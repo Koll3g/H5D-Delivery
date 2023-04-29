@@ -36,19 +36,5 @@ namespace H5D_Delivery.Mgmt.Backend.Shared.IoC
 
             return container;
         }
-
-        public IContainer GetFakeContainer()
-        {
-            var containerBuilder = new ContainerBuilder();
-
-            containerBuilder.RegisterType<FakeCustomerRepository>().As<ICustomerRepository>();
-            containerBuilder.RegisterType<CustomerService>().As<CustomerService>();
-
-            containerBuilder.RegisterType<FakeProductRepository>().As<IProductRepository>();
-            containerBuilder.RegisterType<ProductService>().As<ProductService>();
-
-            var container = containerBuilder.Build();
-            return container;
-        }
     }
 }
