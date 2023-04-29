@@ -125,6 +125,15 @@
 
 <button class="btn btn-primary" @onclick="TestDelivery">Test Delivery</button>
 
+<select @bind="_selectedProductId">
+    <option value="">Select a product</option>
+    @foreach (var product in _products)
+    {
+        <option value="@product.Id">@product.Name</option>
+    }
+</select>
+<p>Selected Product Id: @_selectedProductId</p>
+
 @code {
     private readonly CustomerService _customerService;
     private IEnumerable<Customer> _customers = new List<Customer>();
@@ -155,6 +164,8 @@
         GetAllStockItems();
         GetAllOrders();
     }
+
+    private Guid _selectedProductId;
 
     public void GetAllCustomers()
     {
