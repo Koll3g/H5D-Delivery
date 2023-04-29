@@ -2,7 +2,11 @@
 @using H5D_Delivery.Mgmt.Backend.Customer.Domain
 @using H5D_Delivery.Mgmt.Backend.Shared.IoC
 @using Autofac
+@using H5D_Delivery.Mgmt.Backend.Delivery.Domain
+@using H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryOrderFactory
+@using H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory
 @using H5D_Delivery.Mgmt.Backend.Order.Domain
+@using H5D_Delivery.Mgmt.Backend.Order.Persistence
 @using H5D_Delivery.Mgmt.Backend.Product.Domain
 @using H5D_Delivery.Mgmt.Backend.Stock.Domain
 
@@ -119,6 +123,17 @@
 <button class="btn btn-primary" @onclick="AddOrder">Add Order</button>
 <button class="btn btn-primary" @onclick="DeleteOrder">Delete Order</button>
 
+<button class="btn btn-primary" @onclick="TestDelivery">Test Delivery</button>
+
+<select @bind="_selectedProductId">
+    <option value="">Select a product</option>
+    @foreach (var product in _products)
+    {
+        <option value="@product.Id">@product.Name</option>
+    }
+</select>
+<p>Selected Product Id: @_selectedProductId</p>
+
 @code {
     private readonly CustomerService _customerService;
     private IEnumerable<Customer> _customers = new List<Customer>();
@@ -149,6 +164,8 @@
         GetAllStockItems();
         GetAllOrders();
     }
+
+    private Guid _selectedProductId;
 
     public void GetAllCustomers()
     {
@@ -255,5 +272,11 @@
     {
         var order = _orderService.GetAll()?.First();
         _orderService.Delete(order.Id);
+    }
+
+    private void TestDelivery()
+    {
+        var deliveryService = new DeliveryService(new DeliveryOrderFactoryZbw(new DeliveryPlanFactoryZbw(new DeliveryTimerZbw(), new RouteOptimizerZbw(), new WaypointGeneratorZbw()), new OrderPrioritizerRobotInvoked()), new OrderRepository(new OrderContext()));
+        deliveryService.GenerateDeliveryOrder();
     }
 }

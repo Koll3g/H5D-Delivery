@@ -4,5 +4,6 @@
     {
         HandOver = 1,
         Deposit = 2,
+        Waypoint = 3,
     }
 }
