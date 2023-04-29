@@ -8,11 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Delivery\**" />
     <Compile Remove="Robot\**" />
-    <EmbeddedResource Remove="Delivery\**" />
     <EmbeddedResource Remove="Robot\**" />
-    <None Remove="Delivery\**" />
     <None Remove="Robot\**" />
   </ItemGroup>
 

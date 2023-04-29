@@ -14,6 +14,7 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Persistence
             order.Property(x => x.EarliestDeliveryTime);
             order.Property(x => x.LatestDeliveryTime);
             order.Property(x => x.Priority);
+            order.Property(x => x.Status);
 
             order.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId);
             order.HasOne(x => x.Customer).WithMany().HasForeignKey(x => x.CustomerId);
