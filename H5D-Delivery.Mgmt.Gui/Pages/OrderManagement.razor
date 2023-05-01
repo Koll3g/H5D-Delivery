@@ -1,0 +1,81 @@
+﻿@page "/orderManagement"
+@using H5D_Delivery.Mgmt.Backend.Order.Domain
+@using H5D_Delivery.Mgmt.Backend.Shared.IoC
+@using Autofac
+@using H5D_Delivery.Mgmt.Backend.Customer.Domain
+@using H5D_Delivery.Mgmt.Backend.Product.Domain
+
+
+<h3>Order Management</h3>
+<button class="btn btn-primary" @onclick="AddOrder">Add Order</button>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Customer Id</th>
+        <th>Product Id</th>
+        <th>Amount</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var order in _orders)
+    {
+        <tr>
+            <td>@order.Id</td>
+            <td>@order.CustomerId</td>
+            <td>@order.ProductId</td>
+            <td>@order.Amount</td>
+            <td>
+                <button class="btn btn-primary" @onclick="() => EditOrder(order)">Edit</button>
+                <button class="btn btn-danger" @onclick="() => DeleteOrder(order)">Delete</button>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+@code {
+private readonly OrderService _orderService;
+private readonly CustomerService _customerService;
+private readonly ProductService _productService;
+private IEnumerable<Order> _orders = new List<Order>();
+
+
+public OrderManagement()
+{
+    var iocContainer = new IocSetup().GetContainer();
+    _orderService = iocContainer.Resolve<OrderService>();
+    _customerService = iocContainer.Resolve<CustomerService>();
+    _productService = iocContainer.Resolve<ProductService>();
+
+    GetAllOrders();
+}
+
+public void GetAllOrders()
+{
+    var orders = _orderService.GetAll();
+    if (orders != null)
+    {
+        _orders = orders;
+    }
+}
+
+private void AddOrder()
+{
+    //var order = new Order(new Guid(),  );
+    //_orderService.Create(order);
+    //GetAllOrders();
+}
+
+private void EditOrder(Order order)
+{
+    // Implement edit functionality here
+}
+
+private void DeleteOrder(Order order)
+{
+    _orderService.Delete(order.Id);
+    GetAllOrders();
+}
+}

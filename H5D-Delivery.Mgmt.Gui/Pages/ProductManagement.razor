@@ -1,0 +1,117 @@
+﻿@page "/productManagement"
+@using H5D_Delivery.Mgmt.Backend.Customer.Domain
+@using H5D_Delivery.Mgmt.Backend.Shared.IoC
+@using Autofac
+@using H5D_Delivery.Mgmt.Backend.Order.Domain
+@using H5D_Delivery.Mgmt.Backend.Product.Domain
+@using H5D_Delivery.Mgmt.Backend.Stock.Domain
+@using H5D_Delivery.Mgmt.Backend.Shared
+
+<h3>Products</h3>
+
+<button class="btn btn-primary" @onclick="AddProduct">Add Product</button>
+<button class="btn btn-primary" @onclick="SaveProduct">Save</button>
+
+<div class="row">
+    <div class="col-md-6">
+        <label for="name">Name</label>
+        <input id="name" type="text" @bind="@name" class="form-control" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <label for="id">ID</label>
+        <input id="id" type="text" @bind="@id" class="form-control" />
+    </div>
+  </div>
+
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var product in _products)
+    {
+        <tr>
+            <td>@product.Id</td>
+            <td>@product.Name</td>
+            <td>
+                     <button class="btn btn-primary" @onclick="() => EditProduct(product)">Edit</button> 
+                    <button class="btn btn-danger" @onclick="() => DeleteProduct(product)">Delete</button>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+
+
+
+@code {
+
+    private readonly ProductService _productService;
+    private IEnumerable<Product> _products = new List<Product>();
+    private string name;
+    private Guid id;
+    private Product _selectedProduct;
+
+
+    public ProductManagement()
+    {
+        var iocContainer = new IocSetup().GetContainer();
+       _productService = iocContainer.Resolve<ProductService>();
+        id = Guid.NewGuid();
+       GetAllProducts();
+    }
+
+    public void GetAllProducts()
+    {
+        var products = _productService.GetAll();
+        if (products != null)
+        {
+            _products = products;
+        }
+    }
+
+     private void AddProduct()
+    {
+        var product = new Product(id, name);
+        _productService.Create(product);
+        GetAllProducts();
+
+        // Clear input fields
+        name = "";
+        id = Guid.NewGuid();
+    }
+
+   private void EditProduct(Product product)
+{
+    _selectedProduct = product;
+    id = product.Id;
+    name = product.Name;
+}
+
+private void SaveProduct()
+{
+    if (_selectedProduct == null) return;
+
+    _selectedProduct.Name = name;
+    _productService.Update(_selectedProduct);
+
+    // Clear input fields
+    name = "";
+    _selectedProduct = null;
+    GetAllProducts();
+}
+
+    private void DeleteProduct(Product product)
+    {
+        _productService.Delete(product.Id);
+         GetAllProducts();
+    }
+}
