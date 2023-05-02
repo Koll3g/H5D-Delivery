@@ -1,0 +1,153 @@
+﻿@page "/customerManagement"
+@using H5D_Delivery.Mgmt.Backend.Customer.Domain
+@using H5D_Delivery.Mgmt.Backend.Shared.IoC
+@using Autofac
+@using H5D_Delivery.Mgmt.Backend.Order.Domain
+@using H5D_Delivery.Mgmt.Backend.Product.Domain
+@using H5D_Delivery.Mgmt.Backend.Stock.Domain
+@using H5D_Delivery.Mgmt.Backend.Shared
+
+<h3>Customer Management</h3>
+
+<button class="btn btn-primary" @onclick="AddCustomer">Add Customer</button>
+<button class="btn btn-primary" @onclick="SaveCustomer">Save</button>
+
+<div class="row">
+    <div class="col-md-6">
+        <label for="name">Name</label>
+        <input id="name" type="text" @bind="@name" class="form-control" />
+    </div>
+    <div class="col-md-6">
+        <label for="address">Adress</label>
+        <input id="address" type="text" @bind="@address" class="form-control" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <label for="phone">PhoneNumber</label>
+        <input id="phone" type="text" @bind="@phone" class="form-control" />
+    </div>
+    <div class="col-md-6">
+        <label for="email">E-Mail</label>
+        <input id="email" type="text"  @bind="@email" class="form-control" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <label for="id">ID</label>
+        <input id="id" type="text" @bind="@id" class="form-control" />
+    </div>
+  </div>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var customer in _customers)
+        {
+            <tr>
+                <td>@customer.Id</td>
+                <td>@customer.Name</td>
+                <td>@customer.Address</td>
+                <td>@customer.EMail</td>
+                <td>@customer.PhoneNumber</td>
+                <td>
+                     <button class="btn btn-primary" @onclick="() => EditCustomer(customer)">Edit</button> 
+                    <button class="btn btn-danger" @onclick="() => DeleteCustomer(customer)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+@code {
+    private readonly CustomerService _customerService;
+    private IEnumerable<Customer> _customers = new List<Customer>();
+    private string name;
+    private string address;
+    private string phone;
+    private string email;
+    private Guid id;
+    private Customer _selectedCustomer;
+
+
+    public CustomerManagement()
+    {
+        var iocContainer = new IocSetup().GetContainer();
+        _customerService = iocContainer.Resolve<CustomerService>();
+        id = Guid.NewGuid();
+        GetAllCustomers();
+    }
+
+    public void GetAllCustomers()
+    {
+        var customers = _customerService.GetAll();
+        if (customers != null)
+        {
+            _customers = customers;
+        }
+    }
+
+    private void AddCustomer()
+    {
+        var customer = new Customer(id, name, address, email, phone);
+        _customerService.Create(customer);
+        GetAllCustomers();
+
+        // Clear input fields
+        name = "";
+        address = "";
+        phone = "";
+        email = "";
+        id = Guid.NewGuid();
+    }
+
+    private void EditCustomer(Customer customer)
+    {
+        _selectedCustomer = customer;
+        id = customer.Id;
+        name = customer.Name;
+        address = customer.Address;
+        email = customer.EMail;
+        phone = customer.PhoneNumber;
+     }
+
+     private void SaveCustomer()
+{
+    if (_selectedCustomer == null) return;
+
+    _selectedCustomer.Name = name;
+    _selectedCustomer.Address = address;
+    _selectedCustomer.EMail = email;
+    _selectedCustomer.PhoneNumber = phone;
+    _customerService.Update(_selectedCustomer);
+
+    // Clear input fields
+    name = "";
+    address = "";
+    phone = "";
+    email = "";
+    _selectedCustomer = null;
+    GetAllCustomers();
+}
+
+    private void DeleteCustomer(Customer customer)
+    {
+        _customerService.Delete(customer.Id);
+        GetAllCustomers();
+    }
+}

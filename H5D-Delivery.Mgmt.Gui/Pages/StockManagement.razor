@@ -1,0 +1,127 @@
+﻿@page "/stockManagement"
+@using H5D_Delivery.Mgmt.Backend.Customer.Domain
+@using H5D_Delivery.Mgmt.Backend.Shared.IoC
+@using Autofac
+@using H5D_Delivery.Mgmt.Backend.Order.Domain
+@using H5D_Delivery.Mgmt.Backend.Product.Domain
+@using H5D_Delivery.Mgmt.Backend.Stock.Domain
+@using H5D_Delivery.Mgmt.Backend.Shared
+
+<h3>Stock Items</h3>
+
+<button class="btn btn-primary" @onclick="AddStockItem">Add StockItem</button>
+
+<div class="row">
+    <div class="col-md-6">
+        <label for="product">Product</label>
+        <select id="product" @bind="@selectedProduct">
+            @foreach (var product in _products)
+            {
+                <option value="@product.Id">@product.Name</option>
+            }
+        </select>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <label for="amount">Amount</label>
+        <input id="amount" type="number" @bind="@amount" class="form-control" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <label for="location">Location</label>
+        <select id="location" @bind="@location">
+            <option value="@StorageLocation.A1">A1</option>
+            <option value="@StorageLocation.A2">A2</option>
+            <option value="@StorageLocation.A3">A3</option>
+            <option value="@StorageLocation.A4">A4</option>
+        </select>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Id Product</th>
+        <th>Product Name</th>
+        <th>Amount</th>
+        <th>Location</th>
+    </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var stockItem in _stockItems)
+{
+    var productName = "";
+    var product = _products.FirstOrDefault(p => p.Id == stockItem.ProductId);
+    if (product != null)
+    {
+        productName = product.Name;
+    }
+    <tr>
+        <td>@stockItem.Id</td>
+        <td>@stockItem.ProductId</td>
+        <td>@productName</td>
+        <td>@stockItem.Amount</td>
+        <td>@stockItem.StorageLocation</td>
+    </tr>
+}
+    </tbody>
+</table>
+
+
+
+@code {
+
+    private readonly StockService _stockService;
+    private readonly ProductService _productService;
+    private IEnumerable<StockItem> _stockItems = new List<StockItem>();
+    private IEnumerable<Product> _products = new List<Product>();
+    private Guid selectedProduct = Guid.Empty;
+    private uint amount = 0;
+    private StorageLocation location = StorageLocation.A1;
+
+    public StockManagement()
+    {
+        var iocContainer = new IocSetup().GetContainer();
+        _stockService = iocContainer.Resolve<StockService>();
+        _productService = iocContainer.Resolve<ProductService>();
+        GetAllStockItems();
+        GetAllProducts();
+    }
+
+    private void GetAllStockItems()
+    {
+        var stockItems = _stockService.GetAll();
+        if (stockItems != null)
+        {
+            _stockItems = stockItems;
+        }
+    }
+
+    private void GetAllProducts()
+    {
+        var products = _productService.GetAll();
+        if (products != null)
+        {
+            _products = products;
+        }
+    }
+
+    
+    private void AddStockItem()
+    {
+        var product = _productService.GetAll()?.First();
+        if (product == null)
+        {
+            return;
+        }
+        var stockItem = new StockItem(new Guid(), product.Id, amount, StorageLocation.A1); //--> Name muss angepasst werden
+        _stockService.Create(stockItem);
+    }
+}
+

@@ -58,7 +58,7 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Domain
 
             if (!IsPhoneNumberValid(customer.PhoneNumber))
             {
-                throw new EmailInvalidException($"E-Mail must have format {EmailPattern}");
+                throw new PhoneNumberInvalidException($"PhoneNumber must have format {PhonePattern}");
             }
 
             return true;
@@ -81,5 +81,6 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Domain
             var regex = new Regex(PhonePattern);
             return regex.IsMatch(phoneNumber);
         }
+
     }
 }
