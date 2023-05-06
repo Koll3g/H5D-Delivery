@@ -56,16 +56,10 @@
 
         @foreach (var stockItem in _stockItems)
 {
-    var productName = "";
-    var product = _products.FirstOrDefault(p => p.Id == stockItem.ProductId);
-    if (product != null)
-    {
-        productName = product.Name;
-    }
-    <tr>
+     <tr>
         <td>@stockItem.Id</td>
         <td>@stockItem.ProductId</td>
-        <td>@productName</td>
+        <td>@stockItem.Product.Name</td>
         <td>@stockItem.Amount</td>
         <td>@stockItem.StorageLocation</td>
     </tr>

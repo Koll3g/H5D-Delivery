@@ -9,9 +9,11 @@
 
 <h3>Customer Management</h3>
 
+@*Buttons*@
 <button class="btn btn-primary" @onclick="AddCustomer">Add Customer</button>
 <button class="btn btn-primary" @onclick="SaveCustomer">Save</button>
 
+@*Textfelder und Eingabe*@
 <div class="row">
     <div class="col-md-6">
         <label for="name">Name</label>
@@ -41,7 +43,7 @@
     </div>
   </div>
 
-
+  @*Tabelle*@
 <table class="table">
     <thead>
         <tr>
@@ -63,6 +65,7 @@
                 <td>@customer.EMail</td>
                 <td>@customer.PhoneNumber</td>
                 <td>
+                     @*Buttons der Tabelle*@
                      <button class="btn btn-primary" @onclick="() => EditCustomer(customer)">Edit</button> 
                     <button class="btn btn-danger" @onclick="() => DeleteCustomer(customer)">Delete</button>
                 </td>
