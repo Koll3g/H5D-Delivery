@@ -22,7 +22,7 @@
 <div class="row">
     <div class="col-md-6">
         <label for="id">ID</label>
-        <input id="id" type="text" @bind="@id" class="form-control" />
+        <input id="id" type="text" @bind="@id" class="form-control" readonly="@isIdReadOnly" />
     </div>
   </div>
 
@@ -32,6 +32,7 @@
     <tr>
         <th>Id</th>
         <th>Name</th>
+        <th>Action</th>
     </tr>
     </thead>
     <tbody>
@@ -59,6 +60,7 @@
     private string name;
     private Guid id;
     private Product _selectedProduct;
+    private bool isIdReadOnly = true;
 
 
     public ProductManagement()
@@ -87,6 +89,7 @@
         // Clear input fields
         name = "";
         id = Guid.NewGuid();
+        isIdReadOnly = true;
     }
 
    private void EditProduct(Product product)
@@ -94,6 +97,7 @@
     _selectedProduct = product;
     id = product.Id;
     name = product.Name;
+    isIdReadOnly = true;
 }
 
 private void SaveProduct()
@@ -106,6 +110,8 @@ private void SaveProduct()
     // Clear input fields
     name = "";
     _selectedProduct = null;
+    id = Guid.NewGuid();
+    isIdReadOnly = true;
     GetAllProducts();
 }
 

@@ -39,7 +39,7 @@
 <div class="row">
     <div class="col-md-6">
         <label for="id">ID</label>
-        <input id="id" type="text" @bind="@id" class="form-control" />
+        <input id="id" type="text" @bind="@id" class="form-control" readonly="@isIdReadOnly"/>
     </div>
   </div>
 
@@ -86,6 +86,7 @@
     private string email;
     private Guid id;
     private Customer _selectedCustomer;
+    private bool isIdReadOnly = true;
 
 
     public CustomerManagement()
@@ -117,6 +118,7 @@
         phone = "";
         email = "";
         id = Guid.NewGuid();
+        isIdReadOnly = true;
     }
 
     private void EditCustomer(Customer customer)
@@ -127,6 +129,7 @@
         address = customer.Address;
         email = customer.EMail;
         phone = customer.PhoneNumber;
+        isIdReadOnly = true;
      }
 
      private void SaveCustomer()
@@ -144,7 +147,9 @@
     address = "";
     phone = "";
     email = "";
+    id = Guid.NewGuid();
     _selectedCustomer = null;
+    isIdReadOnly = true;
     GetAllCustomers();
 }
 
