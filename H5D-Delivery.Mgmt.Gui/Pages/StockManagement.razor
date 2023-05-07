@@ -10,6 +10,10 @@
 <h3>Stock Items</h3>
 
 <button class="btn btn-primary" @onclick="AddStockItem">Add StockItem</button>
+<button class="btn btn-primary" @onclick="SaveStockItem">Save</button>
+
+
+
 
 <div class="row">
     <div class="col-md-6">
@@ -50,6 +54,7 @@
         <th>Product Name</th>
         <th>Amount</th>
         <th>Location</th>
+        <th>Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -62,6 +67,10 @@
         <td>@stockItem.Product.Name</td>
         <td>@stockItem.Amount</td>
         <td>@stockItem.StorageLocation</td>
+        <td>
+            <button class="btn btn-primary" @onclick="() => EditStockItem(stockItem)">Edit</button>
+            <button class="btn btn-danger" @onclick="() => DeleteStockItem(stockItem)">Delete</button>
+        </td>
     </tr>
 }
     </tbody>
@@ -78,6 +87,8 @@
     private Guid selectedProduct = Guid.Empty;
     private uint amount = 0;
     private StorageLocation location = StorageLocation.A1;
+    private StockItem selectedStockItem;
+    private StockItem originalStockItem;
 
     public StockManagement()
     {
@@ -106,16 +117,63 @@
         }
     }
 
-    
+
     private void AddStockItem()
     {
-        var product = _productService.GetAll()?.First();
+        var product = _productService.Get(selectedProduct);
         if (product == null)
         {
             return;
         }
-        var stockItem = new StockItem(new Guid(), product.Id, amount, StorageLocation.A1); //--> Name muss angepasst werden
+        var stockItem = new StockItem(Guid.NewGuid(), product.Id, amount, location);
         _stockService.Create(stockItem);
+
+        // Refresh the list of stock items to update the table
+        GetAllStockItems();
+
+        // Clear input fields
+        selectedProduct = Guid.Empty;
+        amount = 0;
+        location = StorageLocation.A1;
+
+
     }
+
+private void EditStockItem(StockItem stockItem)
+{
+    selectedStockItem = stockItem;
+    originalStockItem = new StockItem(stockItem.Id, stockItem.ProductId, stockItem.Amount, stockItem.StorageLocation);
+    selectedProduct = stockItem.ProductId;
+    amount = stockItem.Amount;
+    location = stockItem.StorageLocation;
+}
+
+
+    private void DeleteStockItem(StockItem stockItem)
+    {
+        _stockService.Delete(stockItem.Id);
+        GetAllStockItems();
+    }
+
+    private void SaveStockItem()
+    {
+        if (selectedStockItem == null) return;
+
+        selectedStockItem.ProductId = selectedProduct;
+        selectedStockItem.Amount = amount;
+        selectedStockItem.StorageLocation = location;
+        _stockService.Update(selectedStockItem);
+
+        // Clear input fields
+        selectedProduct = Guid.Empty;
+        amount = 0;
+        location = StorageLocation.A1;
+        selectedStockItem = null;
+        originalStockItem = null;
+
+        // Refresh the list of stock items to update the table
+        GetAllStockItems();
+    }
+
 }
 
