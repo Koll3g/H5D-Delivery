@@ -4,19 +4,94 @@
 @using Autofac
 @using H5D_Delivery.Mgmt.Backend.Customer.Domain
 @using H5D_Delivery.Mgmt.Backend.Product.Domain
+@using H5D_Delivery.Mgmt.Backend.Delivery.Domain
+@using H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryOrderFactory
+@using H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory
+@using H5D_Delivery.Mgmt.Backend.Order.Persistence
 
 
-<h3>Order Management</h3>
-<button class="btn btn-primary" @onclick="AddOrder">Add Order</button>
+
+<h3>Orders</h3>
+
+<div>
+    <button class="btn btn-primary" @onclick="AddOrder">Add Order</button>
+    <button class="btn btn-primary" @onclick="SaveOrder">Save Order</button>
+    <button class="btn btn-primary" @onclick="TestDelivery">Test Delivery</button>
+    
+</div>
+
+<!-- Produkt-Auswahlfeld -->
+<div>
+    <select @bind="_selectedProductId">
+        <option value="">Select a product</option>
+        @foreach (var product in _products)
+        {
+            <option value="@product.Id">@product.Name</option>
+        }
+    </select>
+    <p>Selected Product Id: @_selectedProductId</p>
+</div>
+
+<!-- Kunden-Auswahlfeld -->
+<div>
+    <select @bind="_selectedCustomerId">
+        <option value="">Select a customer</option>
+        @foreach (var customer in _customers)
+        {
+            <option value="@customer.Id">@customer.Name</option>
+        }
+    </select>
+    <p>Selected Customer Id: @_selectedCustomerId</p>
+</div>
+
+<!-- Amount-Eingabefeld -->
+<div class="row">
+    <div class="col-md-6">
+        <label for="orderAmount">Amount</label>
+        <input id="orderAmount" type="number" @bind="@orderAmount" class="form-control" />
+    </div>
+</div>
+
+<!-- Earliest Delivery-Eingabefeld -->
+<div class="row">
+    <div class="col-md-6">
+        <label for="earliestDelivery">Earliest Delivery</label>
+        <input id="earliestDelivery" type="datetime-local" @bind="@earliestDelivery" class="form-control" />
+    </div>
+</div>
+
+<!-- Latest Delivery-Eingabefeld -->
+<div class="row">
+    <div class="col-md-6">
+        <label for="latestDelivery">Latest Delivery</label>
+        <input id="latestDelivery" type="datetime-local" @bind="@latestDelivery" class="form-control" />
+    </div>
+</div>
+
+<!-- Priority-Auswahlfeld -->
+<div>
+      <p>Selected Priority: @_selectedPriority</p>
+    <label for="priority">Priority</label>
+    <select id="priority" @bind="_selectedPriority">
+        <option value="High">High</option>
+        <option value="Middle">Middle</option>
+        <option value="Low">Low</option>
+    </select>
+    </div>
 
 <table class="table">
     <thead>
     <tr>
         <th>Id</th>
-        <th>Customer Id</th>
-        <th>Product Id</th>
+       @* <th>Id Product</th>*@
+        <th>Product Name</th>
+        @*<th>Id Customer</th>*@
+        <th>Customer Name</th>
         <th>Amount</th>
-        <th>Actions</th>
+        <th>Earliest Delivery</th>
+        <th>Latest Delivery</th>
+        <th>Priority</th>
+        <th>Action</th>
     </tr>
     </thead>
     <tbody>
@@ -24,58 +99,137 @@
     {
         <tr>
             <td>@order.Id</td>
-            <td>@order.CustomerId</td>
-            <td>@order.ProductId</td>
+           @* <td>@order.Product.Id</td>*@
+            <td>@order.Product.Name</td>
+           @* <td>@order.Customer.Id</td>*@
+            <td>@order.Customer.Name</td>
             <td>@order.Amount</td>
+            <td>@order.EarliestDeliveryTime</td>
+            <td>@order.LatestDeliveryTime</td>
+            <td>@order.Priority</td>
             <td>
-                <button class="btn btn-primary" @onclick="() => EditOrder(order)">Edit</button>
+                <button class="btn btn-primary" @onclick="() => EditOrder(order)">Edit</button> 
                 <button class="btn btn-danger" @onclick="() => DeleteOrder(order)">Delete</button>
             </td>
+
         </tr>
     }
     </tbody>
 </table>
+
+
+
+
+
 @code {
-private readonly OrderService _orderService;
-private readonly CustomerService _customerService;
-private readonly ProductService _productService;
-private IEnumerable<Order> _orders = new List<Order>();
+    private readonly OrderService _orderService;
+    private IEnumerable<Order> _orders = new List<Order>();
+
+    private readonly ProductService _productService;
+    private IEnumerable<Product> _products = new List<Product>();
+
+    private readonly CustomerService _customerService;
+    private IEnumerable<Customer> _customers = new List<Customer>();
+
+    private string _outputText = "";
+    private bool _show = false;
+    private List<Guid> _selectedCustomers = new List<Guid>();
+
+    private Guid _selectedCustomerId;
+    private Guid _selectedProductId;
+
+    private Order _selectedOrder;
+    private uint orderAmount = 1;
+    private DateTime earliestDelivery = DateTime.Now;
+    private DateTime latestDelivery = DateTime.Now.AddMinutes(15);
+
+    private string _selectedPriority = "Middle";
+
 
 
 public OrderManagement()
 {
     var iocContainer = new IocSetup().GetContainer();
-    _orderService = iocContainer.Resolve<OrderService>();
     _customerService = iocContainer.Resolve<CustomerService>();
     _productService = iocContainer.Resolve<ProductService>();
-
+    _orderService = iocContainer.Resolve<OrderService>();
+    _products = _productService.GetAll();
+    _customers = _customerService.GetAll();
+    
     GetAllOrders();
 }
 
 public void GetAllOrders()
-{
-    var orders = _orderService.GetAll();
-    if (orders != null)
     {
-        _orders = orders;
+        var orders = _orderService.GetAll();
+        if (orders != null)
+        {
+            _orders = orders;
+        }
     }
-}
 
-private void AddOrder()
+   private void AddOrder()
 {
-    //var order = new Order(new Guid(),  );
-    //_orderService.Create(order);
-    //GetAllOrders();
+    var product = _products.FirstOrDefault(p => p.Id == _selectedProductId);
+    var customer = _customers.FirstOrDefault(c => c.Id == _selectedCustomerId);
+    if (product == null || customer == null)
+    {
+        return;
+    }
+      var priority = Enum.Parse<Priority>(_selectedPriority);
+      var order = new Order(new Guid(), product.Id, customer.Id, orderAmount, earliestDelivery, latestDelivery, priority, DeliveryType.Deposit);
+    _orderService.Create(order);
 }
 
-private void EditOrder(Order order)
-{
-    // Implement edit functionality here
-}
 
-private void DeleteOrder(Order order)
+
+    private void DeleteOrder(Order order)
 {
     _orderService.Delete(order.Id);
     GetAllOrders();
 }
+
+
+     private void EditOrder(Order order)
+    {
+        _selectedOrder = order;
+        _selectedProductId = order.Product.Id;
+        _selectedCustomerId = order.Customer.Id;
+    }
+
+   private void SaveOrder()
+{
+    if (_selectedOrder == null) return;
+
+    var updatedProduct = _products.FirstOrDefault(p => p.Id == _selectedProductId);
+    var updatedCustomer = _customers.FirstOrDefault(c => c.Id == _selectedCustomerId);
+
+    if (updatedProduct != null && updatedCustomer != null)
+    {
+         _selectedOrder.Amount = orderAmount;
+        _selectedOrder.ProductId = updatedProduct.Id;
+        _selectedOrder.CustomerId = updatedCustomer.Id;
+        _selectedOrder.EarliestDeliveryTime = earliestDelivery;
+        _selectedOrder.LatestDeliveryTime = latestDelivery;
+        _selectedOrder.Priority = Enum.Parse<Priority>(_selectedPriority);
+        _selectedOrder.DeliveryType = DeliveryType.Deposit;
+        _orderService.Update(_selectedOrder);
+        
+    }
+
+    // Clear selected values
+    _selectedProductId = Guid.Empty;
+    _selectedCustomerId = Guid.Empty;
+    _selectedPriority = "";
+    _selectedOrder = null;
+    GetAllOrders();
+}
+
+
+    private void TestDelivery()
+    {
+        var deliveryService = new DeliveryService(new DeliveryOrderFactoryZbw(new DeliveryPlanFactoryZbw(new DeliveryTimerZbw(), new RouteOptimizerZbw(), new WaypointGeneratorZbw()), new OrderPrioritizerRobotInvoked()), new OrderRepository(new OrderContext()));
+        deliveryService.GenerateDeliveryOrder();
+    }
+
 }
