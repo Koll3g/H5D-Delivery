@@ -29,6 +29,8 @@ namespace H5D_Delivery.Mgmt.Gui
 
             app.UseRouting();
 
+            app.UseStaticFiles();
+
             app.MapBlazorHub();
             app.MapFallbackToPage("/_Host");
 

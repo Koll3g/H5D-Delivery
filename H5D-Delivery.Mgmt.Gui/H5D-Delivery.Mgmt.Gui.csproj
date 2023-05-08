@@ -21,4 +21,12 @@
     <ProjectReference Include="..\H5D-Delivery.Mgmt.Backend\H5D-Delivery.Mgmt.Backend.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\image\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\image\Bild1.png" />
+  </ItemGroup>
+
 </Project>
