@@ -12,12 +12,17 @@ namespace H5D_Delivery.RoboSim
     {
         private readonly IMqttClient _mqttClient;
 
+        Func<MqttApplicationMessageReceivedEventArgs, Task> _statusUpdateRequestHandler;
+        Func<MqttApplicationMessageReceivedEventArgs, Task> _returnToBaseHandler;
+
         private readonly Guid _robotId;
 
         private readonly string _batteryChargeTopic;
         private readonly string _statusUpdateRequestTopic;
+        private readonly string _currentDeliveryStepTopic;
+        private readonly string _returnToBaseTopic;
 
-        public RobotComm(Guid robotId, Func<MqttApplicationMessageReceivedEventArgs, Task> statusUpdateRequestHandler)
+        public RobotComm(Guid robotId, Func<MqttApplicationMessageReceivedEventArgs, Task> statusUpdateRequestHandler, Func<MqttApplicationMessageReceivedEventArgs, Task> returnToBaseHandler)
         {
             var factory = new MqttFactory();
             _mqttClient = factory.CreateMqttClient();
@@ -26,28 +31,37 @@ namespace H5D_Delivery.RoboSim
             //Define all Topics
             _batteryChargeTopic = $"Robots/{_robotId}/From/Status/BatteryChargePct";
             _statusUpdateRequestTopic = $"Robots/{_robotId}/To/Requests/StatusUpdate";
+            _currentDeliveryStepTopic = $"Robots/{_robotId}/From/Status/CurrentDeliveryStep";
+            _returnToBaseTopic = $"Robots/{_robotId}/To/Requests/ReturnToBase";
 
-
-            ConnectAndSubscribe(statusUpdateRequestHandler);
+            _statusUpdateRequestHandler = statusUpdateRequestHandler;
+            _returnToBaseHandler = returnToBaseHandler;
+            ConnectAndSubscribe();
         }
 
-        private async void ConnectAndSubscribe(Func<MqttApplicationMessageReceivedEventArgs, Task> statusUpdateRequestHandler)
+        private async void ConnectAndSubscribe()
         {
             await ConnectAsync("localhost", 1883, "RoboSim");
 
-            SubscribeToAllTopics(statusUpdateRequestHandler);
+            SubscribeToAllTopics();
         }
 
-        private async void SubscribeToAllTopics(Func<MqttApplicationMessageReceivedEventArgs, Task> statusUpdateRequestHandler)
+        private async void SubscribeToAllTopics()
         {
-            await SubscribeAsync(_statusUpdateRequestTopic, statusUpdateRequestHandler);
+            await SubscribeAsync(_statusUpdateRequestTopic, MessageHandler);
+            await SubscribeAsync(_returnToBaseTopic, MessageHandler);
         }
 
         public async void PublishBatteryChargePct(int batteryChargeInPercent)
         {
             await PublishAsync(_batteryChargeTopic, batteryChargeInPercent.ToString());
         }
-        
+
+        public async void PublishCurrentDeliveryStep(int currentDeliveryStep)
+        {
+            await PublishAsync(_currentDeliveryStepTopic, currentDeliveryStep.ToString());
+        }
+
         private async Task ConnectAsync(string brokerHostName, int brokerPort, string clientId)
         {
             var options = new MqttClientOptionsBuilder()
@@ -63,6 +77,19 @@ namespace H5D_Delivery.RoboSim
             await _mqttClient.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic(topic).Build());
             _mqttClient.ApplicationMessageReceivedAsync += handler;
 
+        }
+
+        private Task MessageHandler(MqttApplicationMessageReceivedEventArgs x)
+        {
+            if(x.ApplicationMessage.Topic == _statusUpdateRequestTopic)
+            {
+                return _statusUpdateRequestHandler.Invoke(x);
+            }
+            else if(x.ApplicationMessage.Topic == _returnToBaseTopic)
+            {
+                return _returnToBaseHandler.Invoke(x);
+            }
+            return Task.CompletedTask;
         }
 
         private async Task PublishAsync(string topic, string payload)

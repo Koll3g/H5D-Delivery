@@ -28,63 +28,131 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Connect = new Button();
-            Btn_BatteryPct = new Button();
-            Num_BatteryPct = new NumericUpDown();
-            Lbl_StatusUpdate = new Label();
-            ((System.ComponentModel.ISupportInitialize)Num_BatteryPct).BeginInit();
-            SuspendLayout();
+            this.Connect = new System.Windows.Forms.Button();
+            this.Btn_BatteryPct = new System.Windows.Forms.Button();
+            this.Num_BatteryPct = new System.Windows.Forms.NumericUpDown();
+            this.Lbl_StatusUpdate = new System.Windows.Forms.Label();
+            this.btn_CurrentDeliveryStep = new System.Windows.Forms.Button();
+            this.Num_UpdateCurrentDeliveryStep = new System.Windows.Forms.NumericUpDown();
+            this.Lbl_Connect = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.Lbl_ReturnToBaseRequest = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.Num_BatteryPct)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Num_UpdateCurrentDeliveryStep)).BeginInit();
+            this.SuspendLayout();
             // 
             // Connect
             // 
-            Connect.Location = new Point(248, 84);
-            Connect.Name = "Connect";
-            Connect.Size = new Size(75, 23);
-            Connect.TabIndex = 0;
-            Connect.Text = "Connect";
-            Connect.UseVisualStyleBackColor = true;
-            Connect.Click += Connect_Click;
+            this.Connect.Location = new System.Drawing.Point(31, 32);
+            this.Connect.Name = "Connect";
+            this.Connect.Size = new System.Drawing.Size(75, 23);
+            this.Connect.TabIndex = 0;
+            this.Connect.Text = "Connect";
+            this.Connect.UseVisualStyleBackColor = true;
+            this.Connect.Click += new System.EventHandler(this.Connect_Click);
             // 
             // Btn_BatteryPct
             // 
-            Btn_BatteryPct.Location = new Point(458, 201);
-            Btn_BatteryPct.Name = "Btn_BatteryPct";
-            Btn_BatteryPct.Size = new Size(75, 23);
-            Btn_BatteryPct.TabIndex = 1;
-            Btn_BatteryPct.Text = "Update";
-            Btn_BatteryPct.UseVisualStyleBackColor = true;
-            Btn_BatteryPct.Click += Btn_BatteryPct_Click;
+            this.Btn_BatteryPct.Location = new System.Drawing.Point(120, 141);
+            this.Btn_BatteryPct.Name = "Btn_BatteryPct";
+            this.Btn_BatteryPct.Size = new System.Drawing.Size(75, 23);
+            this.Btn_BatteryPct.TabIndex = 1;
+            this.Btn_BatteryPct.Text = "Update";
+            this.Btn_BatteryPct.UseVisualStyleBackColor = true;
+            this.Btn_BatteryPct.Click += new System.EventHandler(this.Btn_BatteryPct_Click);
             // 
             // Num_BatteryPct
             // 
-            Num_BatteryPct.Location = new Point(369, 201);
-            Num_BatteryPct.Name = "Num_BatteryPct";
-            Num_BatteryPct.Size = new Size(83, 23);
-            Num_BatteryPct.TabIndex = 2;
+            this.Num_BatteryPct.Location = new System.Drawing.Point(31, 141);
+            this.Num_BatteryPct.Name = "Num_BatteryPct";
+            this.Num_BatteryPct.Size = new System.Drawing.Size(83, 23);
+            this.Num_BatteryPct.TabIndex = 2;
             // 
             // Lbl_StatusUpdate
             // 
-            Lbl_StatusUpdate.AutoSize = true;
-            Lbl_StatusUpdate.Location = new Point(587, 331);
-            Lbl_StatusUpdate.Name = "Lbl_StatusUpdate";
-            Lbl_StatusUpdate.Size = new Size(16, 15);
-            Lbl_StatusUpdate.TabIndex = 3;
-            Lbl_StatusUpdate.Text = "...";
+            this.Lbl_StatusUpdate.AutoSize = true;
+            this.Lbl_StatusUpdate.Location = new System.Drawing.Point(166, 194);
+            this.Lbl_StatusUpdate.Name = "Lbl_StatusUpdate";
+            this.Lbl_StatusUpdate.Size = new System.Drawing.Size(16, 15);
+            this.Lbl_StatusUpdate.TabIndex = 3;
+            this.Lbl_StatusUpdate.Text = "...";
+            // 
+            // btn_CurrentDeliveryStep
+            // 
+            this.btn_CurrentDeliveryStep.Location = new System.Drawing.Point(120, 90);
+            this.btn_CurrentDeliveryStep.Name = "btn_CurrentDeliveryStep";
+            this.btn_CurrentDeliveryStep.Size = new System.Drawing.Size(75, 23);
+            this.btn_CurrentDeliveryStep.TabIndex = 4;
+            this.btn_CurrentDeliveryStep.Text = "UpdateDeliveryStep";
+            this.btn_CurrentDeliveryStep.UseVisualStyleBackColor = true;
+            this.btn_CurrentDeliveryStep.Click += new System.EventHandler(this.btn_CurrentDeliveryStep_Click);
+            // 
+            // Num_UpdateCurrentDeliveryStep
+            // 
+            this.Num_UpdateCurrentDeliveryStep.Location = new System.Drawing.Point(31, 90);
+            this.Num_UpdateCurrentDeliveryStep.Name = "Num_UpdateCurrentDeliveryStep";
+            this.Num_UpdateCurrentDeliveryStep.Size = new System.Drawing.Size(83, 23);
+            this.Num_UpdateCurrentDeliveryStep.TabIndex = 6;
+            // 
+            // Lbl_Connect
+            // 
+            this.Lbl_Connect.AutoSize = true;
+            this.Lbl_Connect.Location = new System.Drawing.Point(112, 36);
+            this.Lbl_Connect.Name = "Lbl_Connect";
+            this.Lbl_Connect.Size = new System.Drawing.Size(16, 15);
+            this.Lbl_Connect.TabIndex = 7;
+            this.Lbl_Connect.Text = "...";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(34, 194);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(80, 15);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Status Update";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(31, 220);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(129, 15);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "Return To Base Request";
+            // 
+            // Lbl_ReturnToBaseRequest
+            // 
+            this.Lbl_ReturnToBaseRequest.AutoSize = true;
+            this.Lbl_ReturnToBaseRequest.Location = new System.Drawing.Point(166, 220);
+            this.Lbl_ReturnToBaseRequest.Name = "Lbl_ReturnToBaseRequest";
+            this.Lbl_ReturnToBaseRequest.Size = new System.Drawing.Size(16, 15);
+            this.Lbl_ReturnToBaseRequest.TabIndex = 10;
+            this.Lbl_ReturnToBaseRequest.Text = "...";
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(Lbl_StatusUpdate);
-            Controls.Add(Num_BatteryPct);
-            Controls.Add(Btn_BatteryPct);
-            Controls.Add(Connect);
-            Name = "Form1";
-            Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)Num_BatteryPct).EndInit();
-            ResumeLayout(false);
-            PerformLayout();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.Lbl_ReturnToBaseRequest);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.Lbl_Connect);
+            this.Controls.Add(this.Num_UpdateCurrentDeliveryStep);
+            this.Controls.Add(this.btn_CurrentDeliveryStep);
+            this.Controls.Add(this.Lbl_StatusUpdate);
+            this.Controls.Add(this.Num_BatteryPct);
+            this.Controls.Add(this.Btn_BatteryPct);
+            this.Controls.Add(this.Connect);
+            this.Name = "Form1";
+            this.Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)(this.Num_BatteryPct)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Num_UpdateCurrentDeliveryStep)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
@@ -93,5 +161,11 @@
         private Button Btn_BatteryPct;
         private NumericUpDown Num_BatteryPct;
         private Label Lbl_StatusUpdate;
+        private Button btn_CurrentDeliveryStep;
+        private NumericUpDown Num_UpdateCurrentDeliveryStep;
+        private Label Lbl_Connect;
+        private Label label1;
+        private Label label2;
+        private Label Lbl_ReturnToBaseRequest;
     }
 }

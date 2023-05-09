@@ -23,7 +23,10 @@ namespace H5D_Delivery.RoboSim
         {
             //ToDo: Select Guid based on dropdown
 
-            _robotComm = new RobotComm(_idRobot1, HandleStatusUpdateRequest);
+            _robotComm = new RobotComm(_idRobot1, HandleStatusUpdateRequest, ReturnToBaseHandler);
+
+            Lbl_Connect.Text = "connected";
+
         }
 
         private void Btn_BatteryPct_Click(object sender, EventArgs e)
@@ -37,6 +40,11 @@ namespace H5D_Delivery.RoboSim
             _robotComm.PublishBatteryChargePct(batteryPctValue);
         }
 
+        private void PublishDeliveryStep()
+        {
+            var deliverystepValue = (int)Num_UpdateCurrentDeliveryStep.Value;
+            _robotComm.PublishCurrentDeliveryStep(deliverystepValue);
+        }
         private Task HandleStatusUpdateRequest(MqttApplicationMessageReceivedEventArgs x)
         {
             //Todo: implement functionality
@@ -52,10 +60,31 @@ namespace H5D_Delivery.RoboSim
             {
                 //Send updates for all status fields
                 PublishBatteryPct();
+                PublishDeliveryStep();
 
             }
 
             return Task.CompletedTask;
         }
+
+        private Task ReturnToBaseHandler(MqttApplicationMessageReceivedEventArgs x)
+        {
+            //Todo: implement functionality
+
+            //Show status on GUI (invoke UI update operation)
+            Lbl_ReturnToBaseRequest.Invoke(new Action(() =>
+            {
+                Lbl_ReturnToBaseRequest.Text = x.ApplicationMessage.ConvertPayloadToString();
+            }));
+
+            return Task.CompletedTask;
+        }
+
+        private void btn_CurrentDeliveryStep_Click(object sender, EventArgs e)
+        {
+            PublishDeliveryStep();
+        }
+
+
     }
 }
