@@ -1,0 +1,36 @@
+﻿@page "/CommTest"
+@using H5D_Delivery.Mgmt.Backend.Robot.Comm;
+@using H5D_Delivery.Mgmt.Backend.Robot.Domain;
+
+<h3>CommTest</h3>
+<button class="btn btn-primary" @onclick="RequestUpdate">Request Update</button>
+<p>Battery Charge [%]</p>
+@*<p>@_robot.BatteryCharge</p>*@
+<p>@_batteryCharge</p>
+
+@code {
+    private Robot _robot;
+    private int _batteryCharge = 0;
+
+    public CommTest()
+    {
+        _robot = new Robot(new RobotComm(new Guid("6ee9c6c6-09f0-4c06-a17c-e0ecbcbeb09f")));
+        _robot.RobotComm.BatteryChargePctReceivedEvent += BatteryChargeUpdater;
+    }
+
+    private void RequestUpdate()
+    {
+        _robot.RequestStatusUpdate();
+    }
+
+    private void BatteryChargeUpdater(object? sender, int batteryCharge)
+    {
+        _batteryCharge = batteryCharge;
+        // Update the UI
+        InvokeAsync(() =>
+        {
+            // Update the UI here
+            StateHasChanged();
+        }).ConfigureAwait(false).GetAwaiter().GetResult();
+    }
+}

@@ -10,6 +10,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
     {
         public event EventHandler<int>? BatteryChargePctReceivedEvent;
 
+        public void RequestStatusUpdate();
 
     }
 }

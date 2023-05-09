@@ -1,9 +1,11 @@
-﻿using MQTTnet;
+﻿using H5D_Delivery.Mgmt.Backend.Robot.Domain;
+using MQTTnet;
 using MQTTnet.Client;
+using System.ComponentModel;
 
 namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
 {
-    public class RobotComm
+    public class RobotComm : IRobotComm
     {
         private readonly IMqttClient _mqttClient;
         private Guid _robotId;
@@ -33,7 +35,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
 
         private async void ConnectAndSubscribe()
         {
-            await ConnectAsync("localhost", 1883, "RoboSim");
+            await ConnectAsync("localhost", 1883, "H5D-Delivery");
 
             SubscribeToAllTopics();
         }
@@ -69,15 +71,10 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
         {
             return Task.Run(() =>
             {
-                var payload = x.ApplicationMessage.Payload;
-                var value = ConvertToInt(payload);
+                var payload = x.ApplicationMessage.ConvertPayloadToString();
+                var value = Convert.ToInt32(payload);
                 BatteryChargePctReceivedEvent?.Invoke(this, value);
             });
-        }
-
-        private int ConvertToInt(byte[] payload)
-        {
-            return BitConverter.ToInt32(payload);
         }
 
         private async Task PublishAsync(string topic, string payload)
