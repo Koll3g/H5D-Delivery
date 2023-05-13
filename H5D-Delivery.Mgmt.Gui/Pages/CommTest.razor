@@ -14,7 +14,7 @@
 
     public CommTest()
     {
-        _robot = new Robot(new RobotComm(new Guid("6ee9c6c6-09f0-4c06-a17c-e0ecbcbeb09f")));
+        _robot = new Robot(new Guid("6ee9c6c6-09f0-4c06-a17c-e0ecbcbeb09f"));
         _robot.RobotComm.BatteryChargePctReceivedEvent += BatteryChargeUpdater;
     }
 
@@ -23,9 +23,9 @@
         _robot.RequestStatusUpdate();
     }
 
-    private void BatteryChargeUpdater(object? sender, int batteryCharge)
+    private void BatteryChargeUpdater(object? sender, BatteryCharge batteryCharge)
     {
-        _batteryCharge = batteryCharge;
+        _batteryCharge = batteryCharge.BatteryChargePct;
         // Update the UI
         InvokeAsync(() =>
         {
