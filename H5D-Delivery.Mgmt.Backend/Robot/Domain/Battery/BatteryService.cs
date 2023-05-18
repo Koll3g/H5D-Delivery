@@ -20,14 +20,20 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain.Battery
             return _batteryChargeRepository.GetAllForSpecificRobot(robotId);
         }
 
+        public IEnumerable<BatteryCharge>? GetXNewestForSpecificRobot(Guid robotId, uint amount)
+        {
+            return _batteryChargeRepository.GetXNewestForSpecificRobot(robotId, amount);
+        }
+
+        public IEnumerable<BatteryCharge>? GetXNewest(uint amount)
+        {
+            return _batteryChargeRepository.GetXNewest(amount);
+        }
+
         public IEnumerable<BatteryCharge>? GetAll()
         {
             return _batteryChargeRepository.GetAll();
         }
 
-        public void Create(BatteryCharge batteryCharge)
-        {
-            _batteryChargeRepository.Create(batteryCharge);
-        }
     }
 }

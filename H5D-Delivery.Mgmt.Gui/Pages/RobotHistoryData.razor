@@ -63,13 +63,13 @@
         _robots = _robotService.GetRobots();
 
         _batteryChargeService = IocSetup.Instance.Container.Resolve<BatteryService>();
-        var history = _batteryChargeService.GetAll();
+        var history = _batteryChargeService.GetXNewest(10);
         if (history != null)
         {
             _batteryChargeHistory = history;
         }
 
-        var historySpecific = _batteryChargeService.GetAllForSpecificRobot(_robots.First().Id);
+        var historySpecific = _batteryChargeService.GetXNewestForSpecificRobot(_robots.First().Id, 10);
         if (historySpecific != null)
         {
             _batteryChargeHistorySpecific = historySpecific;

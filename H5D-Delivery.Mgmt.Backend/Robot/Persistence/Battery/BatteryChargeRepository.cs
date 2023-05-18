@@ -18,13 +18,19 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Persistence.Battery
                 .Where(bc => bc.RobotId == robotId);
         }
 
-        public IEnumerable<BatteryCharge>? Get100NewestForSpecificRobot(Guid robotId)
+        public IEnumerable<BatteryCharge>? GetXNewestForSpecificRobot(Guid robotId, uint amount)
         {
             return _dbContext.DbSet?
                 .Where(bc => bc.RobotId == robotId)
                 .OrderByDescending(bc => bc.DateTime)
-                .Take(100)
-                .ToList();
+                .Take((int)amount);
+        }
+
+        public IEnumerable<BatteryCharge>? GetXNewest(uint amount)
+        {
+            return _dbContext.DbSet?
+                .OrderByDescending(bc => bc.DateTime)
+                .Take((int)amount);
         }
     }
 }

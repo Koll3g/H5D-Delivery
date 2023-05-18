@@ -11,6 +11,8 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain.Battery
     {
         public IEnumerable<BatteryCharge>? GetAllForSpecificRobot(Guid robotId);
 
-        public IEnumerable<BatteryCharge>? Get100NewestForSpecificRobot(Guid robotId);
+        public IEnumerable<BatteryCharge>? GetXNewest(uint amount);
+
+        public IEnumerable<BatteryCharge>? GetXNewestForSpecificRobot(Guid robotId, uint amount);
     }
 }
