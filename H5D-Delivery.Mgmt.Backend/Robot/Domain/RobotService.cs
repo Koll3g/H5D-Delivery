@@ -4,31 +4,38 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using H5D_Delivery.Mgmt.Backend.Robot.Comm;
+using H5D_Delivery.Mgmt.Backend.Robot.Domain.Error;
 using Newtonsoft.Json;
 
 namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
 {
     public class RobotService
     {
-        private Robot _robot;
+        private readonly IRobotRepository _robotRepository;
 
-        public RobotService()
+        public RobotService(IRobotRepository robotRepository)
         {
-            _robot = new Robot(new Guid("6ee9c6c6-09f0-4c06-a17c-e0ecbcbeb09f"));
-            _robot.Name = "RobotSim";
+            _robotRepository = robotRepository;
+        }
+        
+        public IEnumerable<Robot>? GetAll()
+        {
+            return _robotRepository.GetAll();
         }
 
-        public List<Robot> GetRobots()
+        public Robot? Get(Guid id)
         {
-            var list = new List<Robot>();
-            list.Add(_robot);
-            return list;
+            return _robotRepository.Get(id);
         }
 
-        public string Test()
+        public void Create(Robot robot)
         {
-            var errorMessage = ErrorMessage.Empty;
-            return JsonConvert.SerializeObject(errorMessage);
+            _robotRepository.Create(robot);
+        }
+
+        public void Update(Robot robot)
+        {
+            _robotRepository.Update(robot);
         }
 
     }

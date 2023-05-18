@@ -1,13 +1,12 @@
 ﻿@page "/robotDashboard"
-@using H5D_Delivery.Mgmt.Backend.Robot.Comm;
-@using H5D_Delivery.Mgmt.Backend.Robot.Domain;
-@using System.ComponentModel
-@using Autofac
+@using H5D_Delivery.Mgmt.Backend.Robot.Domain
+@using H5D_Delivery.Mgmt.Backend.Shared.IoC
 @using H5D_Delivery.Mgmt.Backend.Delivery.Domain
 @using H5D_Delivery.Mgmt.Backend.Order.Domain
 @using H5D_Delivery.Mgmt.Backend.Product.Domain
-@using H5D_Delivery.Mgmt.Backend.Robot.Domain.Battery
-@using H5D_Delivery.Mgmt.Backend.Shared.IoC
+@using H5D_Delivery.Mgmt.Backend.Robot.Comm
+@using Autofac
+@using System.ComponentModel
 
 <h3>Robots</h3>
 <table class="table">
@@ -49,18 +48,18 @@
 </table>
 
 @code {
-    private readonly RobotService _robotService;
-    private readonly IEnumerable<Robot> _robots;
+    private IEnumerable<Robot> _robots;
+    private readonly RobotListener _robotListener;
 
     private readonly DeliveryOrder _testDeliveryOrder;
 
     public RobotDashboard()
     {
-        _robotService = new RobotService();
-        _robots = _robotService.GetRobots();
+        _robotListener = IocSetup.Instance.Container.Resolve<RobotListener>();
+        _robots = _robotListener.ActiveRobots;
         
         _testDeliveryOrder = new DeliveryOrder(new Guid());
-        MakeTestDeliveryOrder();
+        //MakeTestDeliveryOrder();
 
         PropertyChangedSubscription();
 

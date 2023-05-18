@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using H5D_Delivery.Mgmt.Backend.Shared;
 
 namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
 {
@@ -39,7 +40,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
             {
                 await SubscribeAsync(topic);
             }
-            
+            MqttClient.ApplicationMessageReceivedAsync += MqttMessageHandler;
         }
 
         protected abstract Task MqttMessageHandler(MqttApplicationMessageReceivedEventArgs x);
@@ -52,6 +53,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
                 .Build();
 
             await MqttClient.ConnectAsync(options);
+            var test = 1;
         }
 
         protected async Task PublishAsync(string topic, string payload)
@@ -67,7 +69,6 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
         protected async Task SubscribeAsync(string topic)
         {
             await MqttClient.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic(topic).Build());
-            MqttClient.ApplicationMessageReceivedAsync += MqttMessageHandler;
         }
     }
 }

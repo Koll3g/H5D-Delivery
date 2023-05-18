@@ -35,5 +35,9 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain.Battery
             return _batteryChargeRepository.GetAll();
         }
 
+        public void Create(BatteryCharge batteryCharge)
+        {
+            _batteryChargeRepository.Create(batteryCharge);
+        }
     }
 }

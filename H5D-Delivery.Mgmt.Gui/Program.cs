@@ -17,7 +17,7 @@ namespace H5D_Delivery.Mgmt.Gui
             builder.Services.AddSingleton<WeatherForecastService>();
 
             var iocContainer = IocSetup.Instance;
-            var listener = iocContainer.Container.Resolve<BatteryChargeListener>();
+            var robotListener = iocContainer.Container.Resolve<RobotListener>();
 
             var app = builder.Build();
 

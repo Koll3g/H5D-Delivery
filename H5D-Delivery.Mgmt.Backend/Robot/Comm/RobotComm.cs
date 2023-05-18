@@ -5,6 +5,7 @@ using System.ComponentModel;
 using H5D_Delivery.Mgmt.Backend.Delivery.Domain;
 using Newtonsoft.Json;
 using H5D_Delivery.Mgmt.Backend.Robot.Domain.Battery;
+using H5D_Delivery.Mgmt.Backend.Robot.Domain.Error;
 
 namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
 {
@@ -170,6 +171,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
                 var value = JsonConvert.DeserializeObject<ErrorMessage>(payload);
                 if (value != null)
                 {
+                    value.RobotId = _robotId;
                     ErrorMessageReceivedEvent?.Invoke(this, value);
                 }
             });

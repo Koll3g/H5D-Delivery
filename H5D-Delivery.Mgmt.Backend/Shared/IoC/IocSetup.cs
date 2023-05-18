@@ -5,11 +5,15 @@ using H5D_Delivery.Mgmt.Backend.Order.Domain;
 using H5D_Delivery.Mgmt.Backend.Order.Persistence;
 using H5D_Delivery.Mgmt.Backend.Product.Domain;
 using H5D_Delivery.Mgmt.Backend.Product.Persistence;
-using H5D_Delivery.Mgmt.Backend.Robot.Comm;
 using H5D_Delivery.Mgmt.Backend.Robot.Domain.Battery;
 using H5D_Delivery.Mgmt.Backend.Robot.Persistence.Battery;
 using H5D_Delivery.Mgmt.Backend.Stock.Domain;
 using H5D_Delivery.Mgmt.Backend.Stock.Persistence;
+using H5D_Delivery.Mgmt.Backend.Robot.Comm;
+using H5D_Delivery.Mgmt.Backend.Robot.Domain;
+using H5D_Delivery.Mgmt.Backend.Robot.Domain.Error;
+using H5D_Delivery.Mgmt.Backend.Robot.Persistence;
+using H5D_Delivery.Mgmt.Backend.Robot.Persistence.Error;
 
 namespace H5D_Delivery.Mgmt.Backend.Shared.IoC
 {
@@ -89,7 +93,16 @@ namespace H5D_Delivery.Mgmt.Backend.Shared.IoC
             containerBuilder.RegisterType<BatteryChargeRepository>().As<IBatteryChargeRepository>();
             containerBuilder.RegisterType<BatteryChargeContext>().As<BatteryChargeContext>();
             containerBuilder.RegisterType<BatteryService>().As<BatteryService>();
-            containerBuilder.RegisterType<BatteryChargeListener>().SingleInstance();
+
+            containerBuilder.RegisterType<ErrorMessageRepository>().As<IErrorMessageRepository>();
+            containerBuilder.RegisterType<ErrorMessageContext>().As<ErrorMessageContext>();
+            containerBuilder.RegisterType<ErrorService>().As<ErrorService>();
+
+            containerBuilder.RegisterType<RobotRepository>().As<IRobotRepository>();
+            containerBuilder.RegisterType<RobotContext>().As<RobotContext>();
+            containerBuilder.RegisterType<RobotService>().As<RobotService>();
+
+            containerBuilder.RegisterType<RobotListener>().SingleInstance();
 
             Container = containerBuilder.Build();
         }

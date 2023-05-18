@@ -5,10 +5,11 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using H5D_Delivery.Mgmt.Backend.Shared.Persistence;
 
 namespace H5D_Delivery.Mgmt.Backend.Shared
 {
-    public abstract class NotifyPropertyChangedBase : INotifyPropertyChanged
+    public abstract class NotifyPropertyChangedBase : DbItem, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -24,6 +25,10 @@ namespace H5D_Delivery.Mgmt.Backend.Shared
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected NotifyPropertyChangedBase(Guid id) : base(id)
+        {
         }
     }
 }

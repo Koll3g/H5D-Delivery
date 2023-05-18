@@ -1,5 +1,6 @@
 ﻿using H5D_Delivery.Mgmt.Backend.Delivery.Domain;
 using H5D_Delivery.Mgmt.Backend.Robot.Domain.Battery;
+using H5D_Delivery.Mgmt.Backend.Robot.Domain.Error;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,31 +1,35 @@
 ﻿@page "/robotHistoryData"
-@using H5D_Delivery.Mgmt.Backend.Robot.Domain;
-@using Autofac
+@using H5D_Delivery.Mgmt.Backend.Robot.Domain
 @using H5D_Delivery.Mgmt.Backend.Robot.Domain.Battery
 @using H5D_Delivery.Mgmt.Backend.Shared.IoC
+@using H5D_Delivery.Mgmt.Backend.Robot.Comm
+@using Autofac
+@using H5D_Delivery.Mgmt.Backend.Robot.Domain.Error
+@using System.ComponentModel
 
 <h3>All Battery Charges</h3>
 <table class="table">
     <thead>
-        <tr>
-            <th>Id</th>
-            <th>RobotId</th>
-            <th>BatteryCharge</th>
-            <th>DateTime</th>
-        </tr>
+    <tr>
+        <th>Id</th>
+        <th>RobotId</th>
+        <th>BatteryCharge</th>
+        <th>DateTime</th>
+    </tr>
     </thead>
     <tbody>
-        @foreach (var charge in _batteryChargeHistory)
-        {
-            <tr>
-                <td>@charge.Id</td>
-                <td>@charge.RobotId</td>
-                <td>@charge.BatteryChargePct</td>
-                <td>@charge.DateTime</td>
-            </tr>
-        }
+    @foreach (var charge in _batteryChargeHistory)
+    {
+        <tr>
+            <td>@charge.Id</td>
+            <td>@charge.RobotId</td>
+            <td>@charge.BatteryChargePct</td>
+            <td>@charge.DateTime</td>
+        </tr>
+    }
     </tbody>
-</table><h3>Battery Charges for Robot @_robots.First().Id</h3>
+</table>
+<h3>Battery Charges for Robot @_robots.First().Id</h3>
 <table class="table">
     <thead>
     <tr>
@@ -47,22 +51,57 @@
     }
     </tbody>
 </table>
-
+<h3>All Error Messages</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>DateTime</th>
+            <th>DeliveryId</th>
+            <th>DeliveryStep</th>
+            <th>ErrorType</th>
+            <th>RobotId</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var errorMessage in _errorMessageHistory)
+        {
+            <tr>
+                <td>@errorMessage.DateTime</td>
+                <td>@errorMessage.DeliveryId</td>
+                <td>@errorMessage.DeliveryStep</td>
+                <td>@errorMessage.ErrorType</td>
+                <td>@errorMessage.RobotId</td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 @code {
-    private readonly RobotService _robotService;
+    //private readonly RobotService _robotService;
     private readonly IEnumerable<Robot> _robots;
 
     private readonly BatteryService _batteryChargeService;
-    private readonly IEnumerable<BatteryCharge> _batteryChargeHistory = new List<BatteryCharge>();
-    private readonly IEnumerable<BatteryCharge> _batteryChargeHistorySpecific = new List<BatteryCharge>();
+    private IEnumerable<BatteryCharge> _batteryChargeHistory = new List<BatteryCharge>();
+    private IEnumerable<BatteryCharge> _batteryChargeHistorySpecific = new List<BatteryCharge>();
+
+    private readonly ErrorService _errorService;
+    private IEnumerable<ErrorMessage> _errorMessageHistory = new List<ErrorMessage>();
 
     public RobotHistoryData()
     {
-        _robotService = new RobotService();
-        _robots = _robotService.GetRobots();
+        var ioc = IocSetup.Instance.Container;
+        
+        _robots = ioc.Resolve<RobotListener>().ActiveRobots;
+        _batteryChargeService = ioc.Resolve<BatteryService>();
+        _errorService = ioc.Resolve<ErrorService>();
 
-        _batteryChargeService = IocSetup.Instance.Container.Resolve<BatteryService>();
+        LoadData();
+
+        PropertyChangedSubscription();
+    }
+
+    private void LoadData()
+    {
         var history = _batteryChargeService.GetXNewest(10);
         if (history != null)
         {
@@ -74,5 +113,27 @@
         {
             _batteryChargeHistorySpecific = historySpecific;
         }
+
+        var errorHistory = _errorService.GetXNewest(10);
+        if (errorHistory != null)
+        {
+            _errorMessageHistory = errorHistory;
+        }
+    }
+
+    private void PropertyChangedSubscription()
+    {
+        //ugly workaround
+        foreach (var robot in _robots)
+        {
+            robot.PropertyChanged += PropertyHasChanged;
+        }
+    }
+
+    private void PropertyHasChanged(object? x, PropertyChangedEventArgs y)
+    {
+        //ugly workaround
+        LoadData();
+        InvokeAsync(StateHasChanged);
     }
 }

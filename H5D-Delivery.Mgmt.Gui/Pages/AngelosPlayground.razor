@@ -187,13 +187,11 @@
         _productService = iocContainer.Resolve<ProductService>();
         _stockService = iocContainer.Resolve<StockService>();
         _orderService = iocContainer.Resolve<OrderService>();
-        _robotService = new RobotService();
 
         GetAllCustomers();
         GetAllProducts();
         GetAllStockItems();
         GetAllOrders();
-        _robots = _robotService.GetRobots();
 
         foreach (var robot in _robots)
         {
