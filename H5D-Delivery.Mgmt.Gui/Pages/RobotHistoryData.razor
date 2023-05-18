@@ -1,0 +1,78 @@
+﻿@page "/robotHistoryData"
+@using H5D_Delivery.Mgmt.Backend.Robot.Domain;
+@using Autofac
+@using H5D_Delivery.Mgmt.Backend.Robot.Domain.Battery
+@using H5D_Delivery.Mgmt.Backend.Shared.IoC
+
+<h3>All Battery Charges</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>RobotId</th>
+            <th>BatteryCharge</th>
+            <th>DateTime</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var charge in _batteryChargeHistory)
+        {
+            <tr>
+                <td>@charge.Id</td>
+                <td>@charge.RobotId</td>
+                <td>@charge.BatteryChargePct</td>
+                <td>@charge.DateTime</td>
+            </tr>
+        }
+    </tbody>
+</table><h3>Battery Charges for Robot @_robots.First().Id</h3>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>RobotId</th>
+        <th>BatteryCharge</th>
+        <th>DateTime</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var charge in _batteryChargeHistorySpecific)
+    {
+        <tr>
+            <td>@charge.Id</td>
+            <td>@charge.RobotId</td>
+            <td>@charge.BatteryChargePct</td>
+            <td>@charge.DateTime</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+
+@code {
+    private readonly RobotService _robotService;
+    private readonly IEnumerable<Robot> _robots;
+
+    private readonly BatteryService _batteryChargeService;
+    private readonly IEnumerable<BatteryCharge> _batteryChargeHistory = new List<BatteryCharge>();
+    private readonly IEnumerable<BatteryCharge> _batteryChargeHistorySpecific = new List<BatteryCharge>();
+
+    public RobotHistoryData()
+    {
+        _robotService = new RobotService();
+        _robots = _robotService.GetRobots();
+
+        _batteryChargeService = IocSetup.Instance.Container.Resolve<BatteryService>();
+        var history = _batteryChargeService.GetAll();
+        if (history != null)
+        {
+            _batteryChargeHistory = history;
+        }
+
+        var historySpecific = _batteryChargeService.GetAllForSpecificRobot(_robots.First().Id);
+        if (historySpecific != null)
+        {
+            _batteryChargeHistorySpecific = historySpecific;
+        }
+    }
+}
