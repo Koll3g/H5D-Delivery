@@ -28,7 +28,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
 
         protected async void ConnectAndSubscribe()
         {
-            await ConnectAsync("localhost", 1883, "H5D-Delivery");
+            await ConnectAsync("localhost", 1883, ClientId);
 
             SubscribeToAllTopics();
         }

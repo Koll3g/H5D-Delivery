@@ -181,7 +181,8 @@
 
     public AngelosPlayground()
     {
-        var iocContainer = new IocSetup().GetContainer();
+        //var iocContainer = new IocSetup().GetContainer();
+        var iocContainer = IocSetup.Instance.Container;
         _customerService = iocContainer.Resolve<CustomerService>();
         _productService = iocContainer.Resolve<ProductService>();
         _stockService = iocContainer.Resolve<StockService>();

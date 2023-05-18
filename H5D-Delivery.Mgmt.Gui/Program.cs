@@ -1,3 +1,6 @@
+using Autofac;
+using H5D_Delivery.Mgmt.Backend.Robot.Comm;
+using H5D_Delivery.Mgmt.Backend.Shared.IoC;
 using H5D_Delivery.Mgmt.Gui.Data;
 
 namespace H5D_Delivery.Mgmt.Gui
@@ -12,6 +15,9 @@ namespace H5D_Delivery.Mgmt.Gui
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
             builder.Services.AddSingleton<WeatherForecastService>();
+
+            var iocContainer = IocSetup.Instance;
+            var listener = iocContainer.Container.Resolve<BatteryChargeListener>();
 
             var app = builder.Build();
 

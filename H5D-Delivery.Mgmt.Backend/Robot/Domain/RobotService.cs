@@ -15,7 +15,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
         public RobotService()
         {
             _robot = new Robot(new Guid("6ee9c6c6-09f0-4c06-a17c-e0ecbcbeb09f"));
-            _robot.Name = "Doug";
+            _robot.Name = "RobotSim";
         }
 
         public List<Robot> GetRobots()

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using H5D_Delivery.Mgmt.Backend.Shared.Persistence;
 
-namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
+namespace H5D_Delivery.Mgmt.Backend.Robot.Domain.Battery
 {
     public class BatteryCharge : DbItem
     {
@@ -20,6 +20,6 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
             DateTime = dateTime;
         }
 
-        public static BatteryCharge Empty => new BatteryCharge(Guid.Empty, Guid.Empty, -1, new DateTime(1,1,1));
+        public static BatteryCharge Empty => new BatteryCharge(Guid.Empty, Guid.Empty, -1, new DateTime(1, 1, 1));
     }
 }

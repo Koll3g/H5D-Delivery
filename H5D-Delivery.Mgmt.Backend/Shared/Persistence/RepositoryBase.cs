@@ -4,7 +4,7 @@ namespace H5D_Delivery.Mgmt.Backend.Shared.Persistence
 {
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : DbItem
     {
-        private readonly DbContextBase<T> _dbContext;
+        protected readonly DbContextBase<T> _dbContext;
 
         protected RepositoryBase(DbContextBase<T> dbContext)
         {

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using H5D_Delivery.Mgmt.Backend.Robot.Domain;
+using H5D_Delivery.Mgmt.Backend.Robot.Domain.Battery;
 using H5D_Delivery.Mgmt.Backend.Shared.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace H5D_Delivery.Mgmt.Backend.Robot.Persistence
+namespace H5D_Delivery.Mgmt.Backend.Robot.Persistence.Battery
 {
     public class BatteryChargeContext : DbContextBase<BatteryCharge>
     {

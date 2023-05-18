@@ -2,7 +2,9 @@
 using MQTTnet;
 using MQTTnet.Client;
 using System.ComponentModel;
+using H5D_Delivery.Mgmt.Backend.Delivery.Domain;
 using Newtonsoft.Json;
+using H5D_Delivery.Mgmt.Backend.Robot.Domain.Battery;
 
 namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
 {
@@ -25,10 +27,10 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
         private readonly string _deliveryDoneTopic;
         private readonly string _errorMessageTopic;
 
-
         //To:
         private readonly string _returnToBaseRequestTopic;
         private readonly string _statusUpdateRequestTopic;
+        private readonly string _deliveryOrderTopic;
 
 
         public RobotComm(Guid robotId, string clientId) : base(clientId) 
@@ -56,6 +58,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
             //To:
             _statusUpdateRequestTopic = $"Robots/{_robotId}/To/Requests/StatusUpdate";
             _returnToBaseRequestTopic = $"Robots/{_robotId}/To/Requests/ReturnToBase";
+            _deliveryOrderTopic = $"Robots/{_robotId}/To/DeliveryOrder";
 
             ConnectAndSubscribe();
         }
@@ -68,6 +71,12 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
         public async void RequestReturnToBase()
         {
             await PublishAsync(_returnToBaseRequestTopic, "1");
+        }
+
+        public async void GiveDeliveryOrder(DeliveryOrder deliveryOrder)
+        {
+            var deliveryOrderAsJson = JsonConvert.SerializeObject(deliveryOrder);
+            await PublishAsync(_deliveryOrderTopic, deliveryOrderAsJson);
         }
 
         protected override Task MqttMessageHandler(MqttApplicationMessageReceivedEventArgs x)

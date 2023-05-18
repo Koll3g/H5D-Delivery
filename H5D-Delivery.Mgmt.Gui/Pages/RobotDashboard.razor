@@ -2,6 +2,12 @@
 @using H5D_Delivery.Mgmt.Backend.Robot.Comm;
 @using H5D_Delivery.Mgmt.Backend.Robot.Domain;
 @using System.ComponentModel
+@using Autofac
+@using H5D_Delivery.Mgmt.Backend.Delivery.Domain
+@using H5D_Delivery.Mgmt.Backend.Order.Domain
+@using H5D_Delivery.Mgmt.Backend.Product.Domain
+@using H5D_Delivery.Mgmt.Backend.Robot.Domain.Battery
+@using H5D_Delivery.Mgmt.Backend.Shared.IoC
 
 <h3>Robots</h3>
 <table class="table">
@@ -32,28 +38,119 @@
             <td>@robot.DeliveryDone</td>
             <td>@robot.ErrorMessage</td>
             <td>
-                <button @onclick="robot.RequestStatusUpdate">StatusUpdate</button>
-                <button @onclick="robot.RequestReturnToBase">ReturnToBase</button>
+                <button @onclick="robot.RequestStatusUpdate">RequestStatusUpdate</button>
+                <button @onclick="robot.RequestReturnToBase">RequestReturnToBase</button>
+                <button @onclick="() => robot.GiveDeliveryOrder(_testDeliveryOrder)">SendDeliveryOrder</button>
             </td>
             <td>@robot.LastContact</td>
         </tr>
     }
     </tbody>
 </table>
-<p>@_robotService.Test()</p>
+<h3>All Battery Charges</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>RobotId</th>
+            <th>BatteryCharge</th>
+            <th>DateTime</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var charge in _batteryChargeHistory)
+        {
+            <tr>
+                <td>@charge.Id</td>
+                <td>@charge.RobotId</td>
+                <td>@charge.BatteryChargePct</td>
+                <td>@charge.DateTime</td>
+            </tr>
+        }
+    </tbody>
+</table><h3>Battery Charges for Robot @_robots.First().Id</h3>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>RobotId</th>
+        <th>BatteryCharge</th>
+        <th>DateTime</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var charge in _batteryChargeHistorySpecific)
+    {
+        <tr>
+            <td>@charge.Id</td>
+            <td>@charge.RobotId</td>
+            <td>@charge.BatteryChargePct</td>
+            <td>@charge.DateTime</td>
+        </tr>
+    }
+    </tbody>
+</table>
+@*<p>@_robotService.Test()</p>*@
 
 
 @code {
     private readonly RobotService _robotService;
     private readonly IEnumerable<Robot> _robots;
 
+    private readonly DeliveryOrder _testDeliveryOrder;
+
+    private readonly BatteryService _batteryChargeService;
+    private readonly IEnumerable<BatteryCharge> _batteryChargeHistory;
+    private readonly IEnumerable<BatteryCharge> _batteryChargeHistorySpecific;
+    //private readonly BatteryChargeListener _batteryChargeListener = IocSetup.Instance.Container.Resolve<BatteryChargeListener>();
+
     public RobotDashboard()
     {
         _robotService = new RobotService();
         _robots = _robotService.GetRobots();
 
+        _batteryChargeService = IocSetup.Instance.Container.Resolve<BatteryService>();
+        _batteryChargeHistory = _batteryChargeService.GetAll();
+
+        _batteryChargeHistorySpecific = _batteryChargeService.GetAllForSpecificRobot(_robots.First().Id);
+        
+        _testDeliveryOrder = new DeliveryOrder(new Guid());
+        MakeTestDeliveryOrder();
+
         PropertyChangedSubscription();
 
+    }
+
+    private void MakeTestDeliveryOrder()
+    {
+        _testDeliveryOrder.Orders = new List<Order>();
+
+        //var ioc = new IocSetup().GetContainer();
+        var ioc = IocSetup.Instance.Container;
+
+        var orderService = ioc.Resolve<OrderService>();
+        var productService = ioc.Resolve<ProductService>();
+        _testDeliveryOrder.Orders.Add(orderService.GetAll().First());
+        _testDeliveryOrder.DeliveryPlan = new DeliveryPlan(new Guid());
+        _testDeliveryOrder.DeliveryPlan.DeliverySteps = new List<DeliveryStep>();
+
+        var deliveryStep = new DeliveryStep(new Guid());
+        deliveryStep.Coordinates = new Coordinates(1, 2);
+        deliveryStep.ProductId = new Guid();
+        deliveryStep.AuthorizationKey = "aefawef";
+        deliveryStep.StepSequence = 1;
+        deliveryStep.DeliveryType = DeliveryType.Deposit;
+
+        _testDeliveryOrder.DeliveryPlan.DeliverySteps.Add(deliveryStep);
+
+        var deliveryStep2 = new DeliveryStep(new Guid());
+        deliveryStep2.Coordinates = new Coordinates(3, 4);
+        deliveryStep2.ProductId = new Guid();
+        deliveryStep2.AuthorizationKey = "awef123";
+        deliveryStep2.StepSequence = 2;
+        deliveryStep2.DeliveryType = DeliveryType.HandOver;
+
+        _testDeliveryOrder.DeliveryPlan.DeliverySteps.Add(deliveryStep2);
     }
 
     private void PropertyChangedSubscription()
