@@ -9,6 +9,7 @@ using H5D_Delivery.Mgmt.Backend.Delivery.Domain;
 using H5D_Delivery.Mgmt.Backend.Robot.Comm;
 using H5D_Delivery.Mgmt.Backend.Robot.Domain.Battery;
 using H5D_Delivery.Mgmt.Backend.Robot.Domain.Error;
+using H5D_Delivery.Mgmt.Backend.Robot.Persistence;
 using H5D_Delivery.Mgmt.Backend.Shared;
 using H5D_Delivery.Mgmt.Backend.Shared.IoC;
 using H5D_Delivery.Mgmt.Backend.Shared.Persistence;
@@ -69,19 +70,6 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
         public string Name { get; set; }
 
         public DateTime LastContact { get; set; }
-
-        //public Robot(Guid id) : base(id)
-        //{
-        //    _batteryCharge = BatteryCharge.Empty;
-        //    _currentDeliveryId = Guid.Empty;
-        //    LastContact = new DateTime(1, 1, 1);
-        //    _errorMessage = ErrorMessage.Empty;
-
-        //    var clientName = "Listener-" + id;
-        //    _robotComm = new RobotComm(id, clientName);
-
-        //    SubscribeToCommEvents();
-        //}
 
         public Robot(Guid id, string name, DateTime lastContact, Guid currentDeliveryId) : base(id)
         {
@@ -194,6 +182,13 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
         public override int GetHashCode()
         {
             return Id.GetHashCode();
+        }
+
+        public void UpdateDb()
+        {
+            var ioc = IocSetup.Instance.Container;
+            var service = ioc.Resolve<RobotService>();
+            service.Update(this);
         }
     }
 }

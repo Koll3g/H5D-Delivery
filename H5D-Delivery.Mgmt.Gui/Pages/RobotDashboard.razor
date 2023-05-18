@@ -29,7 +29,10 @@
     {
         <tr>
             <td>@robot.Id</td>
-            <td>@robot.Name</td>
+            <td>
+                <input type="text" @bind="robot.Name"/>
+                <button @onclick="robot.UpdateDb">Save</button>
+            </td>
             <td>@robot.BatteryCharge?.BatteryChargePct %</td>
             <td>@robot.GiveMeAnOrder</td>
             <td>@robot.CurrentDeliveryId</td>
@@ -62,7 +65,16 @@
         //MakeTestDeliveryOrder();
 
         PropertyChangedSubscription();
+        RequestUpdatesForAllRobots();
 
+    }
+
+    private void RequestUpdatesForAllRobots()
+    {
+        foreach (var robot in _robots)
+        {
+            robot.RequestStatusUpdate();
+        }
     }
 
     private void MakeTestDeliveryOrder()
