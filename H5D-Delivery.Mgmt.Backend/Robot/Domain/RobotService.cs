@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using H5D_Delivery.Mgmt.Backend.Robot.Comm;
+using Newtonsoft.Json;
 
 namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
 {
@@ -23,6 +24,12 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
             list.Add(_robot);
             return list;
         }
-        
+
+        public string Test()
+        {
+            var errorMessage = ErrorMessage.Empty;
+            return JsonConvert.SerializeObject(errorMessage);
+        }
+
     }
 }

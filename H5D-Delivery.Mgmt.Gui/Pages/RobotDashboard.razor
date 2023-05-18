@@ -1,0 +1,74 @@
+﻿@page "/robotDashboard"
+@using H5D_Delivery.Mgmt.Backend.Robot.Comm;
+@using H5D_Delivery.Mgmt.Backend.Robot.Domain;
+@using System.ComponentModel
+
+<h3>Robots</h3>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>BatteryCharge</th>
+        <th>GiveMeAnOrder</th>
+        <th>CurrentDeliveryId</th>
+        <th>CurrentDeliveryStep</th>
+        <th>DeliveryDone</th>
+        <th>ErrorMessage</th>
+        <th>Actions</th>
+        <th>LastContact</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var robot in _robots)
+    {
+        <tr>
+            <td>@robot.Id</td>
+            <td>@robot.Name</td>
+            <td>@robot.BatteryCharge?.BatteryChargePct %</td>
+            <td>@robot.GiveMeAnOrder</td>
+            <td>@robot.CurrentDeliveryId</td>
+            <td>@robot.CurrentDeliveryStep</td>
+            <td>@robot.DeliveryDone</td>
+            <td>@robot.ErrorMessage</td>
+            <td>
+                <button @onclick="robot.RequestStatusUpdate">StatusUpdate</button>
+                <button @onclick="robot.RequestReturnToBase">ReturnToBase</button>
+            </td>
+            <td>@robot.LastContact</td>
+        </tr>
+    }
+    </tbody>
+</table>
+<p>@_robotService.Test()</p>
+
+
+@code {
+    private readonly RobotService _robotService;
+    private readonly IEnumerable<Robot> _robots;
+
+    public RobotDashboard()
+    {
+        _robotService = new RobotService();
+        _robots = _robotService.GetRobots();
+
+        PropertyChangedSubscription();
+
+    }
+
+    private void PropertyChangedSubscription()
+    {
+        //ugly workaround
+        foreach (var robot in _robots)
+        {
+            robot.PropertyChanged += PropertyHasChanged;
+        }
+    }
+
+    private void PropertyHasChanged(object? x, PropertyChangedEventArgs y)
+    {
+        //ugly workaround
+        InvokeAsync(StateHasChanged);
+    }
+
+}

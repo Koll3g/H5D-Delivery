@@ -144,7 +144,6 @@
             <th>Name</th>
             <th>Charge</th>
             <th>Actions</th>
-            <th>EventCallCounter (Testing only)</th>
         </tr>
     </thead>
     <tbody>
@@ -155,7 +154,6 @@
                 <td>@robot.Name</td>
                 <td>@robot.BatteryCharge?.BatteryChargePct</td>
                 <td><button @onclick="robot.RequestStatusUpdate">RequestUpdate</button></td>
-                <td>@robot.Test</td>
             </tr>
         }
     </tbody>

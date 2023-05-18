@@ -19,5 +19,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
             BatteryChargePct = batteryChargePct;
             DateTime = dateTime;
         }
+
+        public static BatteryCharge Empty => new BatteryCharge(Guid.Empty, Guid.Empty, -1, new DateTime(1,1,1));
     }
 }
