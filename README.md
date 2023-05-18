@@ -3,7 +3,7 @@
 For the application to run you need Docker: https://www.docker.com/products/docker-desktop/
 
 For the SQL Docker Server you must run the "docker-compose.yml" file using powershell with the command:
-"docker-compose-H5D-Db up -d"
+"docker-compose up -d"
 
 To install the MQTT Broker Image use following command:
 "docker pull eclipse-mosquitto:1.6.15"
