@@ -10,8 +10,13 @@ namespace H5D_Delivery.Mgmt.Backend.Shared.Persistence
         {
             if (!optionsBuilder.IsConfigured)
             {
-                string connection = "Data Source = localhost,1433; ; Database=H5D-Db;User Id=sa; Password=H@a123456789;TrustServerCertificate=True";
-
+            #if DEBUG
+                string connection =
+                    "Data Source = localhost,1433; ; Database=H5D-Db;User Id=sa; Password=H@a123456789;TrustServerCertificate=True";
+            #else
+                string connection =
+                    "Data Source = 10.5.0.21,1433; ; Database=H5D-Db;User Id=sa; Password=H@a123456789;TrustServerCertificate=True";
+            #endif
                 optionsBuilder.UseSqlServer(connection);
                 optionsBuilder.LogTo(Console.WriteLine);
             }

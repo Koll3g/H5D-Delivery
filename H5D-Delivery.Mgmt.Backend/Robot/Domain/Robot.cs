@@ -80,7 +80,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
             _batteryCharge = BatteryCharge.Empty;
             _errorMessage = ErrorMessage.Empty;
 
-            var clientName = "Listener-" + id.ToString() + new Guid().ToString();
+            var clientName = "RobotBackend-" + Guid.NewGuid();
             _robotComm = new RobotComm(id, clientName);
 
             SubscribeToCommEvents();

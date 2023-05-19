@@ -38,7 +38,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain.Error
 
         public override string ToString()
         {
-            if (ErrorType == ErrorType.noError)
+            if (ErrorType == ErrorType.NoError)
             {
                 return "No Error";
             }
@@ -48,6 +48,6 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain.Error
             }
         }
 
-        public static ErrorMessage Empty => new ErrorMessage(Guid.Empty, Guid.Empty, -1, ErrorType.noError, new DateTime(1, 1, 1), Guid.Empty);
+        public static ErrorMessage Empty => new ErrorMessage(Guid.Empty, Guid.Empty, -1, ErrorType.NoError, new DateTime(1, 1, 1), Guid.Empty);
     }
 }

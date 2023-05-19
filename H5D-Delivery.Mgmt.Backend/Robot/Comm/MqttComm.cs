@@ -14,7 +14,11 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
     {
         protected readonly IMqttClient MqttClient;
 
+#if DEBUG
         protected const string BrokerHostName = "localhost";
+#else
+        protected const string BrokerHostName = "10.5.0.21";
+#endif
         protected const int BrokerPort = 1883;
         protected readonly string ClientId;
 
@@ -29,7 +33,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
 
         protected async void ConnectAndSubscribe()
         {
-            await ConnectAsync("localhost", 1883, ClientId);
+            await ConnectAsync(BrokerHostName, BrokerPort, ClientId);
 
             SubscribeToAllTopics();
         }

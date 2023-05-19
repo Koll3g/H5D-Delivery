@@ -7,6 +7,7 @@
 @using H5D_Delivery.Mgmt.Backend.Robot.Comm
 @using Autofac
 @using System.ComponentModel
+@using H5D_Delivery.Mgmt.Backend.Customer.Domain
 
 <h3>Robots</h3>
 <table class="table">
@@ -61,12 +62,11 @@
         _robotListener = IocSetup.Instance.Container.Resolve<RobotListener>();
         _robots = _robotListener.ActiveRobots;
         
-        _testDeliveryOrder = new DeliveryOrder(new Guid());
-        //MakeTestDeliveryOrder();
+        _testDeliveryOrder = new DeliveryOrder(Guid.NewGuid());
+        MakeTestDeliveryOrder();
 
         PropertyChangedSubscription();
         RequestUpdatesForAllRobots();
-
     }
 
     private void RequestUpdatesForAllRobots()
@@ -77,30 +77,31 @@
         }
     }
 
+    //TESTING ONLY
     private void MakeTestDeliveryOrder()
     {
         _testDeliveryOrder.Orders = new List<Order>();
 
-        var ioc = IocSetup.Instance.Container;
+        var product = new Product(Guid.NewGuid(), "Messer");
+        var customer = new Customer(Guid.NewGuid(), "Hans", "Zbw-Strasse 4", "hans@gmail.com", "123456");
+        var order = new Order(Guid.NewGuid(), product, customer, 1, new DateTime(2023, 07, 20, 12, 0, 0), new DateTime(2023, 07, 20, 13, 0, 0), Priority.Normal, DeliveryType.Deposit, OrderStatus.Active);
 
-        var orderService = ioc.Resolve<OrderService>();
-        var productService = ioc.Resolve<ProductService>();
-        _testDeliveryOrder.Orders.Add(orderService.GetAll().First());
-        _testDeliveryOrder.DeliveryPlan = new DeliveryPlan(new Guid());
+        _testDeliveryOrder.Orders.Add(order);
+        _testDeliveryOrder.DeliveryPlan = new DeliveryPlan(Guid.NewGuid());
         _testDeliveryOrder.DeliveryPlan.DeliverySteps = new List<DeliveryStep>();
 
-        var deliveryStep = new DeliveryStep(new Guid());
+        var deliveryStep = new DeliveryStep(Guid.NewGuid());
         deliveryStep.Coordinates = new Coordinates(1, 2);
-        deliveryStep.ProductId = new Guid();
+        deliveryStep.ProductId = product.Id;
         deliveryStep.AuthorizationKey = "aefawef";
         deliveryStep.StepSequence = 1;
         deliveryStep.DeliveryType = DeliveryType.Deposit;
 
         _testDeliveryOrder.DeliveryPlan.DeliverySteps.Add(deliveryStep);
 
-        var deliveryStep2 = new DeliveryStep(new Guid());
+        var deliveryStep2 = new DeliveryStep(Guid.NewGuid());
         deliveryStep2.Coordinates = new Coordinates(3, 4);
-        deliveryStep2.ProductId = new Guid();
+        deliveryStep2.ProductId = Guid.NewGuid();
         deliveryStep2.AuthorizationKey = "awef123";
         deliveryStep2.StepSequence = 2;
         deliveryStep2.DeliveryType = DeliveryType.HandOver;

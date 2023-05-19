@@ -8,14 +8,14 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain.Error
 {
     public enum ErrorType
     {
-        personNotAtHome,
-        personNotAuthorized,
-        cannotDeposit,
-        blockedEntrance,
-        cannotMove,
-        navigationError,
-        outOfBattery,
-        pickMeUpImScared,
-        noError
+        PersonNotAtHome = 0,
+        PersonNotAuthorized = 1,
+        CannotDeposit = 2,
+        BlockedEntrance = 3,
+        CannotMove = 4,
+        NavigationError = 5,
+        OutOfBattery = 6,
+        PickMeUpImScared = 7,
+        NoError = 8,
     }
 }

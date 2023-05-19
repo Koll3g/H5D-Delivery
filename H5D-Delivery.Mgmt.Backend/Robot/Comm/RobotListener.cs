@@ -24,7 +24,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
         private readonly string _robotsTopic;
         private const string RobotIdPattern = @"Robots/(?<robotId>[\w-]+)/(\w*)";
 
-        public RobotListener(RobotService robotService) : base("RobotListener-" + new Guid())
+        public RobotListener(RobotService robotService) : base("RobotListener-" + Guid.NewGuid())
         {
             _robotService = robotService;
 
