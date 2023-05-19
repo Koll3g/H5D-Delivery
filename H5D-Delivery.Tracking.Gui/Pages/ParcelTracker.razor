@@ -11,8 +11,10 @@
 
     public ParcelTracker()
     {
-        //name == "Hans" && orderId == "7c5c7e6e - 2635 - 469c - abeb - f6c137ce6579
+        //Funktioniert momentan nur mit name = "Hans" und orderId = "7c5c7e6e-2635-469c-abeb-f6c137ce6579"
         _parcelTrackerService = IocSetup.Instance.Container.Resolve<ParcelTrackerService>();
 
+        //_parcelTrackerService.IsAuthorized();
+        //_parcelTrackerService.GetOrderHistory();
     }
 }
