@@ -1,0 +1,18 @@
+﻿@page "/parcelTracker"
+@using H5D_Delivery.Tracking.Backend.Tracking.Domain
+@using H5D_Delivery.Tracking.Backend.Shared.IoC
+@using Autofac
+
+<PageTitle>ParcelTracker</PageTitle>
+
+
+@code {
+    private readonly ParcelTrackerService _parcelTrackerService;
+
+    public ParcelTracker()
+    {
+        //name == "Hans" && orderId == "7c5c7e6e - 2635 - 469c - abeb - f6c137ce6579
+        _parcelTrackerService = IocSetup.Instance.Container.Resolve<ParcelTrackerService>();
+
+    }
+}
