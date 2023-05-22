@@ -40,6 +40,7 @@
             this.Lbl_ReturnToBaseRequest = new System.Windows.Forms.Label();
             this.Combo_robos = new System.Windows.Forms.ComboBox();
             this.btn_GiveMeAnOrder = new System.Windows.Forms.Button();
+            this.btn_deliveryDone = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Num_BatteryPct)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Num_UpdateCurrentDeliveryStep)).BeginInit();
             this.SuspendLayout();
@@ -74,7 +75,7 @@
             // Lbl_StatusUpdate
             // 
             this.Lbl_StatusUpdate.AutoSize = true;
-            this.Lbl_StatusUpdate.Location = new System.Drawing.Point(162, 279);
+            this.Lbl_StatusUpdate.Location = new System.Drawing.Point(162, 324);
             this.Lbl_StatusUpdate.Name = "Lbl_StatusUpdate";
             this.Lbl_StatusUpdate.Size = new System.Drawing.Size(16, 15);
             this.Lbl_StatusUpdate.TabIndex = 3;
@@ -109,7 +110,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(30, 279);
+            this.label1.Location = new System.Drawing.Point(30, 324);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(80, 15);
             this.label1.TabIndex = 8;
@@ -118,7 +119,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(27, 305);
+            this.label2.Location = new System.Drawing.Point(27, 350);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(129, 15);
             this.label2.TabIndex = 9;
@@ -127,7 +128,7 @@
             // Lbl_ReturnToBaseRequest
             // 
             this.Lbl_ReturnToBaseRequest.AutoSize = true;
-            this.Lbl_ReturnToBaseRequest.Location = new System.Drawing.Point(162, 305);
+            this.Lbl_ReturnToBaseRequest.Location = new System.Drawing.Point(162, 350);
             this.Lbl_ReturnToBaseRequest.Name = "Lbl_ReturnToBaseRequest";
             this.Lbl_ReturnToBaseRequest.Size = new System.Drawing.Size(16, 15);
             this.Lbl_ReturnToBaseRequest.TabIndex = 10;
@@ -155,11 +156,22 @@
             this.btn_GiveMeAnOrder.UseVisualStyleBackColor = true;
             this.btn_GiveMeAnOrder.Click += new System.EventHandler(this.btn_GiveMeAnOrder_Click);
             // 
+            // btn_deliveryDone
+            // 
+            this.btn_deliveryDone.Location = new System.Drawing.Point(27, 282);
+            this.btn_deliveryDone.Name = "btn_deliveryDone";
+            this.btn_deliveryDone.Size = new System.Drawing.Size(164, 23);
+            this.btn_deliveryDone.TabIndex = 13;
+            this.btn_deliveryDone.Text = "DeliveryDone";
+            this.btn_deliveryDone.UseVisualStyleBackColor = true;
+            this.btn_deliveryDone.Click += new System.EventHandler(this.btn_deliveryDone_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btn_deliveryDone);
             this.Controls.Add(this.btn_GiveMeAnOrder);
             this.Controls.Add(this.Combo_robos);
             this.Controls.Add(this.Lbl_ReturnToBaseRequest);
@@ -195,5 +207,6 @@
         private Label Lbl_ReturnToBaseRequest;
         private ComboBox Combo_robos;
         private Button btn_GiveMeAnOrder;
+        private Button btn_deliveryDone;
     }
 }

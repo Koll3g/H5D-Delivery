@@ -22,6 +22,7 @@ namespace H5D_Delivery.RoboSim
         private readonly string _currentDeliveryStepTopic;
         private readonly string _returnToBaseTopic;
         private readonly string _giveMeAnOrderTopic;
+        private readonly string _deliveryDoneTopic;
 
         public RobotComm(Guid robotId, Func<MqttApplicationMessageReceivedEventArgs, Task> statusUpdateRequestHandler, Func<MqttApplicationMessageReceivedEventArgs, Task> returnToBaseHandler)
         {
@@ -32,6 +33,7 @@ namespace H5D_Delivery.RoboSim
             //Define all Topics
             _batteryChargeTopic = $"Robots/{_robotId}/From/Status/BatteryChargePct";
             _currentDeliveryStepTopic = $"Robots/{_robotId}/From/Status/CurrentDeliveryStep";
+            _deliveryDoneTopic = $"Robots/{_robotId}/From/Status/DeliveryDone";
             _giveMeAnOrderTopic = $"Robots/{_robotId}/From/Requests/GiveMeAnOrder";
 
             _statusUpdateRequestTopic = $"Robots/{_robotId}/To/Requests/StatusUpdate";
@@ -72,6 +74,11 @@ namespace H5D_Delivery.RoboSim
         public async void PublishGiveMeAnOrder(bool giveMeAnOrder)
         {
             await PublishAsync(_giveMeAnOrderTopic, giveMeAnOrder.ToString());
+        }
+
+        public async void PublishDeliveryDone(bool deliveryDone)
+        {
+            await PublishAsync(_deliveryDoneTopic, deliveryDone.ToString());
         }
 
         private async Task ConnectAsync(string brokerHostName, int brokerPort, string clientId)

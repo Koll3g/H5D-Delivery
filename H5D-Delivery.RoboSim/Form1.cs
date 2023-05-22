@@ -81,6 +81,11 @@ namespace H5D_Delivery.RoboSim
             _robotComm.PublishGiveMeAnOrder(true);
         }
 
+        private void PublishDeliveryDone()
+        {
+            _robotComm.PublishDeliveryDone(true);
+        }
+
         private Task HandleStatusUpdateRequest(MqttApplicationMessageReceivedEventArgs x)
         {
             //Todo: implement functionality
@@ -97,6 +102,7 @@ namespace H5D_Delivery.RoboSim
                 //Send updates for all status fields
                 PublishBatteryPct();
                 PublishDeliveryStep();
+                PublishDeliveryDone();
 
             }
 
@@ -126,6 +132,11 @@ namespace H5D_Delivery.RoboSim
         private void btn_GiveMeAnOrder_Click(object sender, EventArgs e)
         {
             PublishGiveMeAnOrder();
+        }
+
+        private void btn_deliveryDone_Click(object sender, EventArgs e)
+        {
+            PublishDeliveryDone();
         }
     }
 }
