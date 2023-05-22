@@ -41,6 +41,8 @@
             this.Combo_robos = new System.Windows.Forms.ComboBox();
             this.btn_GiveMeAnOrder = new System.Windows.Forms.Button();
             this.btn_deliveryDone = new System.Windows.Forms.Button();
+            this.combo_Errors = new System.Windows.Forms.ComboBox();
+            this.btn_sendError = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Num_BatteryPct)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Num_UpdateCurrentDeliveryStep)).BeginInit();
             this.SuspendLayout();
@@ -141,7 +143,7 @@
             "Roboter 1",
             "Roboter 2",
             "Roboter 3"});
-            this.Combo_robos.Location = new System.Drawing.Point(32, 25);
+            this.Combo_robos.Location = new System.Drawing.Point(12, 35);
             this.Combo_robos.Name = "Combo_robos";
             this.Combo_robos.Size = new System.Drawing.Size(121, 23);
             this.Combo_robos.TabIndex = 11;
@@ -166,11 +168,42 @@
             this.btn_deliveryDone.UseVisualStyleBackColor = true;
             this.btn_deliveryDone.Click += new System.EventHandler(this.btn_deliveryDone_Click);
             // 
+            // combo_Errors
+            // 
+            this.combo_Errors.FormattingEnabled = true;
+            this.combo_Errors.Items.AddRange(new object[] {
+            "PersonNotAtHome",
+            "PersonNotAuthorized",
+            "CannotDeposit",
+            "BlockedEntrance",
+            "CannotMove",
+            "NavigationError",
+            "OutOfBattery",
+            "PickMeUpImScared",
+            "NoError"});
+            this.combo_Errors.Location = new System.Drawing.Point(496, 350);
+            this.combo_Errors.Name = "combo_Errors";
+            this.combo_Errors.Size = new System.Drawing.Size(121, 23);
+            this.combo_Errors.TabIndex = 14;
+            this.combo_Errors.SelectedIndexChanged += new System.EventHandler(this.combo_Errors_SelectedIndexChanged);
+            // 
+            // btn_sendError
+            // 
+            this.btn_sendError.Location = new System.Drawing.Point(633, 350);
+            this.btn_sendError.Name = "btn_sendError";
+            this.btn_sendError.Size = new System.Drawing.Size(75, 23);
+            this.btn_sendError.TabIndex = 15;
+            this.btn_sendError.Text = "Send";
+            this.btn_sendError.UseVisualStyleBackColor = true;
+            this.btn_sendError.Click += new System.EventHandler(this.btn_sendError_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btn_sendError);
+            this.Controls.Add(this.combo_Errors);
             this.Controls.Add(this.btn_deliveryDone);
             this.Controls.Add(this.btn_GiveMeAnOrder);
             this.Controls.Add(this.Combo_robos);
@@ -208,5 +241,7 @@
         private ComboBox Combo_robos;
         private Button btn_GiveMeAnOrder;
         private Button btn_deliveryDone;
+        private ComboBox combo_Errors;
+        private Button btn_sendError;
     }
 }

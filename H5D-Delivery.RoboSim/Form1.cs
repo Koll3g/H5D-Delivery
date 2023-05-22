@@ -138,5 +138,16 @@ namespace H5D_Delivery.RoboSim
         {
             PublishDeliveryDone();
         }
+
+        private void btn_sendError_Click(object sender, EventArgs e)
+        {
+            string selectedError = combo_Errors.SelectedItem.ToString();
+            _robotComm.PublishErrorMessage(selectedError);
+        }
+
+        private void combo_Errors_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

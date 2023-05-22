@@ -23,6 +23,7 @@ namespace H5D_Delivery.RoboSim
         private readonly string _returnToBaseTopic;
         private readonly string _giveMeAnOrderTopic;
         private readonly string _deliveryDoneTopic;
+        private readonly string _errorMessageTopic;
 
         public RobotComm(Guid robotId, Func<MqttApplicationMessageReceivedEventArgs, Task> statusUpdateRequestHandler, Func<MqttApplicationMessageReceivedEventArgs, Task> returnToBaseHandler)
         {
@@ -35,6 +36,7 @@ namespace H5D_Delivery.RoboSim
             _currentDeliveryStepTopic = $"Robots/{_robotId}/From/Status/CurrentDeliveryStep";
             _deliveryDoneTopic = $"Robots/{_robotId}/From/Status/DeliveryDone";
             _giveMeAnOrderTopic = $"Robots/{_robotId}/From/Requests/GiveMeAnOrder";
+            _errorMessageTopic = $"Robots/{_robotId}/From/Status/ErrorMessage";
 
             _statusUpdateRequestTopic = $"Robots/{_robotId}/To/Requests/StatusUpdate";
             _returnToBaseTopic = $"Robots/{_robotId}/To/Requests/ReturnToBase";
@@ -79,6 +81,11 @@ namespace H5D_Delivery.RoboSim
         public async void PublishDeliveryDone(bool deliveryDone)
         {
             await PublishAsync(_deliveryDoneTopic, deliveryDone.ToString());
+        }
+
+        public async void PublishErrorMessage(string errorMessage)
+        {
+            await PublishAsync(_errorMessageTopic, errorMessage.ToString());
         }
 
         private async Task ConnectAsync(string brokerHostName, int brokerPort, string clientId)
