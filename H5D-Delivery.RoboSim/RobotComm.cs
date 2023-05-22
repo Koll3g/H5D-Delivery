@@ -14,13 +14,14 @@ namespace H5D_Delivery.RoboSim
 
         Func<MqttApplicationMessageReceivedEventArgs, Task> _statusUpdateRequestHandler;
         Func<MqttApplicationMessageReceivedEventArgs, Task> _returnToBaseHandler;
-
+       
         private readonly Guid _robotId;
 
         private readonly string _batteryChargeTopic;
         private readonly string _statusUpdateRequestTopic;
         private readonly string _currentDeliveryStepTopic;
         private readonly string _returnToBaseTopic;
+        private readonly string _giveMeAnOrderTopic;
 
         public RobotComm(Guid robotId, Func<MqttApplicationMessageReceivedEventArgs, Task> statusUpdateRequestHandler, Func<MqttApplicationMessageReceivedEventArgs, Task> returnToBaseHandler)
         {
@@ -30,12 +31,17 @@ namespace H5D_Delivery.RoboSim
 
             //Define all Topics
             _batteryChargeTopic = $"Robots/{_robotId}/From/Status/BatteryChargePct";
-            _statusUpdateRequestTopic = $"Robots/{_robotId}/To/Requests/StatusUpdate";
             _currentDeliveryStepTopic = $"Robots/{_robotId}/From/Status/CurrentDeliveryStep";
+            _giveMeAnOrderTopic = $"Robots/{_robotId}/From/Requests/GiveMeAnOrder";
+
+            _statusUpdateRequestTopic = $"Robots/{_robotId}/To/Requests/StatusUpdate";
             _returnToBaseTopic = $"Robots/{_robotId}/To/Requests/ReturnToBase";
+            
 
             _statusUpdateRequestHandler = statusUpdateRequestHandler;
             _returnToBaseHandler = returnToBaseHandler;
+            
+
             ConnectAndSubscribe();
         }
 
@@ -63,6 +69,11 @@ namespace H5D_Delivery.RoboSim
             await PublishAsync(_currentDeliveryStepTopic, currentDeliveryStep.ToString());
         }
 
+        public async void PublishGiveMeAnOrder(bool giveMeAnOrder)
+        {
+            await PublishAsync(_giveMeAnOrderTopic, giveMeAnOrder.ToString());
+        }
+
         private async Task ConnectAsync(string brokerHostName, int brokerPort, string clientId)
         {
             var options = new MqttClientOptionsBuilder()
@@ -88,6 +99,7 @@ namespace H5D_Delivery.RoboSim
             {
                 return _returnToBaseHandler.Invoke(x);
             }
+            
             return Task.CompletedTask;
         }
 
@@ -100,5 +112,6 @@ namespace H5D_Delivery.RoboSim
 
             await _mqttClient.PublishAsync(message);
         }
+
     }
 }

@@ -8,6 +8,8 @@ namespace H5D_Delivery.RoboSim
         private RobotComm _robotComm;
 
         private static Guid _idRobot1 = new Guid("6ee9c6c6-09f0-4c06-a17c-e0ecbcbeb09f");
+        private static Guid _idRobot2 = new Guid("490fde85-cfc1-47a8-bd6e-0eca6eb81f98");
+        private static Guid _idRobot3 = new Guid("ad4b8e7e-e2d9-4547-9b5c-9e827e94961d");
 
         public Form1()
         {
@@ -21,13 +23,41 @@ namespace H5D_Delivery.RoboSim
 
         private void Connect_Click(object sender, EventArgs e)
         {
-            //ToDo: Select Guid based on dropdown
+            Guid selectedRobotId;
 
-            _robotComm = new RobotComm(_idRobot1, HandleStatusUpdateRequest, ReturnToBaseHandler);
+            // ToDo: Select Guid based on dropdown
+            if (Combo_robos.SelectedItem.ToString() == "Roboter 1")
+            {
+                selectedRobotId = _idRobot1;
+            }
+            else if (Combo_robos.SelectedItem.ToString() == "Roboter 2")
+            {
+                selectedRobotId = _idRobot2;
+            }
+            else if (Combo_robos.SelectedItem.ToString() == "Roboter 3")
+            {
+                selectedRobotId = _idRobot3;
+            }
+            else
+            {
+                // Handle invalid selection or error condition
+                return;
+            }
 
+            _robotComm = new RobotComm(selectedRobotId, HandleStatusUpdateRequest, ReturnToBaseHandler);
             Lbl_Connect.Text = "connected";
-
         }
+
+        //private void Connect_Click(object sender, EventArgs e)
+        //{
+
+        //    //ToDo: Select Guid based on dropdown
+
+        //    _robotComm = new RobotComm(_idRobot1, HandleStatusUpdateRequest, ReturnToBaseHandler);
+
+        //    Lbl_Connect.Text = "connected";
+
+        //}
 
         private void Btn_BatteryPct_Click(object sender, EventArgs e)
         {
@@ -45,6 +75,12 @@ namespace H5D_Delivery.RoboSim
             var deliverystepValue = (int)Num_UpdateCurrentDeliveryStep.Value;
             _robotComm.PublishCurrentDeliveryStep(deliverystepValue);
         }
+
+        private void PublishGiveMeAnOrder()
+        {
+            _robotComm.PublishGiveMeAnOrder(true);
+        }
+
         private Task HandleStatusUpdateRequest(MqttApplicationMessageReceivedEventArgs x)
         {
             //Todo: implement functionality
@@ -86,5 +122,10 @@ namespace H5D_Delivery.RoboSim
         }
 
 
+
+        private void btn_GiveMeAnOrder_Click(object sender, EventArgs e)
+        {
+            PublishGiveMeAnOrder();
+        }
     }
 }
