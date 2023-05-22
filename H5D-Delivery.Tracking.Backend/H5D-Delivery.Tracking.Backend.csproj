@@ -13,4 +13,8 @@
     <None Remove="ParcelTracker\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="7.0.1" />
+  </ItemGroup>
+
 </Project>

@@ -152,17 +152,17 @@
 
 
 
-    public OrderManagement()
-    {
-        var iocContainer = new IocSetup().GetContainer();
-        _customerService = iocContainer.Resolve<CustomerService>();
-        _productService = iocContainer.Resolve<ProductService>();
-        _orderService = iocContainer.Resolve<OrderService>();
-        _products = _productService.GetAll();
-        _customers = _customerService.GetAll();
-
-        GetAllOrders();
-    }
+public OrderManagement()
+{
+    var iocContainer = new IocSetup().GetContainer();
+    _customerService = iocContainer.Resolve<CustomerService>();
+    _productService = iocContainer.Resolve<ProductService>();
+    _orderService = iocContainer.Resolve<OrderService>();
+    _products = _productService.GetAll();
+    _customers = _customerService.GetAll();
+    
+    GetAllOrders();
+}
 
     public void GetAllOrders()
     {

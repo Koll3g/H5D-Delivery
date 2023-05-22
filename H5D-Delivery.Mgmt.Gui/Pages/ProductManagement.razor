@@ -71,7 +71,7 @@
     public ProductManagement()
     {
         var iocContainer = new IocSetup().GetContainer();
-        _productService = iocContainer.Resolve<ProductService>();
+       _productService = iocContainer.Resolve<ProductService>();
         id = Guid.NewGuid();
         GetAllProducts();
     }

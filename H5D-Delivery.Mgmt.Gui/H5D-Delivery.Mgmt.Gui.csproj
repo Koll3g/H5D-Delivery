@@ -7,6 +7,7 @@
     <RootNamespace>H5D_Delivery.Mgmt.Gui</RootNamespace>
     <UserSecretsId>30d2f2ca-78ce-409d-9bc3-0d6999cae338</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <EnableSdkContainerSupport>true</EnableSdkContainerSupport>
   </PropertyGroup>
 
   <ItemGroup>

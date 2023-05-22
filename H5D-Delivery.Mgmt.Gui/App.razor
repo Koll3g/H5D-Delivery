@@ -1,4 +1,7 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+﻿@using H5D_Delivery.Mgmt.Backend.Robot.Comm
+@using H5D_Delivery.Mgmt.Backend.Shared.IoC
+@using Autofac
+<Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
@@ -10,3 +13,4 @@
         </LayoutView>
     </NotFound>
 </Router>
+

@@ -48,8 +48,9 @@ namespace H5D_Delivery.RoboSim
 
         private async void SubscribeToAllTopics()
         {
-            await SubscribeAsync(_statusUpdateRequestTopic, MessageHandler);
-            await SubscribeAsync(_returnToBaseTopic, MessageHandler);
+            await SubscribeAsync(_statusUpdateRequestTopic);
+            await SubscribeAsync(_returnToBaseTopic);
+            _mqttClient.ApplicationMessageReceivedAsync += MessageHandler;
         }
 
         public async void PublishBatteryChargePct(int batteryChargeInPercent)
@@ -72,11 +73,9 @@ namespace H5D_Delivery.RoboSim
             await _mqttClient.ConnectAsync(options);
         }
 
-        private async Task SubscribeAsync(string topic, Func<MqttApplicationMessageReceivedEventArgs, Task> handler)
+        private async Task SubscribeAsync(string topic)
         {
             await _mqttClient.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic(topic).Build());
-            _mqttClient.ApplicationMessageReceivedAsync += handler;
-
         }
 
         private Task MessageHandler(MqttApplicationMessageReceivedEventArgs x)

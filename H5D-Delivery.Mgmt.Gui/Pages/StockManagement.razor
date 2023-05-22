@@ -92,7 +92,8 @@
 
     public StockManagement()
     {
-        var iocContainer = new IocSetup().GetContainer();
+        //var iocContainer = new IocSetup().GetContainer();
+        var iocContainer = IocSetup.Instance.Container;
         _stockService = iocContainer.Resolve<StockService>();
         _productService = iocContainer.Resolve<ProductService>();
         GetAllStockItems();
