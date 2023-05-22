@@ -70,7 +70,7 @@
 
     public ProductManagement()
     {
-        var iocContainer = new IocSetup().GetContainer();
+        var iocContainer = IocSetup.Instance.Container;
        _productService = iocContainer.Resolve<ProductService>();
         id = Guid.NewGuid();
         GetAllProducts();
