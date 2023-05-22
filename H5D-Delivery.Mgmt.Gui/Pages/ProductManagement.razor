@@ -50,7 +50,11 @@
     </tbody>
 </table>
 
-
+<div class="row">
+    <div class="col-md-12">
+        <label id="error" class="form-control">@errorMessage</label>
+    </div>
+</div>
 
 
 @code {
@@ -61,14 +65,15 @@
     private Guid id;
     private Product _selectedProduct;
     private bool isIdReadOnly = true;
+    private string errorMessage = string.Empty;
 
 
     public ProductManagement()
     {
         var iocContainer = new IocSetup().GetContainer();
-       _productService = iocContainer.Resolve<ProductService>();
+        _productService = iocContainer.Resolve<ProductService>();
         id = Guid.NewGuid();
-       GetAllProducts();
+        GetAllProducts();
     }
 
     public void GetAllProducts()
@@ -80,40 +85,56 @@
         }
     }
 
-     private void AddProduct()
+    private void AddProduct()
     {
-        var product = new Product(id, name);
-        _productService.Create(product);
-        GetAllProducts();
+        try
+        {
+            var product = new Product(id, name);
+            _productService.Create(product);
+            GetAllProducts();
 
-        // Clear input fields
-        name = "";
-        id = Guid.NewGuid();
+            // Clear input fields
+            name = "";
+            id = Guid.NewGuid();
+            isIdReadOnly = true;
+            errorMessage = string.Empty;
+        }
+
+        catch(Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+
+    private void EditProduct(Product product)
+    {
+        _selectedProduct = product;
+        id = product.Id;
+        name = product.Name;
         isIdReadOnly = true;
     }
 
-   private void EditProduct(Product product)
-{
-    _selectedProduct = product;
-    id = product.Id;
-    name = product.Name;
-    isIdReadOnly = true;
-}
+    private void SaveProduct()
+    {
+        try{
+            if (_selectedProduct == null) return;
 
-private void SaveProduct()
-{
-    if (_selectedProduct == null) return;
+            _selectedProduct.Name = name;
+            _productService.Update(_selectedProduct);
 
-    _selectedProduct.Name = name;
-    _productService.Update(_selectedProduct);
-
-    // Clear input fields
-    name = "";
-    _selectedProduct = null;
-    id = Guid.NewGuid();
-    isIdReadOnly = true;
-    GetAllProducts();
-}
+            // Clear input fields
+            name = "";
+            _selectedProduct = null;
+            id = Guid.NewGuid();
+            isIdReadOnly = true;
+            GetAllProducts();
+            errorMessage = string.Empty;
+        }
+        catch(Exception ex)
+        {
+            errorMessage = ex.Message; 
+        }
+    }
 
     private void DeleteProduct(Product product)
     {

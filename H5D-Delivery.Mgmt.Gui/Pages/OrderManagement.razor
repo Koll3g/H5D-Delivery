@@ -74,7 +74,7 @@
     <label for="priority">Priority</label>
     <select id="priority" @bind="_selectedPriority">
         <option value="High">High</option>
-        <option value="Middle">Middle</option>
+        <option value="Normal">Normal</option>
         <option value="Low">Low</option>
     </select>
     </div>
@@ -117,7 +117,11 @@
     </tbody>
 </table>
 
-
+<div class="row">
+    <div class="col-md-12">
+        <label id="error" class="form-control">@errorMessage</label>
+    </div>
+</div>
 
 
 
@@ -143,23 +147,24 @@
     private DateTime earliestDelivery = DateTime.Now;
     private DateTime latestDelivery = DateTime.Now.AddMinutes(15);
 
-    private string _selectedPriority = "Middle";
+    private string _selectedPriority = "Normal";
+    private string errorMessage = string.Empty;
 
 
 
-public OrderManagement()
-{
-    var iocContainer = new IocSetup().GetContainer();
-    _customerService = iocContainer.Resolve<CustomerService>();
-    _productService = iocContainer.Resolve<ProductService>();
-    _orderService = iocContainer.Resolve<OrderService>();
-    _products = _productService.GetAll();
-    _customers = _customerService.GetAll();
-    
-    GetAllOrders();
-}
+    public OrderManagement()
+    {
+        var iocContainer = new IocSetup().GetContainer();
+        _customerService = iocContainer.Resolve<CustomerService>();
+        _productService = iocContainer.Resolve<ProductService>();
+        _orderService = iocContainer.Resolve<OrderService>();
+        _products = _productService.GetAll();
+        _customers = _customerService.GetAll();
 
-public void GetAllOrders()
+        GetAllOrders();
+    }
+
+    public void GetAllOrders()
     {
         var orders = _orderService.GetAll();
         if (orders != null)
@@ -168,18 +173,26 @@ public void GetAllOrders()
         }
     }
 
-   private void AddOrder()
-{
-    var product = _products.FirstOrDefault(p => p.Id == _selectedProductId);
-    var customer = _customers.FirstOrDefault(c => c.Id == _selectedCustomerId);
-    if (product == null || customer == null)
+    private void AddOrder()
     {
-        return;
+        try
+        {
+            var product = _products.FirstOrDefault(p => p.Id == _selectedProductId);
+            var customer = _customers.FirstOrDefault(c => c.Id == _selectedCustomerId);
+            if (product == null || customer == null)
+            {
+                return;
+            }
+            var priority = Enum.Parse<Priority>(_selectedPriority);
+            var order = new Order(new Guid(), product.Id, customer.Id, orderAmount, earliestDelivery, latestDelivery, priority, DeliveryType.Deposit);
+            _orderService.Create(order);
+            errorMessage = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
     }
-      var priority = Enum.Parse<Priority>(_selectedPriority);
-      var order = new Order(new Guid(), product.Id, customer.Id, orderAmount, earliestDelivery, latestDelivery, priority, DeliveryType.Deposit);
-    _orderService.Create(order);
-}
 
 
 
@@ -199,6 +212,7 @@ public void GetAllOrders()
 
    private void SaveOrder()
 {
+    try{ 
     if (_selectedOrder == null) return;
 
     var updatedProduct = _products.FirstOrDefault(p => p.Id == _selectedProductId);
@@ -223,6 +237,12 @@ public void GetAllOrders()
     _selectedPriority = "";
     _selectedOrder = null;
     GetAllOrders();
+     errorMessage = string.Empty;
+    }
+    catch (Exception ex)
+    {
+        errorMessage = ex.Message;
+    }
 }
 
 

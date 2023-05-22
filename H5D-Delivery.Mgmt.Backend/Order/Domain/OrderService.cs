@@ -23,6 +23,10 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain
 
         public void Update(Order order)
         {
+            if (!IsOrderValid(order))
+            {
+                return;
+            }
             _orderRepository.Update(order);
         }
 
@@ -44,11 +48,13 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain
         {
             if (!IsTimeFrameValid(order))
             {
-                throw new TimeFrameInvalidException("Earliest and latest delivery time must be at least 15 minutes apart!");
+                string errorMessage = "Earliest and latest delivery time must be at least 15 minutes apart!";
+                throw new TimeFrameInvalidException(errorMessage);
             }
             else if (!IsAmountValid(order))
             {
-                throw new AmountInvalidException("Amount must be 1");
+                string errorMessage = "Amount must be 1.";
+                throw new AmountInvalidException(errorMessage);
             }
 
             return true;

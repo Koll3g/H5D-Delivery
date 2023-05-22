@@ -74,10 +74,14 @@
     </tbody>
 </table>
 
-
-
+<div class="row">
+    <div class="col-md-12">
+        <label id="error" class="form-control">@errorMessage</label>
+    </div>
+</div>
 
 @code {
+
     private readonly CustomerService _customerService;
     private IEnumerable<Customer> _customers = new List<Customer>();
     private string name;
@@ -87,6 +91,8 @@
     private Guid id;
     private Customer _selectedCustomer;
     private bool isIdReadOnly = true;
+    private string errorMessage = string.Empty;
+
 
 
     public CustomerManagement()
@@ -108,19 +114,27 @@
 
     private void AddCustomer()
     {
-        var customer = new Customer(id, name, address, email, phone);
-        _customerService.Create(customer);
-        GetAllCustomers();
+        try
+        {
+            var customer = new Customer(id, name, address, email, phone);
+            _customerService.Create(customer);
+            GetAllCustomers();
 
-        // Clear input fields
-        name = "";
-        address = "";
-        phone = "";
-        email = "";
-        id = Guid.NewGuid();
-        isIdReadOnly = true;
+            // Clear input fields
+            name = "";
+            address = "";
+            phone = "";
+            email = "";
+            id = Guid.NewGuid();
+            isIdReadOnly = true;
+            errorMessage = string.Empty;
+        }
+        catch(Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
     }
-
+    
     private void EditCustomer(Customer customer)
     {
         _selectedCustomer = customer;
@@ -134,24 +148,33 @@
 
      private void SaveCustomer()
 {
-    if (_selectedCustomer == null) return;
+    try
+    {
+        if (_selectedCustomer == null) return;
 
-    _selectedCustomer.Name = name;
-    _selectedCustomer.Address = address;
-    _selectedCustomer.EMail = email;
-    _selectedCustomer.PhoneNumber = phone;
-    _customerService.Update(_selectedCustomer);
+        _selectedCustomer.Name = name;
+        _selectedCustomer.Address = address;
+        _selectedCustomer.EMail = email;
+        _selectedCustomer.PhoneNumber = phone;
+        _customerService.Update(_selectedCustomer);
 
-    // Clear input fields
-    name = "";
-    address = "";
-    phone = "";
-    email = "";
-    id = Guid.NewGuid();
-    _selectedCustomer = null;
-    isIdReadOnly = true;
-    GetAllCustomers();
+        // Clear input fields
+        name = "";
+        address = "";
+        phone = "";
+        email = "";
+        id = Guid.NewGuid();
+        _selectedCustomer = null;
+        isIdReadOnly = true;
+        GetAllCustomers();
+        errorMessage = string.Empty;
+    }
+    catch (Exception ex)
+    {
+        errorMessage = ex.Message;
+    }
 }
+
 
     private void DeleteCustomer(Customer customer)
     {

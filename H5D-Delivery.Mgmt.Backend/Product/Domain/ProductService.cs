@@ -23,6 +23,10 @@ namespace H5D_Delivery.Mgmt.Backend.Product.Domain
 
         public void Update(Product product)
         {
+            if (!IsProductValid(product))
+            {
+                return;
+            }
             _productRepository.Update(product);
         }
 
@@ -44,7 +48,8 @@ namespace H5D_Delivery.Mgmt.Backend.Product.Domain
         {
             if (string.IsNullOrEmpty(product.Name))
             {
-                throw new ProductNameInvalidException("Product Name cannot be empty");
+                string errorMessage = "Product Name cannot be empty.";
+                throw new ProductNameInvalidException(errorMessage);
             }
 
             return true;

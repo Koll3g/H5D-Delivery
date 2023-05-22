@@ -27,6 +27,10 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Domain
 
         public void Update(Customer customer)
         {
+            if (!IsCustomerValid(customer))
+            {
+                return;
+            }
             _customerRepository.Update(customer);
         }
 
@@ -48,22 +52,28 @@ namespace H5D_Delivery.Mgmt.Backend.Customer.Domain
         {
             if (!IsAddressValid(customer.Address))
             {
-                throw new AddressInvalidException($"Address must have format {AddressPattern}");
+               // throw new AddressInvalidException($"Address must have format {AddressPattern}");
+                string errorMessage = "Please check the address. The address must be Zbw-Strasse 1-4.";
+                throw new AddressInvalidException(errorMessage);
             }
 
             if (!IsEMailValid(customer.EMail))
             {
-                throw new EmailInvalidException($"E-Mail must have format {EmailPattern}");
+              //  throw new EmailInvalidException($"E-Mail must have format {EmailPattern}");
+                string errorMessage = "This email is invalid.";
+                throw new EmailInvalidException(errorMessage);
             }
 
             if (!IsPhoneNumberValid(customer.PhoneNumber))
             {
-                throw new PhoneNumberInvalidException($"PhoneNumber must have format {PhonePattern}");
+                // throw new PhoneNumberInvalidException($"PhoneNumber must have format {PhonePattern}");
+                string errorMessage = "This phone number is invalid";
+                throw new PhoneNumberInvalidException(errorMessage);
             }
 
             return true;
         }
-
+    
         private static bool IsAddressValid(string address)
         {
             var regex = new Regex(AddressPattern);
