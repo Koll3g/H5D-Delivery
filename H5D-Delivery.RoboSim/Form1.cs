@@ -141,11 +141,22 @@ namespace H5D_Delivery.RoboSim
 
         private void btn_sendError_Click(object sender, EventArgs e)
         {
-            string selectedError = combo_Errors.SelectedItem.ToString();
-            _robotComm.PublishErrorMessage(selectedError);
+            string selectedError = combo_Errors.SelectedItem.ToString() ?? string.Empty;
+            var error = new ErrorMessageDto()
+            {
+                deliveryId = Guid.NewGuid(),
+                step = (int)Num_UpdateCurrentDeliveryStep.Value,
+                type = selectedError
+            };
+            _robotComm.PublishErrorMessage(error);
         }
 
         private void combo_Errors_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Combo_robos_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

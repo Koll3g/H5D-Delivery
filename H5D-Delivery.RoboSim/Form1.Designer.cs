@@ -28,202 +28,190 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.Connect = new System.Windows.Forms.Button();
-            this.Btn_BatteryPct = new System.Windows.Forms.Button();
-            this.Num_BatteryPct = new System.Windows.Forms.NumericUpDown();
-            this.Lbl_StatusUpdate = new System.Windows.Forms.Label();
-            this.btn_CurrentDeliveryStep = new System.Windows.Forms.Button();
-            this.Num_UpdateCurrentDeliveryStep = new System.Windows.Forms.NumericUpDown();
-            this.Lbl_Connect = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.Lbl_ReturnToBaseRequest = new System.Windows.Forms.Label();
-            this.Combo_robos = new System.Windows.Forms.ComboBox();
-            this.btn_GiveMeAnOrder = new System.Windows.Forms.Button();
-            this.btn_deliveryDone = new System.Windows.Forms.Button();
-            this.combo_Errors = new System.Windows.Forms.ComboBox();
-            this.btn_sendError = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.Num_BatteryPct)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Num_UpdateCurrentDeliveryStep)).BeginInit();
-            this.SuspendLayout();
+            Connect = new Button();
+            Btn_BatteryPct = new Button();
+            Num_BatteryPct = new NumericUpDown();
+            Lbl_StatusUpdate = new Label();
+            btn_CurrentDeliveryStep = new Button();
+            Num_UpdateCurrentDeliveryStep = new NumericUpDown();
+            Lbl_Connect = new Label();
+            label1 = new Label();
+            label2 = new Label();
+            Lbl_ReturnToBaseRequest = new Label();
+            Combo_robos = new ComboBox();
+            btn_GiveMeAnOrder = new Button();
+            btn_deliveryDone = new Button();
+            combo_Errors = new ComboBox();
+            btn_sendError = new Button();
+            ((System.ComponentModel.ISupportInitialize)Num_BatteryPct).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)Num_UpdateCurrentDeliveryStep).BeginInit();
+            SuspendLayout();
             // 
             // Connect
             // 
-            this.Connect.Location = new System.Drawing.Point(27, 83);
-            this.Connect.Name = "Connect";
-            this.Connect.Size = new System.Drawing.Size(75, 23);
-            this.Connect.TabIndex = 0;
-            this.Connect.Text = "Connect";
-            this.Connect.UseVisualStyleBackColor = true;
-            this.Connect.Click += new System.EventHandler(this.Connect_Click);
+            Connect.Location = new Point(27, 83);
+            Connect.Name = "Connect";
+            Connect.Size = new Size(75, 23);
+            Connect.TabIndex = 0;
+            Connect.Text = "Connect";
+            Connect.UseVisualStyleBackColor = true;
+            Connect.Click += Connect_Click;
             // 
             // Btn_BatteryPct
             // 
-            this.Btn_BatteryPct.Location = new System.Drawing.Point(116, 192);
-            this.Btn_BatteryPct.Name = "Btn_BatteryPct";
-            this.Btn_BatteryPct.Size = new System.Drawing.Size(180, 23);
-            this.Btn_BatteryPct.TabIndex = 1;
-            this.Btn_BatteryPct.Text = "Update";
-            this.Btn_BatteryPct.UseVisualStyleBackColor = true;
-            this.Btn_BatteryPct.Click += new System.EventHandler(this.Btn_BatteryPct_Click);
+            Btn_BatteryPct.Location = new Point(116, 192);
+            Btn_BatteryPct.Name = "Btn_BatteryPct";
+            Btn_BatteryPct.Size = new Size(180, 23);
+            Btn_BatteryPct.TabIndex = 1;
+            Btn_BatteryPct.Text = "UpdateBatteryCharge";
+            Btn_BatteryPct.UseVisualStyleBackColor = true;
+            Btn_BatteryPct.Click += Btn_BatteryPct_Click;
             // 
             // Num_BatteryPct
             // 
-            this.Num_BatteryPct.Location = new System.Drawing.Point(27, 192);
-            this.Num_BatteryPct.Name = "Num_BatteryPct";
-            this.Num_BatteryPct.Size = new System.Drawing.Size(83, 23);
-            this.Num_BatteryPct.TabIndex = 2;
+            Num_BatteryPct.Location = new Point(27, 192);
+            Num_BatteryPct.Name = "Num_BatteryPct";
+            Num_BatteryPct.Size = new Size(83, 23);
+            Num_BatteryPct.TabIndex = 2;
             // 
             // Lbl_StatusUpdate
             // 
-            this.Lbl_StatusUpdate.AutoSize = true;
-            this.Lbl_StatusUpdate.Location = new System.Drawing.Point(162, 324);
-            this.Lbl_StatusUpdate.Name = "Lbl_StatusUpdate";
-            this.Lbl_StatusUpdate.Size = new System.Drawing.Size(16, 15);
-            this.Lbl_StatusUpdate.TabIndex = 3;
-            this.Lbl_StatusUpdate.Text = "...";
+            Lbl_StatusUpdate.AutoSize = true;
+            Lbl_StatusUpdate.Location = new Point(162, 324);
+            Lbl_StatusUpdate.Name = "Lbl_StatusUpdate";
+            Lbl_StatusUpdate.Size = new Size(16, 15);
+            Lbl_StatusUpdate.TabIndex = 3;
+            Lbl_StatusUpdate.Text = "...";
             // 
             // btn_CurrentDeliveryStep
             // 
-            this.btn_CurrentDeliveryStep.Location = new System.Drawing.Point(116, 141);
-            this.btn_CurrentDeliveryStep.Name = "btn_CurrentDeliveryStep";
-            this.btn_CurrentDeliveryStep.Size = new System.Drawing.Size(180, 23);
-            this.btn_CurrentDeliveryStep.TabIndex = 4;
-            this.btn_CurrentDeliveryStep.Text = "UpdateDeliveryStep";
-            this.btn_CurrentDeliveryStep.UseVisualStyleBackColor = true;
-            this.btn_CurrentDeliveryStep.Click += new System.EventHandler(this.btn_CurrentDeliveryStep_Click);
+            btn_CurrentDeliveryStep.Location = new Point(116, 141);
+            btn_CurrentDeliveryStep.Name = "btn_CurrentDeliveryStep";
+            btn_CurrentDeliveryStep.Size = new Size(180, 23);
+            btn_CurrentDeliveryStep.TabIndex = 4;
+            btn_CurrentDeliveryStep.Text = "UpdateDeliveryStep";
+            btn_CurrentDeliveryStep.UseVisualStyleBackColor = true;
+            btn_CurrentDeliveryStep.Click += btn_CurrentDeliveryStep_Click;
             // 
             // Num_UpdateCurrentDeliveryStep
             // 
-            this.Num_UpdateCurrentDeliveryStep.Location = new System.Drawing.Point(27, 141);
-            this.Num_UpdateCurrentDeliveryStep.Name = "Num_UpdateCurrentDeliveryStep";
-            this.Num_UpdateCurrentDeliveryStep.Size = new System.Drawing.Size(83, 23);
-            this.Num_UpdateCurrentDeliveryStep.TabIndex = 6;
+            Num_UpdateCurrentDeliveryStep.Location = new Point(27, 141);
+            Num_UpdateCurrentDeliveryStep.Name = "Num_UpdateCurrentDeliveryStep";
+            Num_UpdateCurrentDeliveryStep.Size = new Size(83, 23);
+            Num_UpdateCurrentDeliveryStep.TabIndex = 6;
             // 
             // Lbl_Connect
             // 
-            this.Lbl_Connect.AutoSize = true;
-            this.Lbl_Connect.Location = new System.Drawing.Point(108, 87);
-            this.Lbl_Connect.Name = "Lbl_Connect";
-            this.Lbl_Connect.Size = new System.Drawing.Size(16, 15);
-            this.Lbl_Connect.TabIndex = 7;
-            this.Lbl_Connect.Text = "...";
+            Lbl_Connect.AutoSize = true;
+            Lbl_Connect.Location = new Point(108, 87);
+            Lbl_Connect.Name = "Lbl_Connect";
+            Lbl_Connect.Size = new Size(16, 15);
+            Lbl_Connect.TabIndex = 7;
+            Lbl_Connect.Text = "...";
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(30, 324);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(80, 15);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Status Update";
+            label1.AutoSize = true;
+            label1.Location = new Point(30, 324);
+            label1.Name = "label1";
+            label1.Size = new Size(80, 15);
+            label1.TabIndex = 8;
+            label1.Text = "Status Update";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(27, 350);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(129, 15);
-            this.label2.TabIndex = 9;
-            this.label2.Text = "Return To Base Request";
+            label2.AutoSize = true;
+            label2.Location = new Point(27, 350);
+            label2.Name = "label2";
+            label2.Size = new Size(129, 15);
+            label2.TabIndex = 9;
+            label2.Text = "Return To Base Request";
             // 
             // Lbl_ReturnToBaseRequest
             // 
-            this.Lbl_ReturnToBaseRequest.AutoSize = true;
-            this.Lbl_ReturnToBaseRequest.Location = new System.Drawing.Point(162, 350);
-            this.Lbl_ReturnToBaseRequest.Name = "Lbl_ReturnToBaseRequest";
-            this.Lbl_ReturnToBaseRequest.Size = new System.Drawing.Size(16, 15);
-            this.Lbl_ReturnToBaseRequest.TabIndex = 10;
-            this.Lbl_ReturnToBaseRequest.Text = "...";
+            Lbl_ReturnToBaseRequest.AutoSize = true;
+            Lbl_ReturnToBaseRequest.Location = new Point(162, 350);
+            Lbl_ReturnToBaseRequest.Name = "Lbl_ReturnToBaseRequest";
+            Lbl_ReturnToBaseRequest.Size = new Size(16, 15);
+            Lbl_ReturnToBaseRequest.TabIndex = 10;
+            Lbl_ReturnToBaseRequest.Text = "...";
             // 
             // Combo_robos
             // 
-            this.Combo_robos.FormattingEnabled = true;
-            this.Combo_robos.Items.AddRange(new object[] {
-            "Roboter 1",
-            "Roboter 2",
-            "Roboter 3"});
-            this.Combo_robos.Location = new System.Drawing.Point(12, 35);
-            this.Combo_robos.Name = "Combo_robos";
-            this.Combo_robos.Size = new System.Drawing.Size(121, 23);
-            this.Combo_robos.TabIndex = 11;
+            Combo_robos.FormattingEnabled = true;
+            Combo_robos.Items.AddRange(new object[] { "Roboter 1", "Roboter 2", "Roboter 3" });
+            Combo_robos.Location = new Point(12, 35);
+            Combo_robos.Name = "Combo_robos";
+            Combo_robos.Size = new Size(121, 23);
+            Combo_robos.TabIndex = 11;
+            Combo_robos.SelectedIndexChanged += Combo_robos_SelectedIndexChanged;
             // 
             // btn_GiveMeAnOrder
             // 
-            this.btn_GiveMeAnOrder.Location = new System.Drawing.Point(27, 240);
-            this.btn_GiveMeAnOrder.Name = "btn_GiveMeAnOrder";
-            this.btn_GiveMeAnOrder.Size = new System.Drawing.Size(164, 23);
-            this.btn_GiveMeAnOrder.TabIndex = 12;
-            this.btn_GiveMeAnOrder.Text = "GiveMeAnOrder";
-            this.btn_GiveMeAnOrder.UseVisualStyleBackColor = true;
-            this.btn_GiveMeAnOrder.Click += new System.EventHandler(this.btn_GiveMeAnOrder_Click);
+            btn_GiveMeAnOrder.Location = new Point(27, 240);
+            btn_GiveMeAnOrder.Name = "btn_GiveMeAnOrder";
+            btn_GiveMeAnOrder.Size = new Size(164, 23);
+            btn_GiveMeAnOrder.TabIndex = 12;
+            btn_GiveMeAnOrder.Text = "GiveMeAnOrder";
+            btn_GiveMeAnOrder.UseVisualStyleBackColor = true;
+            btn_GiveMeAnOrder.Click += btn_GiveMeAnOrder_Click;
             // 
             // btn_deliveryDone
             // 
-            this.btn_deliveryDone.Location = new System.Drawing.Point(27, 282);
-            this.btn_deliveryDone.Name = "btn_deliveryDone";
-            this.btn_deliveryDone.Size = new System.Drawing.Size(164, 23);
-            this.btn_deliveryDone.TabIndex = 13;
-            this.btn_deliveryDone.Text = "DeliveryDone";
-            this.btn_deliveryDone.UseVisualStyleBackColor = true;
-            this.btn_deliveryDone.Click += new System.EventHandler(this.btn_deliveryDone_Click);
+            btn_deliveryDone.Location = new Point(27, 282);
+            btn_deliveryDone.Name = "btn_deliveryDone";
+            btn_deliveryDone.Size = new Size(164, 23);
+            btn_deliveryDone.TabIndex = 13;
+            btn_deliveryDone.Text = "DeliveryDone";
+            btn_deliveryDone.UseVisualStyleBackColor = true;
+            btn_deliveryDone.Click += btn_deliveryDone_Click;
             // 
             // combo_Errors
             // 
-            this.combo_Errors.FormattingEnabled = true;
-            this.combo_Errors.Items.AddRange(new object[] {
-            "PersonNotAtHome",
-            "PersonNotAuthorized",
-            "CannotDeposit",
-            "BlockedEntrance",
-            "CannotMove",
-            "NavigationError",
-            "OutOfBattery",
-            "PickMeUpImScared",
-            "NoError"});
-            this.combo_Errors.Location = new System.Drawing.Point(496, 350);
-            this.combo_Errors.Name = "combo_Errors";
-            this.combo_Errors.Size = new System.Drawing.Size(121, 23);
-            this.combo_Errors.TabIndex = 14;
-            this.combo_Errors.SelectedIndexChanged += new System.EventHandler(this.combo_Errors_SelectedIndexChanged);
+            combo_Errors.FormattingEnabled = true;
+            combo_Errors.Items.AddRange(new object[] { "personNotAtHome", "personNotAuthorized", "cannotDeposit", "blockedEntrance", "cannotMove", "navigationError", "outOfBattery", "pickMeUpImScared", "noError" });
+            combo_Errors.Location = new Point(496, 350);
+            combo_Errors.Name = "combo_Errors";
+            combo_Errors.Size = new Size(121, 23);
+            combo_Errors.TabIndex = 14;
+            combo_Errors.SelectedIndexChanged += combo_Errors_SelectedIndexChanged;
             // 
             // btn_sendError
             // 
-            this.btn_sendError.Location = new System.Drawing.Point(633, 350);
-            this.btn_sendError.Name = "btn_sendError";
-            this.btn_sendError.Size = new System.Drawing.Size(75, 23);
-            this.btn_sendError.TabIndex = 15;
-            this.btn_sendError.Text = "Send";
-            this.btn_sendError.UseVisualStyleBackColor = true;
-            this.btn_sendError.Click += new System.EventHandler(this.btn_sendError_Click);
+            btn_sendError.Location = new Point(633, 350);
+            btn_sendError.Name = "btn_sendError";
+            btn_sendError.Size = new Size(75, 23);
+            btn_sendError.TabIndex = 15;
+            btn_sendError.Text = "Send";
+            btn_sendError.UseVisualStyleBackColor = true;
+            btn_sendError.Click += btn_sendError_Click;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.btn_sendError);
-            this.Controls.Add(this.combo_Errors);
-            this.Controls.Add(this.btn_deliveryDone);
-            this.Controls.Add(this.btn_GiveMeAnOrder);
-            this.Controls.Add(this.Combo_robos);
-            this.Controls.Add(this.Lbl_ReturnToBaseRequest);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.Lbl_Connect);
-            this.Controls.Add(this.Num_UpdateCurrentDeliveryStep);
-            this.Controls.Add(this.btn_CurrentDeliveryStep);
-            this.Controls.Add(this.Lbl_StatusUpdate);
-            this.Controls.Add(this.Num_BatteryPct);
-            this.Controls.Add(this.Btn_BatteryPct);
-            this.Controls.Add(this.Connect);
-            this.Name = "Form1";
-            this.Text = " ";
-            ((System.ComponentModel.ISupportInitialize)(this.Num_BatteryPct)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Num_UpdateCurrentDeliveryStep)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Controls.Add(btn_sendError);
+            Controls.Add(combo_Errors);
+            Controls.Add(btn_deliveryDone);
+            Controls.Add(btn_GiveMeAnOrder);
+            Controls.Add(Combo_robos);
+            Controls.Add(Lbl_ReturnToBaseRequest);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Controls.Add(Lbl_Connect);
+            Controls.Add(Num_UpdateCurrentDeliveryStep);
+            Controls.Add(btn_CurrentDeliveryStep);
+            Controls.Add(Lbl_StatusUpdate);
+            Controls.Add(Num_BatteryPct);
+            Controls.Add(Btn_BatteryPct);
+            Controls.Add(Connect);
+            Name = "Form1";
+            Text = " ";
+            ((System.ComponentModel.ISupportInitialize)Num_BatteryPct).EndInit();
+            ((System.ComponentModel.ISupportInitialize)Num_UpdateCurrentDeliveryStep).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

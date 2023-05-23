@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MQTTnet;
 using MQTTnet.Client;
+using Newtonsoft.Json;
 
 namespace H5D_Delivery.RoboSim
 {
@@ -36,7 +37,7 @@ namespace H5D_Delivery.RoboSim
             _currentDeliveryStepTopic = $"Robots/{_robotId}/From/Status/CurrentDeliveryStep";
             _deliveryDoneTopic = $"Robots/{_robotId}/From/Status/DeliveryDone";
             _giveMeAnOrderTopic = $"Robots/{_robotId}/From/Requests/GiveMeAnOrder";
-            _errorMessageTopic = $"Robots/{_robotId}/From/Status/ErrorMessage";
+            _errorMessageTopic = $"Robots/{_robotId}/From/ErrorMessage";
 
             _statusUpdateRequestTopic = $"Robots/{_robotId}/To/Requests/StatusUpdate";
             _returnToBaseTopic = $"Robots/{_robotId}/To/Requests/ReturnToBase";
@@ -83,9 +84,9 @@ namespace H5D_Delivery.RoboSim
             await PublishAsync(_deliveryDoneTopic, deliveryDone.ToString());
         }
 
-        public async void PublishErrorMessage(string errorMessage)
+        public async void PublishErrorMessage(ErrorMessageDto errorMessage)
         {
-            await PublishAsync(_errorMessageTopic, errorMessage.ToString());
+            await PublishAsync(_errorMessageTopic, JsonConvert.SerializeObject(errorMessage));
         }
 
         private async Task ConnectAsync(string brokerHostName, int brokerPort, string clientId)
