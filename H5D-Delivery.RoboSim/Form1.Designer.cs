@@ -44,13 +44,16 @@
             combo_Errors = new ComboBox();
             btn_sendError = new Button();
             richTextBox1 = new RichTextBox();
+            label3 = new Label();
+            label4 = new Label();
+            label5 = new Label();
             ((System.ComponentModel.ISupportInitialize)Num_BatteryPct).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Num_UpdateCurrentDeliveryStep).BeginInit();
             SuspendLayout();
             // 
             // Connect
             // 
-            Connect.Location = new Point(27, 83);
+            Connect.Location = new Point(12, 73);
             Connect.Name = "Connect";
             Connect.Size = new Size(75, 23);
             Connect.TabIndex = 0;
@@ -60,7 +63,7 @@
             // 
             // Btn_BatteryPct
             // 
-            Btn_BatteryPct.Location = new Point(116, 192);
+            Btn_BatteryPct.Location = new Point(101, 131);
             Btn_BatteryPct.Name = "Btn_BatteryPct";
             Btn_BatteryPct.Size = new Size(180, 23);
             Btn_BatteryPct.TabIndex = 1;
@@ -70,7 +73,7 @@
             // 
             // Num_BatteryPct
             // 
-            Num_BatteryPct.Location = new Point(27, 192);
+            Num_BatteryPct.Location = new Point(12, 131);
             Num_BatteryPct.Name = "Num_BatteryPct";
             Num_BatteryPct.Size = new Size(83, 23);
             Num_BatteryPct.TabIndex = 2;
@@ -78,7 +81,7 @@
             // Lbl_StatusUpdate
             // 
             Lbl_StatusUpdate.AutoSize = true;
-            Lbl_StatusUpdate.Location = new Point(162, 324);
+            Lbl_StatusUpdate.Location = new Point(98, 226);
             Lbl_StatusUpdate.Name = "Lbl_StatusUpdate";
             Lbl_StatusUpdate.Size = new Size(16, 15);
             Lbl_StatusUpdate.TabIndex = 3;
@@ -86,7 +89,7 @@
             // 
             // btn_CurrentDeliveryStep
             // 
-            btn_CurrentDeliveryStep.Location = new Point(116, 141);
+            btn_CurrentDeliveryStep.Location = new Point(101, 102);
             btn_CurrentDeliveryStep.Name = "btn_CurrentDeliveryStep";
             btn_CurrentDeliveryStep.Size = new Size(180, 23);
             btn_CurrentDeliveryStep.TabIndex = 4;
@@ -96,7 +99,7 @@
             // 
             // Num_UpdateCurrentDeliveryStep
             // 
-            Num_UpdateCurrentDeliveryStep.Location = new Point(27, 141);
+            Num_UpdateCurrentDeliveryStep.Location = new Point(12, 102);
             Num_UpdateCurrentDeliveryStep.Name = "Num_UpdateCurrentDeliveryStep";
             Num_UpdateCurrentDeliveryStep.Size = new Size(83, 23);
             Num_UpdateCurrentDeliveryStep.TabIndex = 6;
@@ -104,7 +107,7 @@
             // Lbl_Connect
             // 
             Lbl_Connect.AutoSize = true;
-            Lbl_Connect.Location = new Point(108, 87);
+            Lbl_Connect.Location = new Point(94, 77);
             Lbl_Connect.Name = "Lbl_Connect";
             Lbl_Connect.Size = new Size(16, 15);
             Lbl_Connect.TabIndex = 7;
@@ -113,7 +116,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(30, 324);
+            label1.Location = new Point(12, 226);
             label1.Name = "label1";
             label1.Size = new Size(80, 15);
             label1.TabIndex = 8;
@@ -122,7 +125,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(27, 350);
+            label2.Location = new Point(12, 250);
             label2.Name = "label2";
             label2.Size = new Size(129, 15);
             label2.TabIndex = 9;
@@ -131,7 +134,7 @@
             // Lbl_ReturnToBaseRequest
             // 
             Lbl_ReturnToBaseRequest.AutoSize = true;
-            Lbl_ReturnToBaseRequest.Location = new Point(162, 350);
+            Lbl_ReturnToBaseRequest.Location = new Point(147, 250);
             Lbl_ReturnToBaseRequest.Name = "Lbl_ReturnToBaseRequest";
             Lbl_ReturnToBaseRequest.Size = new Size(16, 15);
             Lbl_ReturnToBaseRequest.TabIndex = 10;
@@ -141,7 +144,7 @@
             // 
             Combo_robos.FormattingEnabled = true;
             Combo_robos.Items.AddRange(new object[] { "Roboter 1", "Roboter 2", "Roboter 3" });
-            Combo_robos.Location = new Point(12, 35);
+            Combo_robos.Location = new Point(12, 44);
             Combo_robos.Name = "Combo_robos";
             Combo_robos.Size = new Size(121, 23);
             Combo_robos.TabIndex = 11;
@@ -149,7 +152,7 @@
             // 
             // btn_GiveMeAnOrder
             // 
-            btn_GiveMeAnOrder.Location = new Point(27, 240);
+            btn_GiveMeAnOrder.Location = new Point(12, 160);
             btn_GiveMeAnOrder.Name = "btn_GiveMeAnOrder";
             btn_GiveMeAnOrder.Size = new Size(164, 23);
             btn_GiveMeAnOrder.TabIndex = 12;
@@ -159,7 +162,7 @@
             // 
             // btn_deliveryDone
             // 
-            btn_deliveryDone.Location = new Point(27, 282);
+            btn_deliveryDone.Location = new Point(12, 189);
             btn_deliveryDone.Name = "btn_deliveryDone";
             btn_deliveryDone.Size = new Size(164, 23);
             btn_deliveryDone.TabIndex = 13;
@@ -171,7 +174,7 @@
             // 
             combo_Errors.FormattingEnabled = true;
             combo_Errors.Items.AddRange(new object[] { "personNotAtHome", "personNotAuthorized", "cannotDeposit", "blockedEntrance", "cannotMove", "navigationError", "outOfBattery", "pickMeUpImScared", "noError" });
-            combo_Errors.Location = new Point(496, 350);
+            combo_Errors.Location = new Point(12, 299);
             combo_Errors.Name = "combo_Errors";
             combo_Errors.Size = new Size(121, 23);
             combo_Errors.TabIndex = 14;
@@ -179,7 +182,7 @@
             // 
             // btn_sendError
             // 
-            btn_sendError.Location = new Point(633, 350);
+            btn_sendError.Location = new Point(147, 299);
             btn_sendError.Name = "btn_sendError";
             btn_sendError.Size = new Size(75, 23);
             btn_sendError.TabIndex = 15;
@@ -189,17 +192,47 @@
             // 
             // richTextBox1
             // 
-            richTextBox1.Location = new Point(406, 21);
+            richTextBox1.Location = new Point(287, 29);
             richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new Size(371, 300);
+            richTextBox1.Size = new Size(501, 723);
             richTextBox1.TabIndex = 16;
             richTextBox1.Text = "";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(12, 281);
+            label3.Name = "label3";
+            label3.Size = new Size(89, 15);
+            label3.TabIndex = 17;
+            label3.Text = "Error Messages:";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(287, 9);
+            label4.Name = "label4";
+            label4.Size = new Size(82, 15);
+            label4.TabIndex = 18;
+            label4.Text = "DeliveryOrder:";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(11, 26);
+            label5.Name = "label5";
+            label5.Size = new Size(76, 15);
+            label5.TabIndex = 19;
+            label5.Text = "Select Robot:";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(800, 764);
+            Controls.Add(label5);
+            Controls.Add(label4);
+            Controls.Add(label3);
             Controls.Add(richTextBox1);
             Controls.Add(btn_sendError);
             Controls.Add(combo_Errors);
@@ -217,7 +250,7 @@
             Controls.Add(Btn_BatteryPct);
             Controls.Add(Connect);
             Name = "Form1";
-            Text = " ";
+            Text = " RoboSim";
             Load += Form1_Load_1;
             ((System.ComponentModel.ISupportInitialize)Num_BatteryPct).EndInit();
             ((System.ComponentModel.ISupportInitialize)Num_UpdateCurrentDeliveryStep).EndInit();
@@ -243,5 +276,8 @@
         private ComboBox combo_Errors;
         private Button btn_sendError;
         private RichTextBox richTextBox1;
+        private Label label3;
+        private Label label4;
+        private Label label5;
     }
 }
