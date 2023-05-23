@@ -73,12 +73,12 @@ namespace H5D_Delivery.RoboSim
             await PublishAsync(_currentDeliveryStepTopic, currentDeliveryStep.ToString());
         }
 
-        public async void PublishGiveMeAnOrder(bool giveMeAnOrder)
+        public async void PublishGiveMeAnOrder(int giveMeAnOrder)
         {
             await PublishAsync(_giveMeAnOrderTopic, giveMeAnOrder.ToString());
         }
 
-        public async void PublishDeliveryDone(bool deliveryDone)
+        public async void PublishDeliveryDone(int deliveryDone)
         {
             await PublishAsync(_deliveryDoneTopic, deliveryDone.ToString());
         }

@@ -78,12 +78,12 @@ namespace H5D_Delivery.RoboSim
 
         private void PublishGiveMeAnOrder()
         {
-            _robotComm.PublishGiveMeAnOrder(true);
+            _robotComm.PublishGiveMeAnOrder(1);
         }
 
         private void PublishDeliveryDone()
         {
-            _robotComm.PublishDeliveryDone(true);
+            _robotComm.PublishDeliveryDone(1);
         }
 
         private Task HandleStatusUpdateRequest(MqttApplicationMessageReceivedEventArgs x)
