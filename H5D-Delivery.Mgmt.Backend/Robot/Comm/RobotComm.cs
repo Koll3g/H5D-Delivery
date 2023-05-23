@@ -116,10 +116,17 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
         {
             return Task.Run(() =>
             {
-                var payload = x.ApplicationMessage.ConvertPayloadToString();
-                var value = Convert.ToInt32(payload);
-                var batteryCharge = new BatteryCharge(new Guid(), _robotId, value, DateTime.Now);
-                BatteryChargePctReceivedEvent?.Invoke(this, batteryCharge);
+                try
+                {
+                    var payload = x.ApplicationMessage.ConvertPayloadToString();
+                    var value = Convert.ToInt32(payload);
+                    var batteryCharge = new BatteryCharge(new Guid(), _robotId, value, DateTime.Now);
+                    BatteryChargePctReceivedEvent?.Invoke(this, batteryCharge);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             });
         }
 
@@ -127,9 +134,16 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
         {
             return Task.Run(() =>
             {
-                var payload = x.ApplicationMessage.ConvertPayloadToString();
-                var value = Convert.ToInt32(payload);
-                GiveMeAnOrderReceivedEvent?.Invoke(this, value);
+                try
+                {
+                    var payload = x.ApplicationMessage.ConvertPayloadToString();
+                    var value = Convert.ToInt32(payload);
+                    GiveMeAnOrderReceivedEvent?.Invoke(this, value);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             });
         }
 
@@ -137,9 +151,16 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
         {
             return Task.Run(() =>
             {
-                var payload = x.ApplicationMessage.ConvertPayloadToString();
-                var value = new Guid(payload);
-                CurrentDeliveryIdReceivedEvent?.Invoke(this, value);
+                try
+                {
+                    var payload = x.ApplicationMessage.ConvertPayloadToString();
+                    var value = new Guid(payload);
+                    CurrentDeliveryIdReceivedEvent?.Invoke(this, value);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             });
         }
 
@@ -147,9 +168,17 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
         {
             return Task.Run(() =>
             {
-                var payload = x.ApplicationMessage.ConvertPayloadToString();
-                var value = Convert.ToInt32(payload);
-                CurrentDeliveryStepReceivedEvent?.Invoke(this, value);
+                try
+                {
+                    var payload = x.ApplicationMessage.ConvertPayloadToString();
+                    var value = Convert.ToInt32(payload);
+                    CurrentDeliveryStepReceivedEvent?.Invoke(this, value);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+
             });
         }
 
@@ -157,9 +186,16 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
         {
             return Task.Run(() =>
             {
-                var payload = x.ApplicationMessage.ConvertPayloadToString();
-                var value = Convert.ToInt32(payload);
-                DeliveryDoneReceivedEvent?.Invoke(this, value);
+                try
+                {
+                    var payload = x.ApplicationMessage.ConvertPayloadToString();
+                    var value = Convert.ToInt32(payload);
+                    DeliveryDoneReceivedEvent?.Invoke(this, value);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             });
         }
 
@@ -167,12 +203,19 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
         {
             return Task.Run(() =>
             {
-                var payload = x.ApplicationMessage.ConvertPayloadToString();
-                var value = JsonConvert.DeserializeObject<ErrorMessage>(payload);
-                if (value != null)
+                try
                 {
-                    value.RobotId = _robotId;
-                    ErrorMessageReceivedEvent?.Invoke(this, value);
+                    var payload = x.ApplicationMessage.ConvertPayloadToString();
+                    var value = JsonConvert.DeserializeObject<ErrorMessage>(payload);
+                    if (value != null)
+                    {
+                        value.RobotId = _robotId;
+                        ErrorMessageReceivedEvent?.Invoke(this, value);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
                 }
             });
         }
