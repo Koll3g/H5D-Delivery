@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using H5D_Delivery.Mgmt.Backend.Delivery.Comm;
 
 namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
 {
@@ -20,7 +21,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
 
         public void RequestStatusUpdate();
         public void RequestReturnToBase();
-        public void GiveDeliveryOrder(DeliveryOrder deliveryOrder);
+        public void GiveDeliveryOrder(DeliveryOrderDto deliveryOrder);
 
     }
 }

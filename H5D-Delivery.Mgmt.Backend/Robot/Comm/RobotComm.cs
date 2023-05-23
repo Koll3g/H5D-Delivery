@@ -2,10 +2,14 @@
 using MQTTnet;
 using MQTTnet.Client;
 using System.ComponentModel;
+using Autofac;
+using H5D_Delivery.Mgmt.Backend.Delivery.Comm;
 using H5D_Delivery.Mgmt.Backend.Delivery.Domain;
 using Newtonsoft.Json;
 using H5D_Delivery.Mgmt.Backend.Robot.Domain.Battery;
 using H5D_Delivery.Mgmt.Backend.Robot.Domain.Error;
+using H5D_Delivery.Mgmt.Backend.Shared.IoC;
+using H5D_Delivery.RoboSim;
 
 namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
 {
@@ -74,7 +78,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
             await PublishAsync(_returnToBaseRequestTopic, "1");
         }
 
-        public async void GiveDeliveryOrder(DeliveryOrder deliveryOrder)
+        public async void GiveDeliveryOrder(DeliveryOrderDto deliveryOrder)
         {
             var deliveryOrderAsJson = JsonConvert.SerializeObject(deliveryOrder);
             await PublishAsync(_deliveryOrderTopic, deliveryOrderAsJson);
@@ -120,7 +124,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
                 {
                     var payload = x.ApplicationMessage.ConvertPayloadToString();
                     var value = Convert.ToInt32(payload);
-                    var batteryCharge = new BatteryCharge(new Guid(), _robotId, value, DateTime.Now);
+                    var batteryCharge = new BatteryCharge(Guid.NewGuid(), _robotId, value, DateTime.Now);
                     BatteryChargePctReceivedEvent?.Invoke(this, batteryCharge);
                 }
                 catch (Exception e)
@@ -206,11 +210,12 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
                 try
                 {
                     var payload = x.ApplicationMessage.ConvertPayloadToString();
-                    var value = JsonConvert.DeserializeObject<ErrorMessage>(payload);
-                    if (value != null)
+                    var dto = JsonConvert.DeserializeObject<ErrorMessageDto>(payload);
+                    var errorMessage = dto?.ConvertToErrorMessage();
+                    if (errorMessage != null)
                     {
-                        value.RobotId = _robotId;
-                        ErrorMessageReceivedEvent?.Invoke(this, value);
+                        errorMessage.RobotId = _robotId;
+                        ErrorMessageReceivedEvent?.Invoke(this, errorMessage);
                     }
                 }
                 catch (Exception e)

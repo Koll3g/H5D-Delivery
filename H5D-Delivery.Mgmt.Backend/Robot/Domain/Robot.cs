@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
+using H5D_Delivery.Mgmt.Backend.Delivery.Comm;
 using H5D_Delivery.Mgmt.Backend.Delivery.Domain;
 using H5D_Delivery.Mgmt.Backend.Robot.Comm;
 using H5D_Delivery.Mgmt.Backend.Robot.Domain.Battery;
@@ -13,6 +14,7 @@ using H5D_Delivery.Mgmt.Backend.Robot.Persistence;
 using H5D_Delivery.Mgmt.Backend.Shared;
 using H5D_Delivery.Mgmt.Backend.Shared.IoC;
 using H5D_Delivery.Mgmt.Backend.Shared.Persistence;
+using H5D_Delivery.Mgmt.Backend.Stock.Domain;
 
 namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
 {
@@ -164,7 +166,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
             _robotComm.RequestReturnToBase();
         }
 
-        public void GiveDeliveryOrder(DeliveryOrder deliveryOrder)
+        public void GiveDeliveryOrder(DeliveryOrderDto deliveryOrder)
         {
             _robotComm.GiveDeliveryOrder(deliveryOrder);
         }

@@ -31,7 +31,7 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory
 
         private DeliveryStep GenerateDeliveryStep(Order.Domain.Order order)
         {
-            var deliveryStep = new DeliveryStep(new Guid())
+            var deliveryStep = new DeliveryStep(Guid.NewGuid())
             {
                 DeliveryType = order.DeliveryType,
                 ProductId = order.ProductId,

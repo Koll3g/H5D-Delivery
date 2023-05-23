@@ -16,7 +16,7 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory
             RouteOptimizer = routeOptimizer;
             WaypointGenerator = waypointGenerator;
 
-            DeliveryPlan = new DeliveryPlan(new Guid());
+            DeliveryPlan = new DeliveryPlan(Guid.NewGuid());
         }
 
         public virtual DeliveryPlan CreateDeliveryPlan(List<Order.Domain.Order> orders)

@@ -184,7 +184,7 @@ public OrderManagement()
                 return;
             }
             var priority = Enum.Parse<Priority>(_selectedPriority);
-            var order = new Order(new Guid(), product.Id, customer.Id, orderAmount, earliestDelivery, latestDelivery, priority, DeliveryType.Deposit);
+            var order = new Order(Guid.NewGuid(), product.Id, customer.Id, orderAmount, earliestDelivery, latestDelivery, priority, DeliveryType.Deposit);
             _orderService.Create(order);
             errorMessage = string.Empty;
         }

@@ -217,7 +217,7 @@
 
     private void AddCustomer()
     {
-        var customer = new Backend.Customer.Domain.Customer(new Guid(), "Hans", "Zbw-Strasse 4", "ich@gmail.com", "46574841");
+        var customer = new Backend.Customer.Domain.Customer(Guid.NewGuid(), "Hans", "Zbw-Strasse 4", "ich@gmail.com", "46574841");
         _customerService.Create(customer);
     }
 
@@ -262,7 +262,7 @@
 
     private void AddProduct()
     {
-        var product = new Product(new Guid(), "Messer");
+        var product = new Product(Guid.NewGuid(), "Messer");
         _productService.Create(product);
     }
 
@@ -282,7 +282,7 @@
         {
             return;
         }
-        var stockItem = new StockItem(new Guid(), product.Id, 10, StorageLocation.A1);
+        var stockItem = new StockItem(Guid.NewGuid(), product.Id, 10, StorageLocation.A1);
         _stockService.Create(stockItem);
     }
 
@@ -303,7 +303,7 @@
         {
             return;
         }
-        var order = new Order(new Guid(), product.Id, customer.Id, 1, new DateTime(2023, 04, 14, 10, 0, 0), new DateTime(2023, 04, 14, 12, 0, 0), Priority.Normal, DeliveryType.Deposit);
+        var order = new Order(Guid.NewGuid(), product.Id, customer.Id, 1, new DateTime(2023, 04, 14, 10, 0, 0), new DateTime(2023, 04, 14, 12, 0, 0), Priority.Normal, DeliveryType.Deposit);
         _orderService.Create(order);
     }
 

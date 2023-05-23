@@ -17,7 +17,7 @@ namespace H5D_Delivery.Mgmt.Backend.UnitTests.Customer
             //Arrange
             var customerRepository = A.Fake<ICustomerRepository>();
             var customerService = new CustomerService(customerRepository);
-            var customer = new Backend.Customer.Domain.Customer(new Guid(), "Hans", address, email, phone);
+            var customer = new Backend.Customer.Domain.Customer(Guid.NewGuid(), "Hans", address, email, phone);
 
             //Act
             customerService.Create(customer);
@@ -39,7 +39,7 @@ namespace H5D_Delivery.Mgmt.Backend.UnitTests.Customer
             //Arrange
             var customerRepository = A.Fake<ICustomerRepository>();
             var customerService = new CustomerService(customerRepository);
-            var customer = new Backend.Customer.Domain.Customer(new Guid(), "Hans", address, "info@gmail.com", "46574841");
+            var customer = new Backend.Customer.Domain.Customer(Guid.NewGuid(), "Hans", address, "info@gmail.com", "46574841");
 
             //Act
             var act = () => customerService.Create(customer);
@@ -61,7 +61,7 @@ namespace H5D_Delivery.Mgmt.Backend.UnitTests.Customer
             //Arrange
             var customerRepository = A.Fake<ICustomerRepository>();
             var customerService = new CustomerService(customerRepository);
-            var customer = new Backend.Customer.Domain.Customer(new Guid(), "Hans", "Zbw-Strasse 4", email, "46574841");
+            var customer = new Backend.Customer.Domain.Customer(Guid.NewGuid(), "Hans", "Zbw-Strasse 4", email, "46574841");
 
             //Act
             var act = () => customerService.Create(customer);
@@ -83,7 +83,7 @@ namespace H5D_Delivery.Mgmt.Backend.UnitTests.Customer
             //Arrange
             var customerRepository = A.Fake<ICustomerRepository>();
             var customerService = new CustomerService(customerRepository);
-            var customer = new Backend.Customer.Domain.Customer(new Guid(), "Hans", "Zbw-Strasse 4", "info@gmail.com", phone);
+            var customer = new Backend.Customer.Domain.Customer(Guid.NewGuid(), "Hans", "Zbw-Strasse 4", "info@gmail.com", phone);
 
             //Act
             var act = () => customerService.Create(customer);

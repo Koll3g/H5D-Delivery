@@ -15,9 +15,9 @@ namespace H5D_Delivery.Mgmt.Backend.Product.Persistence
         {
             return new List<Domain.Product>
             {
-                new Domain.Product(new Guid(), "Messer"),
-                new Domain.Product(new Guid(), "Gabel"),
-                new Domain.Product(new Guid(), "Löffel"),
+                new Domain.Product(Guid.NewGuid(), "Messer"),
+                new Domain.Product(Guid.NewGuid(), "Gabel"),
+                new Domain.Product(Guid.NewGuid(), "Löffel"),
             };
 
         }

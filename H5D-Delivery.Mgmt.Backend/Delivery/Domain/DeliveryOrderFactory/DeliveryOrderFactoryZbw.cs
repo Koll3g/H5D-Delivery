@@ -12,7 +12,7 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryOrderFactory
 
         public override DeliveryOrder GenerateDeliveryOrder(IEnumerable<Order.Domain.Order> orders)
         {
-            DeliveryOrder = new DeliveryOrder(new Guid());
+            DeliveryOrder = new DeliveryOrder(Guid.NewGuid());
 
             var topOrders = OrderPrioritizer.PrioritizeOrders(orders);
             DeliveryOrder.Orders = topOrders.ToList();
