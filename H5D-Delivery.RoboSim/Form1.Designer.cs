@@ -43,6 +43,7 @@
             btn_deliveryDone = new Button();
             combo_Errors = new ComboBox();
             btn_sendError = new Button();
+            richTextBox1 = new RichTextBox();
             ((System.ComponentModel.ISupportInitialize)Num_BatteryPct).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Num_UpdateCurrentDeliveryStep).BeginInit();
             SuspendLayout();
@@ -186,11 +187,20 @@
             btn_sendError.UseVisualStyleBackColor = true;
             btn_sendError.Click += btn_sendError_Click;
             // 
+            // richTextBox1
+            // 
+            richTextBox1.Location = new Point(406, 21);
+            richTextBox1.Name = "richTextBox1";
+            richTextBox1.Size = new Size(371, 300);
+            richTextBox1.TabIndex = 16;
+            richTextBox1.Text = "";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(richTextBox1);
             Controls.Add(btn_sendError);
             Controls.Add(combo_Errors);
             Controls.Add(btn_deliveryDone);
@@ -208,6 +218,7 @@
             Controls.Add(Connect);
             Name = "Form1";
             Text = " ";
+            Load += Form1_Load_1;
             ((System.ComponentModel.ISupportInitialize)Num_BatteryPct).EndInit();
             ((System.ComponentModel.ISupportInitialize)Num_UpdateCurrentDeliveryStep).EndInit();
             ResumeLayout(false);
@@ -231,5 +242,6 @@
         private Button btn_deliveryDone;
         private ComboBox combo_Errors;
         private Button btn_sendError;
+        private RichTextBox richTextBox1;
     }
 }

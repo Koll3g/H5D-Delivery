@@ -15,7 +15,8 @@ namespace H5D_Delivery.RoboSim
 
         Func<MqttApplicationMessageReceivedEventArgs, Task> _statusUpdateRequestHandler;
         Func<MqttApplicationMessageReceivedEventArgs, Task> _returnToBaseHandler;
-       
+        Func<MqttApplicationMessageReceivedEventArgs, Task> _deliveryOrderReceivedHandler;
+
         private readonly Guid _robotId;
 
         private readonly string _batteryChargeTopic;
@@ -25,8 +26,10 @@ namespace H5D_Delivery.RoboSim
         private readonly string _giveMeAnOrderTopic;
         private readonly string _deliveryDoneTopic;
         private readonly string _errorMessageTopic;
+        private readonly string _deliveryOrderTopic;
+        private readonly string _deliveryIdTopic;
 
-        public RobotComm(Guid robotId, Func<MqttApplicationMessageReceivedEventArgs, Task> statusUpdateRequestHandler, Func<MqttApplicationMessageReceivedEventArgs, Task> returnToBaseHandler)
+        public RobotComm(Guid robotId, Func<MqttApplicationMessageReceivedEventArgs, Task> statusUpdateRequestHandler, Func<MqttApplicationMessageReceivedEventArgs, Task> returnToBaseHandler, Func<MqttApplicationMessageReceivedEventArgs, Task> deliveryOrderReceivedHandler)
         {
             var factory = new MqttFactory();
             _mqttClient = factory.CreateMqttClient();
@@ -38,14 +41,16 @@ namespace H5D_Delivery.RoboSim
             _deliveryDoneTopic = $"Robots/{_robotId}/From/Status/DeliveryDone";
             _giveMeAnOrderTopic = $"Robots/{_robotId}/From/Requests/GiveMeAnOrder";
             _errorMessageTopic = $"Robots/{_robotId}/From/ErrorMessage";
+            _deliveryIdTopic = $"Robots/{_robotId}/From/Status/CurrentDeliveryId";
 
             _statusUpdateRequestTopic = $"Robots/{_robotId}/To/Requests/StatusUpdate";
             _returnToBaseTopic = $"Robots/{_robotId}/To/Requests/ReturnToBase";
-            
+            _deliveryOrderTopic = $"Robots/{_robotId}/To/DeliveryOrder";
+
 
             _statusUpdateRequestHandler = statusUpdateRequestHandler;
             _returnToBaseHandler = returnToBaseHandler;
-            
+            _deliveryOrderReceivedHandler = deliveryOrderReceivedHandler;
 
             ConnectAndSubscribe();
         }
@@ -61,6 +66,7 @@ namespace H5D_Delivery.RoboSim
         {
             await SubscribeAsync(_statusUpdateRequestTopic);
             await SubscribeAsync(_returnToBaseTopic);
+            await SubscribeAsync(_deliveryOrderTopic);
             _mqttClient.ApplicationMessageReceivedAsync += MessageHandler;
         }
 
@@ -77,6 +83,11 @@ namespace H5D_Delivery.RoboSim
         public async void PublishGiveMeAnOrder(int giveMeAnOrder)
         {
             await PublishAsync(_giveMeAnOrderTopic, giveMeAnOrder.ToString());
+        }
+
+        public async void PublishDeliveryId(Guid deliveryId)
+        {
+            await PublishAsync(_deliveryIdTopic, deliveryId.ToString());
         }
 
         public async void PublishDeliveryDone(int deliveryDone)
@@ -113,6 +124,10 @@ namespace H5D_Delivery.RoboSim
             else if(x.ApplicationMessage.Topic == _returnToBaseTopic)
             {
                 return _returnToBaseHandler.Invoke(x);
+            }
+            else if (x.ApplicationMessage.Topic == _deliveryOrderTopic)
+            {
+                return _deliveryOrderReceivedHandler.Invoke(x);
             }
             
             return Task.CompletedTask;
