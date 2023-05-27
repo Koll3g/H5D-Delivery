@@ -2,6 +2,6 @@
 {
     public interface IDeliveryTimer
     {
-        public void GenerateDeliveryTimes(DeliveryPlan deliveryPlan);
+        public void GenerateDeliveryTimes(DeliveryPlan deliveryPlan, List<Order.Domain.Order> orders);
     }
 }

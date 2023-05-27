@@ -13,7 +13,7 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory
             
             RouteOptimizer.OptimizeRoute(DeliveryPlan);
             WaypointGenerator.GenerateWaypoints(DeliveryPlan);
-            DeliveryTimer.GenerateDeliveryTimes(DeliveryPlan);
+            DeliveryTimer.GenerateDeliveryTimes(DeliveryPlan, orders);
 
             //ToDo: number all deliverySteps
 

@@ -15,6 +15,8 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
         public string AuthorizationKey { get; set; } = string.Empty;
         public Guid? ProductId { get; set; }
         public Coordinates Coordinates { get; set; } = Coordinates.Empty;
+        public DateTime PlannedDeliveryTime { get; set; }
+        public DateTime RealDeliveryTime { get; set; }
 
         public DeliveryStep(Guid id) : base(id)
         {
