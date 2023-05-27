@@ -125,8 +125,8 @@
 </div>
 
 
-@*Testing only*@
-<table class="table">
+@*Testing only Angelo*@
+@*<table class="table">
     <thead>
     <tr>
         <th>Id</th>
@@ -146,7 +146,7 @@
         </tr>
     }
     </tbody>
-</table>
+</table>*@
 
 
 @code {
@@ -174,9 +174,9 @@
     private string _selectedPriority = "Normal";
     private string errorMessage = string.Empty;
 
-    //Testing only
-    private readonly OrderHistoryService _orderHistoryService;
-    private IEnumerable<OrderHistory> _orderHistory = new List<OrderHistory>();
+    //Testing only Angelo
+    //private readonly OrderHistoryService _orderHistoryService;
+    //private IEnumerable<OrderHistory> _orderHistory = new List<OrderHistory>();
 
 
 public OrderManagement()
@@ -190,14 +190,13 @@ public OrderManagement()
     
     GetAllOrders();
 
-    //Testing only
-    _orderHistoryService = iocContainer.Resolve<OrderHistoryService>();
-    
-    var orderHistory  = _orderHistoryService.GetAll();
-    if (orderHistory != null)
-    {
-        _orderHistory = orderHistory;
-    }
+    //Testing only Angelo
+    //_orderHistoryService = iocContainer.Resolve<OrderHistoryService>();
+    //var orderHistory  = _orderHistoryService.GetAll();
+    //if (orderHistory != null)
+    //{
+    //    _orderHistory = orderHistory;
+    //}
 }
 
     public void GetAllOrders()
