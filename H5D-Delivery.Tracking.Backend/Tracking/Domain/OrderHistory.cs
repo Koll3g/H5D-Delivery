@@ -11,6 +11,7 @@ namespace H5D_Delivery.Tracking.Backend.Tracking.Domain
     {
         public DateTime DateTime { get; set; }
         public OrderStatus Status { get; set; }
+        public Guid OrderId { get; set; }
 
         public OrderHistory(Guid id) : base(id)
         {

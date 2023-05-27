@@ -34,31 +34,38 @@ namespace H5D_Delivery.Tracking.Backend.Tracking.Domain
             var history = new List<OrderHistory>();
             var historyItem1 = new OrderHistory(Guid.NewGuid())
             {
+                OrderId = new Guid("7c5c7e6e-2635-469c-abeb-f6c137ce6579"),
                 DateTime = new DateTime(2023, 05, 19, 12, 0, 0),
                 Status = OrderStatus.Active // = Bestellung wurde erfasst
+
             };
             var historyItem2 = new OrderHistory(Guid.NewGuid())
             {
+                OrderId = new Guid("7c5c7e6e-2635-469c-abeb-f6c137ce6579"),
                 DateTime = new DateTime(2023, 05, 19, 13, 0, 0),
                 Status = OrderStatus.PlannedForDelivery  // = Die Bestellung wurde einem Roboter zugeteilt und wird bald ausgeliefert
             };
             var historyItem3 = new OrderHistory(Guid.NewGuid())
             {
+                OrderId = new Guid("7c5c7e6e-2635-469c-abeb-f6c137ce6579"),
                 DateTime = new DateTime(2023, 05, 19, 14, 0, 0),
                 Status = OrderStatus.BeingDelivered // = ist auf dem Roboter und unterwegs
             };
             var historyItem4 = new OrderHistory(Guid.NewGuid())
             {
+                OrderId = new Guid("7c5c7e6e-2635-469c-abeb-f6c137ce6579"),
                 DateTime = new DateTime(2023, 05, 19, 15, 0, 0),
                 Status = OrderStatus.Delivered  // = Erfolgreich geliefert
             };
             var historyItem5 = new OrderHistory(Guid.NewGuid())
             {
+                OrderId = new Guid("7c5c7e6e-2635-469c-abeb-f6c137ce6579"),
                 DateTime = new DateTime(2023, 05, 19, 16, 0, 0),
                 Status = OrderStatus.FailedToDeliver  // = Konnte nicht zugestellt werden
             };
             var historyItem6 = new OrderHistory(Guid.NewGuid())
             {
+                OrderId = new Guid("7c5c7e6e-2635-469c-abeb-f6c137ce6579"),
                 DateTime = new DateTime(2023, 05, 19, 17, 0, 0),
                 Status = OrderStatus.Canceled // = Bestellung wurde storniert
             };
