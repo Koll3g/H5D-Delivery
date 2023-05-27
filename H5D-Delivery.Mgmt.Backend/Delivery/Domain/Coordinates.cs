@@ -16,5 +16,7 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
             X = x;
             Y = y;
         }
+
+        public static Coordinates Empty => new(0,0);
     }
 }

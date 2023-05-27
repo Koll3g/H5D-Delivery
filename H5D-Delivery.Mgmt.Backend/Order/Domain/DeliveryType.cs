@@ -5,5 +5,7 @@
         HandOver = 1,
         Deposit = 2,
         Waypoint = 3,
+        DistributionCenter = 4,
+        ParkPosition = 5,
     }
 }

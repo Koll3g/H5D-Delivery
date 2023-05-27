@@ -44,11 +44,11 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory
         {
             return address switch
             {
-                "Zbw-Strasse 1" => new Coordinates(500, 600),
-                "Zbw-Strasse 2" => new Coordinates(1000, 600),
-                "Zbw-Strasse 3" => new Coordinates(1500, 600),
-                "Zbw-Strasse 4" => new Coordinates(2000, 0),
-                _ => throw new AddressInvalidException("Address not found"),
+                "Zbw-Strasse 1" => WaypointCoordinates.ZbwStrasse1,
+                "Zbw-Strasse 2" => WaypointCoordinates.ZbwStrasse2,
+                "Zbw-Strasse 3" => WaypointCoordinates.ZbwStrasse3,
+                "Zbw-Strasse 4" => WaypointCoordinates.ZbwStrasse4,
+                _ => WaypointCoordinates.Empty
             };
         }
     }

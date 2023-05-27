@@ -33,6 +33,8 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Comm
                 DeliveryType.Deposit => "deposit",
                 DeliveryType.HandOver => "handOver",
                 DeliveryType.Waypoint => "waypoint",
+                DeliveryType.DistributionCenter => "distributionCenter",
+                DeliveryType.ParkPosition => "parkPosition",
                 _ => string.Empty,
             };
         }

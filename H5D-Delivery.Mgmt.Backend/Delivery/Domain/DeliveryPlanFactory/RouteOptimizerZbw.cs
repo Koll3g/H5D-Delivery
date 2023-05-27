@@ -13,7 +13,7 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory
 
         private void OptimizeForDistance(DeliveryPlan deliveryPlan)
         {
-            deliveryPlan.DeliverySteps = new List<DeliveryStep>(deliveryPlan.DeliverySteps.OrderByDescending(s => s.Coordinates?.X));
+            deliveryPlan.DeliverySteps = new List<DeliveryStep>(deliveryPlan.DeliverySteps.OrderByDescending(s => s.Coordinates.X));
         }
     }
 }

@@ -11,10 +11,10 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
     public class DeliveryStep : DbItem
     {
         public int StepSequence { get; set; }
-        public DeliveryType? DeliveryType { get; set; }
-        public string? AuthorizationKey { get; set; }
+        public DeliveryType DeliveryType { get; set; }
+        public string AuthorizationKey { get; set; } = string.Empty;
         public Guid? ProductId { get; set; }
-        public Coordinates? Coordinates { get; set; }
+        public Coordinates Coordinates { get; set; } = Coordinates.Empty;
 
         public DeliveryStep(Guid id) : base(id)
         {
