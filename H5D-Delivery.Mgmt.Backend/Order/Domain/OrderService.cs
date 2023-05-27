@@ -1,14 +1,17 @@
-﻿using H5D_Delivery.Mgmt.Backend.Order.Exceptions;
+﻿using H5D_Delivery.Mgmt.Backend.Order.Domain.History;
+using H5D_Delivery.Mgmt.Backend.Order.Exceptions;
 
 namespace H5D_Delivery.Mgmt.Backend.Order.Domain
 {
     public class OrderService
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IOrderHistoryRepository _orderHistoryRepository;
 
-        public OrderService(IOrderRepository orderRepository)
+        public OrderService(IOrderRepository orderRepository, IOrderHistoryRepository orderHistoryRepository)
         {
             _orderRepository = orderRepository;
+            _orderHistoryRepository = orderHistoryRepository;
         }
 
         public IEnumerable<Order>? GetAll()
@@ -42,6 +45,20 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain
                 return;
             }
             _orderRepository.Create(order);
+
+            try
+            {
+                _orderHistoryRepository.Create(new OrderHistory(Guid.NewGuid())
+                {
+                    DateTime = DateTime.Now,
+                    Status = OrderStatus.Active,
+                    OrderId = order.Id
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         private static bool IsOrderValid(Order order)
