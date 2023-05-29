@@ -11,7 +11,17 @@
 
 @*Buttons*@
 <button class="btn btn-primary" @onclick="AddCustomer">Add Customer</button>
-<button class="btn btn-primary" @onclick="SaveCustomer">Save</button>
+
+@if (isEditing)
+{
+    <button class="btn btn-primary" @onclick="SaveCustomer">Update Customer</button>
+}
+
+@if (isEditing)
+{
+    <button class="btn btn-secondary" @onclick="CancelEditing">Cancel</button>
+}
+
 
 @*Textfelder und Eingabe*@
 <div class="row">
@@ -92,6 +102,7 @@
     private Customer _selectedCustomer;
     private bool isIdReadOnly = true;
     private string errorMessage = string.Empty;
+    private bool isEditing = false;
 
 
 
@@ -145,6 +156,7 @@
         email = customer.EMail;
         phone = customer.PhoneNumber;
         isIdReadOnly = true;
+        isEditing = true;
      }
 
      private void SaveCustomer()
@@ -169,11 +181,23 @@
         isIdReadOnly = true;
         GetAllCustomers();
         errorMessage = string.Empty;
+        isEditing = false;
     }
     catch (Exception ex)
     {
         errorMessage = ex.Message;
     }
+}
+
+    private void CancelEditing()
+{
+    isEditing = false;
+    _selectedCustomer = null;
+    name = "";
+    address = "";
+    phone = "";
+    email = "";
+    id = Guid.NewGuid();
 }
 
 

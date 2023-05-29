@@ -18,7 +18,19 @@
 
 <div>
     <button class="btn btn-primary" @onclick="AddOrder">Add Order</button>
-    <button class="btn btn-primary" @onclick="SaveOrder">Save Order</button>
+   @if (isEditing)
+{
+    <button class="btn btn-primary" @onclick="SaveOrder">Update Order</button>
+}
+    @if (isEditing)
+{
+    <button class="btn btn-secondary" @onclick="CancelEditing">Cancel</button>
+}
+    <button class="btn btn-primary" @onclick="TestDelivery">Test Delivery</button>
+
+
+
+    
 </div>
 
 <!-- Produkt-Auswahlfeld -->
@@ -92,6 +104,8 @@
         <th>Earliest Delivery</th>
         <th>Latest Delivery</th>
         <th>Priority</th>
+        <th>Status</th> <!-- Neues Feld für Status -->
+        <th>Delivery Type</th> <!-- Neues Feld für Delivery Type -->
         <th>Action</th>
     </tr>
     </thead>
@@ -108,6 +122,8 @@
             <td>@order.EarliestDeliveryTime</td>
             <td>@order.LatestDeliveryTime</td>
             <td>@order.Priority</td>
+            <td>@order.Status</td> <!-- Neues Feld für Status -->
+            <td>@order.DeliveryType</td> <!-- Neues Feld für Delivery Type -->
             <td>
                 <button class="btn btn-primary" @onclick="() => EditOrder(order)">Edit</button> 
                 <button class="btn btn-danger" @onclick="() => DeleteOrder(order)">Delete</button>
@@ -177,9 +193,15 @@
     private string _selectedPriority = "Normal";
     private string errorMessage = string.Empty;
 
+    private bool isEditing = false;
+
+    private DeliveryType _selectedDeliveryType = DeliveryType.Deposit; // Initialer DeliveryType
+
     //Testing only Angelo
     //private readonly OrderHistoryService _orderHistoryService;
     //private IEnumerable<OrderHistory> _orderHistory = new List<OrderHistory>();
+
+
 
 
 public OrderManagement()
@@ -202,6 +224,7 @@ public OrderManagement()
     //}
 }
 
+
     public void GetAllOrders()
     {
         var orders = _orderService.GetAll();
@@ -210,6 +233,8 @@ public OrderManagement()
             _orders = orders;
         }
     }
+
+
 
     private void AddOrder()
     {
@@ -246,6 +271,8 @@ public OrderManagement()
         _selectedOrder = order;
         _selectedProductId = order.Product.Id;
         _selectedCustomerId = order.Customer.Id;
+         _selectedDeliveryType = order.DeliveryType; // Delivery Type aktualisieren
+        isEditing = true;
     }
 
    private void SaveOrder()
@@ -265,14 +292,16 @@ public OrderManagement()
         _selectedOrder.LatestDeliveryTime = latestDelivery;
         _selectedOrder.Priority = Enum.Parse<Priority>(_selectedPriority);
         _selectedOrder.DeliveryType = DeliveryType.Deposit;
+        _selectedOrder.DeliveryType = _selectedDeliveryType; // Delivery Type aktualisieren
         _orderService.Update(_selectedOrder);
-        
-    }
+        isEditing = false;
+     }
 
     // Clear selected values
     _selectedProductId = Guid.Empty;
     _selectedCustomerId = Guid.Empty;
     _selectedPriority = "";
+     _selectedDeliveryType = DeliveryType.Deposit; // Delivery Type zurücksetzen
     _selectedOrder = null;
     GetAllOrders();
      errorMessage = string.Empty;
@@ -330,6 +359,19 @@ public OrderManagement()
             throw;
         }
     }
-    
 
+    private void CancelEditing()
+    {
+        isEditing = false;
+        _selectedOrder = null;
+        _selectedProductId = Guid.Empty;
+        _selectedCustomerId = Guid.Empty;
+        orderAmount = 1;
+        earliestDelivery = DateTime.Now;
+        latestDelivery = DateTime.Now.AddMinutes(15);
+        _selectedPriority = "Normal";
+         _selectedDeliveryType = DeliveryType.Deposit; // Delivery Type zurücksetzen
 }
+    }
+}
+

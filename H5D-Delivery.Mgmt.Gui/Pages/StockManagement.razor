@@ -10,7 +10,15 @@
 <h3>Stock Items</h3>
 
 <button class="btn btn-primary" @onclick="AddStockItem">Add StockItem</button>
-<button class="btn btn-primary" @onclick="SaveStockItem">Save</button>
+@if (isEditing)
+{
+    <button class="btn btn-primary" @onclick="SaveStockItem">Update Item</button>
+}
+
+@if (isEditing)
+{
+    <button class="btn btn-secondary" @onclick="CancelEditing">Cancel</button>
+}
 
 
 
@@ -89,6 +97,8 @@
     private StorageLocation location = StorageLocation.A1;
     private StockItem selectedStockItem;
     private StockItem originalStockItem;
+    private bool isEditing = false;
+
 
     public StockManagement()
     {
@@ -147,6 +157,7 @@ private void EditStockItem(StockItem stockItem)
     selectedProduct = stockItem.ProductId;
     amount = stockItem.Amount;
     location = stockItem.StorageLocation;
+    isEditing = true;
 }
 
 
@@ -171,10 +182,21 @@ private void EditStockItem(StockItem stockItem)
         location = StorageLocation.A1;
         selectedStockItem = null;
         originalStockItem = null;
+        isEditing = false;
 
         // Refresh the list of stock items to update the table
         GetAllStockItems();
     }
+   private void CancelEditing()
+{
+    isEditing = false;
+    selectedStockItem = null;
+    originalStockItem = null;
+    selectedProduct = Guid.Empty;
+    amount = 0;
+    location = StorageLocation.A1;
+}
+
 
 }
 
