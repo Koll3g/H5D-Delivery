@@ -28,6 +28,7 @@ namespace H5D_Delivery.RoboSim
         private readonly string _errorMessageTopic;
         private readonly string _deliveryOrderTopic;
         private readonly string _deliveryIdTopic;
+        private readonly string _currentPositionTopic;
 
         public RobotComm(Guid robotId, Func<MqttApplicationMessageReceivedEventArgs, Task> statusUpdateRequestHandler, Func<MqttApplicationMessageReceivedEventArgs, Task> returnToBaseHandler, Func<MqttApplicationMessageReceivedEventArgs, Task> deliveryOrderReceivedHandler)
         {
@@ -46,7 +47,7 @@ namespace H5D_Delivery.RoboSim
             _statusUpdateRequestTopic = $"Robots/{_robotId}/To/Requests/StatusUpdate";
             _returnToBaseTopic = $"Robots/{_robotId}/To/Requests/ReturnToBase";
             _deliveryOrderTopic = $"Robots/{_robotId}/To/DeliveryOrder";
-
+            _currentPositionTopic = $"Robots/{_robotId}/From/Status/CurrentPosition";
 
             _statusUpdateRequestHandler = statusUpdateRequestHandler;
             _returnToBaseHandler = returnToBaseHandler;
@@ -75,9 +76,16 @@ namespace H5D_Delivery.RoboSim
             await PublishAsync(_batteryChargeTopic, batteryChargeInPercent.ToString());
         }
 
-        public async void PublishCurrentDeliveryStep(int currentDeliveryStep)
+        public async void PublishCurrentDeliveryStep(int currentDeliveryStep, Guid currentDeliveryId)
         {
-            await PublishAsync(_currentDeliveryStepTopic, currentDeliveryStep.ToString());
+            var message = new
+            {
+                deliveryId = currentDeliveryId,
+                deliveryStep = currentDeliveryStep
+            };
+
+            var json = JsonConvert.SerializeObject(message);
+            await PublishAsync(_currentDeliveryStepTopic, json);
         }
 
         public async void PublishGiveMeAnOrder(int giveMeAnOrder)
@@ -98,6 +106,18 @@ namespace H5D_Delivery.RoboSim
         public async void PublishErrorMessage(ErrorMessageDto errorMessage)
         {
             await PublishAsync(_errorMessageTopic, JsonConvert.SerializeObject(errorMessage));
+        }
+
+        public async void PublishCurrentPosition(int x1, int y1)
+        {
+            var message = new
+            {
+                x = x1,
+                y = y1
+            };
+
+            var json = JsonConvert.SerializeObject(message);
+            await PublishAsync(_currentPositionTopic, json);
         }
 
         private async Task ConnectAsync(string brokerHostName, int brokerPort, string clientId)

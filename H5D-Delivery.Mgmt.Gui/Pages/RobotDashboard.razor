@@ -22,6 +22,7 @@
         <th>CurrentDeliveryId</th>
         <th>CurrentDeliveryStep</th>
         <th>DeliveryDone</th>
+        <th>CurrentPosition</th>
         <th>ErrorMessage</th>
         <th>Actions</th>
         <th>LastContact</th>
@@ -41,6 +42,7 @@
             <td>@robot.CurrentDeliveryId</td>
             <td>@robot.CurrentDeliveryStep</td>
             <td>@robot.DeliveryDone</td>
+            <td>@robot.CurrentPosition</td>
             <td>@robot.ErrorMessage</td>
             <td>
                 <button @onclick="robot.RequestStatusUpdate">RequestStatusUpdate</button>

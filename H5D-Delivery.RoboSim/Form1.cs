@@ -76,7 +76,7 @@ namespace H5D_Delivery.RoboSim
         private void PublishDeliveryStep()
         {
             var deliverystepValue = (int)Num_UpdateCurrentDeliveryStep.Value;
-            _robotComm.PublishCurrentDeliveryStep(deliverystepValue);
+            _robotComm.PublishCurrentDeliveryStep(deliverystepValue, _currentDeliveryId);
         }
 
         private void PublishGiveMeAnOrder()
@@ -107,6 +107,7 @@ namespace H5D_Delivery.RoboSim
                 PublishDeliveryStep();
                 PublishDeliveryDone(0);
                 PublishCurrentDeliveryId(_currentDeliveryId);
+                PublishPosition();
             }
 
             return Task.CompletedTask;
@@ -205,6 +206,21 @@ namespace H5D_Delivery.RoboSim
         private void Form1_Load_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Btn_PublishPos_Click(object sender, EventArgs e)
+        {
+            PublishPosition();
+        }
+
+        private void PublishPosition()
+        {
+            _robotComm.PublishCurrentPosition((int)Num_Xpos.Value, (int)Num_Ypos.Value);
         }
     }
 }

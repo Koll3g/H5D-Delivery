@@ -20,9 +20,10 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
         public event EventHandler<BatteryCharge>? BatteryChargePctReceivedEvent;
         public event EventHandler<int>? GiveMeAnOrderReceivedEvent;
         public event EventHandler<Guid>? CurrentDeliveryIdReceivedEvent;
-        public event EventHandler<int>? CurrentDeliveryStepReceivedEvent;
+        public event EventHandler<CurrentDeliveryStep>? CurrentDeliveryStepReceivedEvent;
         public event EventHandler<int>? DeliveryDoneReceivedEvent;
         public event EventHandler<ErrorMessage>? ErrorMessageReceivedEvent;
+        public event EventHandler<Coordinates>? CurrentPositionReceivedEvent;
 
         //From:
         private readonly string _batteryChargePctTopic;
@@ -31,6 +32,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
         private readonly string _currentDeliveryStepTopic;
         private readonly string _deliveryDoneTopic;
         private readonly string _errorMessageTopic;
+        private readonly string _currentPositionTopic;
 
         //To:
         private readonly string _returnToBaseRequestTopic;
@@ -52,6 +54,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
             _currentDeliveryStepTopic = $"Robots/{_robotId}/From/Status/CurrentDeliveryStep";
             _deliveryDoneTopic = $"Robots/{_robotId}/From/Status/DeliveryDone";
             _errorMessageTopic = $"Robots/{_robotId}/From/ErrorMessage";
+            _currentPositionTopic = $"Robots/{_robotId}/From/Status/CurrentPosition";
 
             SubscriptionTopics.Add(_batteryChargePctTopic);
             SubscriptionTopics.Add(_giveMeAnOrderTopic);
@@ -59,6 +62,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
             SubscriptionTopics.Add(_currentDeliveryStepTopic);
             SubscriptionTopics.Add(_deliveryDoneTopic);
             SubscriptionTopics.Add(_errorMessageTopic);
+            SubscriptionTopics.Add(_currentPositionTopic);
 
             //To:
             _statusUpdateRequestTopic = $"Robots/{_robotId}/To/Requests/StatusUpdate";
@@ -111,6 +115,10 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
             else if (topic == _errorMessageTopic)
             {
                 return ErrorMessageReceivedHandler(x);
+            }
+            else if (topic == _currentPositionTopic)
+            {
+                return CurrentPositionReceivedHandler(x);
             }
 
             return Task.CompletedTask;
@@ -175,14 +183,17 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
                 try
                 {
                     var payload = x.ApplicationMessage.ConvertPayloadToString();
-                    var value = Convert.ToInt32(payload);
-                    CurrentDeliveryStepReceivedEvent?.Invoke(this, value);
+                    var dto = JsonConvert.DeserializeObject<CurrentDeliveryStepDto>(payload);
+                    var step = dto?.ConvertToCurrentDeliveryStep();
+                    if (step != null)
+                    {
+                        CurrentDeliveryStepReceivedEvent?.Invoke(this, step);
+                    }
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    Console.WriteLine(ex);
+                    Console.WriteLine(e);
                 }
-
             });
         }
 
@@ -216,6 +227,27 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
                     {
                         errorMessage.RobotId = _robotId;
                         ErrorMessageReceivedEvent?.Invoke(this, errorMessage);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            });
+        }
+
+        private Task CurrentPositionReceivedHandler(MqttApplicationMessageReceivedEventArgs x)
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    var payload = x.ApplicationMessage.ConvertPayloadToString();
+                    var dto = JsonConvert.DeserializeObject<CurrentPositionDto>(payload);
+                    var coordinates = dto?.ConvertToCoordinates();
+                    if (coordinates != null)
+                    {
+                        CurrentPositionReceivedEvent?.Invoke(this, coordinates);
                     }
                 }
                 catch (Exception e)
