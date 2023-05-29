@@ -29,5 +29,44 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
 
             return distance;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            Coordinates other = (Coordinates)obj;
+            return X == other.X && Y == other.Y;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 17;
+                hash = hash * 23 + X.GetHashCode();
+                hash = hash * 23 + Y.GetHashCode();
+                return hash;
+            }
+        }
+
+        public static bool operator ==(Coordinates left, Coordinates right)
+        {
+            if (ReferenceEquals(left, right))
+                return true;
+            if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
+                return false;
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Coordinates left, Coordinates right)
+        {
+            return !(left == right);
+        }
+
+        public override string ToString()
+        {
+            return $"X:{X},Y:{Y} [mm]";
+        }
     }
 }

@@ -61,7 +61,7 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory
                 var distance = Coordinates.CalculateDistance(currentDeliveryStep.Coordinates,
                     lastDeliveryStep.Coordinates);
                 var timeToTravel = new TimeSpan(0, 0, distance / _robotSpeed);
-                currentDeliveryStep.PlannedDeliveryTime -= timeToTravel;
+                currentDeliveryStep.PlannedDeliveryTime = lastDeliveryStep.PlannedDeliveryTime + timeToTravel;
 
                 //Add times (if necessary) for other actions
                 if (currentDeliveryStep.DeliveryType == DeliveryType.Deposit)
@@ -109,7 +109,7 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory
                 var distance = Coordinates.CalculateDistance(currentDeliveryStep.Coordinates,
                     nextDeliveryStep.Coordinates);
                 var timeToTravel = new TimeSpan(0, 0, distance / _robotSpeed);
-                currentDeliveryStep.PlannedDeliveryTime -= timeToTravel;
+                currentDeliveryStep.PlannedDeliveryTime = nextDeliveryStep.PlannedDeliveryTime - timeToTravel;
 
                 //Add times (if necessary) for other actions
                 if (nextDeliveryStep.DeliveryType == DeliveryType.Deposit)

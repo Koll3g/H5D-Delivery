@@ -1,6 +1,8 @@
 ﻿using Autofac;
 using H5D_Delivery.Mgmt.Backend.Customer.Persistence;
 using H5D_Delivery.Mgmt.Backend.Customer.Domain;
+using H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryOrderFactory;
+using H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory;
 using H5D_Delivery.Mgmt.Backend.Order.Domain;
 using H5D_Delivery.Mgmt.Backend.Order.Domain.History;
 using H5D_Delivery.Mgmt.Backend.Order.Persistence;
@@ -82,6 +84,13 @@ namespace H5D_Delivery.Mgmt.Backend.Shared.IoC
             containerBuilder.RegisterType<OrderHistoryRepository>().As<IOrderHistoryRepository>();
             containerBuilder.RegisterType<OrderHistoryContext>().As<OrderHistoryContext>();
             containerBuilder.RegisterType<OrderHistoryService>().As<OrderHistoryService>();
+
+            containerBuilder.RegisterType<DeliveryOrderFactoryZbw>().As<DeliveryOrderFactory>();
+            containerBuilder.RegisterType<DeliveryPlanFactoryZbw>().As<DeliveryPlanFactory>();
+            containerBuilder.RegisterType<WaypointGeneratorZbw>().As<IWaypointGenerator>();
+            containerBuilder.RegisterType<RouteOptimizerZbw>().As<IRouteOptimizer>();
+            containerBuilder.RegisterType<DeliveryTimerZbw>().As<IDeliveryTimer>();
+            containerBuilder.RegisterType<OrderPrioritizerRobotInvoked>().As<IOrderPrioritizer>();
 
             Container = containerBuilder.Build();
         }

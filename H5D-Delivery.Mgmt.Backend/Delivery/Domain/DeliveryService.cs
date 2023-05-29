@@ -21,7 +21,7 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
 
         public void GenerateDeliveryOrder()
         {
-            var orders = _orderRepository.GetAll();
+            var orders = _orderRepository.GetAll()?.ToList();
 
             var deliveryOrder = _deliveryOrderFactory.GenerateDeliveryOrder(orders);
         }

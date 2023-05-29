@@ -10,11 +10,12 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory
 {
     public class WaypointGeneratorZbw : IWaypointGenerator
     {
-        private readonly List<DeliveryStep> _deliverySteps = new List<DeliveryStep>();
+        private List<DeliveryStep> _deliverySteps = new List<DeliveryStep>();
 
         public void GenerateWaypoints(DeliveryPlan deliveryPlan)
         {
             _deliverySteps.Clear();
+
             AddStepsFromParkingPositionToDistributionCenter();
 
             foreach (DeliveryStep step in deliveryPlan.DeliverySteps)
@@ -24,7 +25,7 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory
 
             NumberDeliverySteps();
 
-            deliveryPlan.DeliverySteps = _deliverySteps;
+            deliveryPlan.DeliverySteps = new List<DeliveryStep>(_deliverySteps);
             _deliverySteps.Clear();
         }
 
