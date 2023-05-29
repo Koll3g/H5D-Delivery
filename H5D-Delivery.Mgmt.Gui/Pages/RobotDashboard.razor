@@ -9,6 +9,7 @@
 @using System.ComponentModel
 @using H5D_Delivery.Mgmt.Backend.Customer.Domain
 @using H5D_Delivery.Mgmt.Backend.Delivery.Comm
+@using H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryOrderFactory
 @using H5D_Delivery.Mgmt.Backend.Stock.Domain
 @using Microsoft.VisualBasic
 
@@ -48,7 +49,7 @@
             <td>
                 <button @onclick="robot.RequestStatusUpdate">RequestStatusUpdate</button>
                 <button @onclick="robot.RequestReturnToBase">RequestReturnToBase</button>
-                <button @onclick="() => robot.GiveDeliveryOrder(MakeTestDeliveryOrder())">SendDeliveryOrder</button>
+                <button @onclick="() => robot.GiveDeliveryOrder(MakeTestDeliveryOrder2())">SendDeliveryOrder</button>
                 <button @onclick="() => robot.VisualizePosition = !robot.VisualizePosition">@GetButtonText(robot.VisualizePosition)</button>
             </td>
             <td>@robot.LastContact</td>
@@ -190,6 +191,14 @@
         testDeliveryOrder.DeliveryPlan.DeliverySteps.Add(deliveryStep4);
 
         return new DeliveryOrderDto(testDeliveryOrder, stockItems);
+    }
+
+    private DeliveryOrderDto MakeTestDeliveryOrder2()
+    {
+        var orders = IocSetup.Instance.Container.Resolve<OrderService>().GetAll().ToList();
+        var deliveryOrder = IocSetup.Instance.Container.Resolve<DeliveryOrderFactory>().GenerateDeliveryOrder(orders);
+        var stockItems = IocSetup.Instance.Container.Resolve<StockService>().GetAll().ToList();
+        return new DeliveryOrderDto(deliveryOrder, stockItems);
     }
 
     private void PropertyChangedSubscription()

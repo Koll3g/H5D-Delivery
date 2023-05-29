@@ -14,6 +14,7 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Comm
         public string type { get; set; }
         public string authorizationKey { get; set; } = string.Empty;
         public string productId { get; set; } = string.Empty;
+        public DateTime plannedDeliveryTime { get; set; }
         public CoordinateDto coordinates { get; set; } = new CoordinateDto(new Coordinates(0, 0));
 
         public DeliveryStepDto(DeliveryStep deliveryStep)
@@ -24,6 +25,7 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Comm
             if (deliveryStep.ProductId != null) productId = deliveryStep.ProductId.ToString() ?? string.Empty;
             if (deliveryStep.Coordinates != null)
                 coordinates = new CoordinateDto(deliveryStep.Coordinates);
+            plannedDeliveryTime = deliveryStep.PlannedDeliveryTime;
         }
 
         private static string GetType(DeliveryType? deliveryType)
