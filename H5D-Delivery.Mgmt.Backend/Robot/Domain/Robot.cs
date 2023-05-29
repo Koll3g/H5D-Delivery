@@ -78,6 +78,9 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
             private set => SetProperty(ref _currentPosition, value);
         }
 
+        [NotMapped]
+        public bool VisualizePosition { get; set; } = false;
+
         public string Name { get; set; }
 
         public DateTime LastContact { get; set; }

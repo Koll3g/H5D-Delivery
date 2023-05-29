@@ -234,14 +234,20 @@
             // 
             // Num_Xpos
             // 
+            Num_Xpos.Increment = new decimal(new int[] { 100, 0, 0, 0 });
             Num_Xpos.Location = new Point(56, 342);
+            Num_Xpos.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            Num_Xpos.Minimum = new decimal(new int[] { 10000, 0, 0, int.MinValue });
             Num_Xpos.Name = "Num_Xpos";
             Num_Xpos.Size = new Size(85, 23);
             Num_Xpos.TabIndex = 20;
             // 
             // Num_Ypos
             // 
+            Num_Ypos.Increment = new decimal(new int[] { 100, 0, 0, 0 });
             Num_Ypos.Location = new Point(56, 373);
+            Num_Ypos.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            Num_Ypos.Minimum = new decimal(new int[] { 10000, 0, 0, int.MinValue });
             Num_Ypos.Name = "Num_Ypos";
             Num_Ypos.Size = new Size(85, 23);
             Num_Ypos.TabIndex = 21;

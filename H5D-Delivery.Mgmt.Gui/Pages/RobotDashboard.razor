@@ -10,6 +10,7 @@
 @using H5D_Delivery.Mgmt.Backend.Customer.Domain
 @using H5D_Delivery.Mgmt.Backend.Delivery.Comm
 @using H5D_Delivery.Mgmt.Backend.Stock.Domain
+@using Microsoft.VisualBasic
 
 <h3>Robots</h3>
 <table class="table">
@@ -48,12 +49,63 @@
                 <button @onclick="robot.RequestStatusUpdate">RequestStatusUpdate</button>
                 <button @onclick="robot.RequestReturnToBase">RequestReturnToBase</button>
                 <button @onclick="() => robot.GiveDeliveryOrder(MakeTestDeliveryOrder())">SendDeliveryOrder</button>
+                <button @onclick="() => robot.VisualizePosition = !robot.VisualizePosition">@GetButtonText(robot.VisualizePosition)</button>
             </td>
             <td>@robot.LastContact</td>
         </tr>
     }
     </tbody>
 </table>
+@if (_robots.Any(r => r.VisualizePosition))
+{
+    <div id="map" style="position: relative; width: 940px; height: 500px; border: 1px solid black; overflow: visible;">
+        <div style="position: absolute; left: 0px; top: 200px; width: 140px; height: 200px; background-color: lightgray; border: 1px solid black">
+            <p>Verteilzentrum</p>
+        </div>
+        <div style="position: absolute; left: 200px; top: 0px; width: 180px; height: 200px; background-color: lightgray; border: 1px solid black">
+            <p>Kunde 1</p>
+        </div>
+        <div style="position: absolute; left: 380px; top: 0px; width: 180px; height: 200px; background-color:lightgray; border: 1px solid black">
+            <p>Kunde 2</p>
+        </div>
+        <div style="position: absolute; left: 560px; top: 0px; width: 180px; height: 200px; background-color:lightgray; border: 1px solid black">
+            <p>Kunde 3</p>
+        </div>
+        <div style="position: absolute; left: 800px; top: 200px; width: 140px; height: 200px; background-color: lightgray; border: 1px solid black">
+            <p>Kunde 4</p>
+        </div>
+        <div style="position: absolute; left: 0px; top: 400px; width: 140px; height: 80px; background-color: lightgray; border: 1px solid black">
+            <p>Parkposition</p>
+        </div>
+        @foreach (var robot in _robots)
+        {
+            if (robot.VisualizePosition)
+            {
+                <div style="position: absolute; left: @(robot.CurrentPosition.X/5+50)px; top: @(-1*robot.CurrentPosition.Y/5+300+10)px; height: 20px; background-color: lightblue; border-radius: 5px">• @robot.Name</div>
+            }
+        }
+    </div>
+}
+
+<style>
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-gap: 10px;
+        width: 940px;
+        height: 500px;
+        border: 1px solid black;
+        overflow: visible;
+    }
+
+    .grid-item {
+        position: relative;
+        background-color: lightgray;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 5px;
+    }
+</style>
 
 @code {
     private IEnumerable<Robot> _robots;
@@ -67,6 +119,11 @@
 
         PropertyChangedSubscription();
         RequestUpdatesForAllRobots();
+    }
+
+    private string GetButtonText(bool visualizePosition)
+    {
+        return visualizePosition ? "Hide on Map" : "Show on Map";
     }
 
     private void RequestUpdatesForAllRobots()
