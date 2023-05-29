@@ -135,30 +135,6 @@
     </div>
 </div>
 
-
-@*Testing only Angelo*@
-@*<table class="table">
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Date</th>
-        <th>OrderId</th>
-        <th>Status</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var orderHistory in _orderHistory)
-    {
-        <tr>
-            <td>@orderHistory.Id</td>
-            <td>@orderHistory.DateTime></td>
-            <td>@orderHistory.OrderId</td>
-            <td>@orderHistory.Status.ToString()</td>
-        </tr>
-    }
-    </tbody>
-</table>*@
-
 <button class="btn btn-primary" @onclick="AddOrdersForDeliveryTest">AddOrdersForDeliveryTest</button>
 <p>Only use this button if there are customers at each address and 4 different products in stock</p>
 
@@ -192,14 +168,7 @@
 
     private DeliveryType _selectedDeliveryType = DeliveryType.Deposit; // Initialer DeliveryType
 
-    //Testing only Angelo
-    //private readonly OrderHistoryService _orderHistoryService;
-    //private IEnumerable<OrderHistory> _orderHistory = new List<OrderHistory>();
-
-
-
-
-public OrderManagement()
+    public OrderManagement()
 {
     var iocContainer = IocSetup.Instance.Container;
     _customerService = iocContainer.Resolve<CustomerService>();
@@ -209,14 +178,6 @@ public OrderManagement()
     _customers = _customerService.GetAll();
     
     GetAllOrders();
-
-    //Testing only Angelo
-    //_orderHistoryService = iocContainer.Resolve<OrderHistoryService>();
-    //var orderHistory  = _orderHistoryService.GetAll();
-    //if (orderHistory != null)
-    //{
-    //    _orderHistory = orderHistory;
-    //}
 }
 
 
@@ -344,14 +305,10 @@ public OrderManagement()
             _orderService.Create(order2);
             _orderService.Create(order3);
             _orderService.Create(order4);
-
-            var deliveryOrder = IocSetup.Instance.Container.Resolve<DeliveryOrderFactory>().GenerateDeliveryOrder(_orders);
-            var test = deliveryOrder;
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw;
         }
     }
 
