@@ -16,8 +16,18 @@
 
 <div>
     <button class="btn btn-primary" @onclick="AddOrder">Add Order</button>
-    <button class="btn btn-primary" @onclick="SaveOrder">Save Order</button>
+   @if (isEditing)
+{
+    <button class="btn btn-primary" @onclick="SaveOrder">Update Order</button>
+}
+    @if (isEditing)
+{
+    <button class="btn btn-secondary" @onclick="CancelEditing">Cancel</button>
+}
     <button class="btn btn-primary" @onclick="TestDelivery">Test Delivery</button>
+
+
+
     
 </div>
 
@@ -174,9 +184,13 @@
     private string _selectedPriority = "Normal";
     private string errorMessage = string.Empty;
 
+    private bool isEditing = false;
+
     //Testing only Angelo
     //private readonly OrderHistoryService _orderHistoryService;
     //private IEnumerable<OrderHistory> _orderHistory = new List<OrderHistory>();
+
+
 
 
 public OrderManagement()
@@ -199,6 +213,7 @@ public OrderManagement()
     //}
 }
 
+
     public void GetAllOrders()
     {
         var orders = _orderService.GetAll();
@@ -207,6 +222,8 @@ public OrderManagement()
             _orders = orders;
         }
     }
+
+
 
     private void AddOrder()
     {
@@ -243,6 +260,7 @@ public OrderManagement()
         _selectedOrder = order;
         _selectedProductId = order.Product.Id;
         _selectedCustomerId = order.Customer.Id;
+        isEditing = true;
     }
 
    private void SaveOrder()
@@ -263,8 +281,8 @@ public OrderManagement()
         _selectedOrder.Priority = Enum.Parse<Priority>(_selectedPriority);
         _selectedOrder.DeliveryType = DeliveryType.Deposit;
         _orderService.Update(_selectedOrder);
-        
-    }
+        isEditing = false;
+     }
 
     // Clear selected values
     _selectedProductId = Guid.Empty;
@@ -287,4 +305,16 @@ public OrderManagement()
         deliveryService.GenerateDeliveryOrder();
     }
 
+    private void CancelEditing()
+    {
+        isEditing = false;
+        _selectedOrder = null;
+        _selectedProductId = Guid.Empty;
+        _selectedCustomerId = Guid.Empty;
+        orderAmount = 1;
+        earliestDelivery = DateTime.Now;
+        latestDelivery = DateTime.Now.AddMinutes(15);
+        _selectedPriority = "Normal";
+    }
 }
+

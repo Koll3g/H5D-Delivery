@@ -10,7 +10,15 @@
 <h3>Products</h3>
 
 <button class="btn btn-primary" @onclick="AddProduct">Add Product</button>
-<button class="btn btn-primary" @onclick="SaveProduct">Save</button>
+@if (isEditing)
+{
+    <button class="btn btn-primary" @onclick="SaveProduct">Update Product</button>
+}
+
+@if (isEditing)
+{
+    <button class="btn btn-secondary" @onclick="CancelEditing">Cancel</button>
+}
 
 <div class="row">
     <div class="col-md-6">
@@ -66,6 +74,7 @@
     private Product _selectedProduct;
     private bool isIdReadOnly = true;
     private string errorMessage = string.Empty;
+    private bool isEditing = false;
 
 
     public ProductManagement()
@@ -112,6 +121,7 @@
         id = product.Id;
         name = product.Name;
         isIdReadOnly = true;
+        isEditing = true;
     }
 
     private void SaveProduct()
@@ -129,6 +139,7 @@
             isIdReadOnly = true;
             GetAllProducts();
             errorMessage = string.Empty;
+            isEditing = false;
         }
         catch(Exception ex)
         {
@@ -141,4 +152,14 @@
         _productService.Delete(product.Id);
          GetAllProducts();
     }
+
+    private void CancelEditing()
+{
+    isEditing = false;
+    _selectedProduct = null;
+    id = Guid.NewGuid();
+    name = "";
+    isIdReadOnly = true;
+}
+
 }
