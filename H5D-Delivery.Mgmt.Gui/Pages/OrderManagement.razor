@@ -297,9 +297,9 @@
             var deliveryWindow = new TimeSpan(1, 0, 0);
 
             var order1 = new Order(Guid.NewGuid(), product1.Id, customer1.Id, 1, dateTime1, dateTime1 + deliveryWindow, Priority.Normal, DeliveryType.Deposit);
-            var order2 = new Order(Guid.NewGuid(), product2.Id, customer2.Id, 1, dateTime2, dateTime2 + deliveryWindow, Priority.Normal, DeliveryType.HandOver);
+            var order2 = new Order(Guid.NewGuid(), product2.Id, customer2.Id, 1, dateTime2, dateTime2 + deliveryWindow, Priority.Normal, DeliveryType.HandOver, authorizationKey:"test1");
             var order3 = new Order(Guid.NewGuid(), product3.Id, customer3.Id, 1, dateTime3, dateTime3 + deliveryWindow, Priority.Normal, DeliveryType.Deposit);
-            var order4 = new Order(Guid.NewGuid(), product4.Id, customer4.Id, 1, dateTime4, dateTime4 + deliveryWindow, Priority.Normal, DeliveryType.HandOver);
+            var order4 = new Order(Guid.NewGuid(), product4.Id, customer4.Id, 1, dateTime4, dateTime4 + deliveryWindow, Priority.Normal, DeliveryType.HandOver, authorizationKey:"test2");
 
             _orderService.Create(order1);
             _orderService.Create(order2);

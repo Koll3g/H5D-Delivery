@@ -32,7 +32,8 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory
             {
                 DeliveryType = order.DeliveryType,
                 ProductId = order.ProductId,
-                Coordinates = GetCoordinatesFromAddress(order.Customer.Address)
+                Coordinates = GetCoordinatesFromAddress(order.Customer.Address),
+                AuthorizationKey = order.AuthorizationKey
             };
             return deliveryStep;
         }

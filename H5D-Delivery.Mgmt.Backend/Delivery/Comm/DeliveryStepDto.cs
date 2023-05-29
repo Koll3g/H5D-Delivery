@@ -21,10 +21,9 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Comm
         {
             id = deliveryStep.StepSequence;
             type = GetType(deliveryStep.DeliveryType);
-            if (deliveryStep.AuthorizationKey != null) authorizationKey = deliveryStep.AuthorizationKey;
+            if (deliveryStep.AuthorizationKey != string.Empty) authorizationKey = deliveryStep.AuthorizationKey;
             if (deliveryStep.ProductId != null) productId = deliveryStep.ProductId.ToString() ?? string.Empty;
-            if (deliveryStep.Coordinates != null)
-                coordinates = new CoordinateDto(deliveryStep.Coordinates);
+            this.coordinates = new CoordinateDto(deliveryStep.Coordinates);
             plannedDeliveryTime = deliveryStep.PlannedDeliveryTime;
         }
 

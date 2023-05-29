@@ -136,62 +136,62 @@
     }
 
     //TESTING ONLY
-    private DeliveryOrderDto MakeTestDeliveryOrder()
-    {
-        var testDeliveryOrder = new DeliveryOrder(Guid.NewGuid());
-        testDeliveryOrder.Orders = new List<Order>();
-        var stockItems = new List<StockItem>();
+    //private DeliveryOrderDto MakeTestDeliveryOrder()
+    //{
+    //    var testDeliveryOrder = new DeliveryOrder(Guid.NewGuid());
+    //    testDeliveryOrder.Orders = new List<Order>();
+    //    var stockItems = new List<StockItem>();
 
-        var product = new Product(Guid.NewGuid(), "Messer");
-        var stockItem = new StockItem(Guid.NewGuid(), product, 50, StorageLocation.A1);
-        stockItems.Add(stockItem);
+    //    var product = new Product(Guid.NewGuid(), "Messer");
+    //    var stockItem = new StockItem(Guid.NewGuid(), product, 50, StorageLocation.A1);
+    //    stockItems.Add(stockItem);
 
-        var product2 = new Product(Guid.NewGuid(), "Gabel");
-        var stockItem2 = new StockItem(Guid.NewGuid(), product2, 50, StorageLocation.A2);
-        stockItems.Add(stockItem2);
+    //    var product2 = new Product(Guid.NewGuid(), "Gabel");
+    //    var stockItem2 = new StockItem(Guid.NewGuid(), product2, 50, StorageLocation.A2);
+    //    stockItems.Add(stockItem2);
 
-        var customer = new Customer(Guid.NewGuid(), "Hans", "Zbw-Strasse 4", "hans@gmail.com", "123456");
-        var customer2 = new Customer(Guid.NewGuid(), "Max", "Zbw-Strasse 3", "max@gmail.com", "123456");
+    //    var customer = new Customer(Guid.NewGuid(), "Hans", "Zbw-Strasse 4", "hans@gmail.com", "123456");
+    //    var customer2 = new Customer(Guid.NewGuid(), "Max", "Zbw-Strasse 3", "max@gmail.com", "123456");
 
-        var order = new Order(Guid.NewGuid(), product, customer, 1, new DateTime(2023, 07, 20, 12, 0, 0), new DateTime(2023, 07, 20, 13, 0, 0), Priority.Normal, DeliveryType.Deposit, OrderStatus.Active);
-        var order2 = new Order(Guid.NewGuid(), product2, customer2, 1, new DateTime(2023, 07, 20, 13, 0, 0), new DateTime(2023, 07, 20, 14, 0, 0), Priority.Normal, DeliveryType.HandOver, OrderStatus.Active);
+    //    var order = new Order(Guid.NewGuid(), product, customer, 1, new DateTime(2023, 07, 20, 12, 0, 0), new DateTime(2023, 07, 20, 13, 0, 0), Priority.Normal, DeliveryType.Deposit, OrderStatus.Active);
+    //    var order2 = new Order(Guid.NewGuid(), product2, customer2, 1, new DateTime(2023, 07, 20, 13, 0, 0), new DateTime(2023, 07, 20, 14, 0, 0), Priority.Normal, DeliveryType.HandOver, OrderStatus.Active);
 
-        testDeliveryOrder.Orders.Add(order);
-        testDeliveryOrder.Orders.Add(order2);
+    //    testDeliveryOrder.Orders.Add(order);
+    //    testDeliveryOrder.Orders.Add(order2);
 
-        testDeliveryOrder.DeliveryPlan = new DeliveryPlan(Guid.NewGuid());
-        testDeliveryOrder.DeliveryPlan.DeliverySteps = new List<DeliveryStep>();
+    //    testDeliveryOrder.DeliveryPlan = new DeliveryPlan(Guid.NewGuid());
+    //    testDeliveryOrder.DeliveryPlan.DeliverySteps = new List<DeliveryStep>();
 
-        var deliveryStep1 = new DeliveryStep(Guid.NewGuid());
-        deliveryStep1.Coordinates = new Coordinates(500, 500);
-        deliveryStep1.StepSequence = 1;
-        deliveryStep1.DeliveryType = DeliveryType.Waypoint;
-        testDeliveryOrder.DeliveryPlan.DeliverySteps.Add(deliveryStep1);
+    //    var deliveryStep1 = new DeliveryStep(Guid.NewGuid());
+    //    deliveryStep1.Coordinates = new Coordinates(500, 500);
+    //    deliveryStep1.StepSequence = 1;
+    //    deliveryStep1.DeliveryType = DeliveryType.Waypoint;
+    //    testDeliveryOrder.DeliveryPlan.DeliverySteps.Add(deliveryStep1);
 
-        var deliveryStep2 = new DeliveryStep(Guid.NewGuid());
-        deliveryStep2.Coordinates = new Coordinates(1000, 2000);
-        deliveryStep2.ProductId = product.Id;
-        deliveryStep2.AuthorizationKey = "aefawef";
-        deliveryStep2.StepSequence = 2;
-        deliveryStep2.DeliveryType = DeliveryType.Deposit;
-        testDeliveryOrder.DeliveryPlan.DeliverySteps.Add(deliveryStep2);
+    //    var deliveryStep2 = new DeliveryStep(Guid.NewGuid());
+    //    deliveryStep2.Coordinates = new Coordinates(1000, 2000);
+    //    deliveryStep2.ProductId = product.Id;
+    //    deliveryStep2.AuthorizationKey = "aefawef";
+    //    deliveryStep2.StepSequence = 2;
+    //    deliveryStep2.DeliveryType = DeliveryType.Deposit;
+    //    testDeliveryOrder.DeliveryPlan.DeliverySteps.Add(deliveryStep2);
 
-        var deliveryStep3 = new DeliveryStep(Guid.NewGuid());
-        deliveryStep3.Coordinates = new Coordinates(2000, 3000);
-        deliveryStep3.StepSequence = 3;
-        deliveryStep3.DeliveryType = DeliveryType.Waypoint;
-        testDeliveryOrder.DeliveryPlan.DeliverySteps.Add(deliveryStep3);
+    //    var deliveryStep3 = new DeliveryStep(Guid.NewGuid());
+    //    deliveryStep3.Coordinates = new Coordinates(2000, 3000);
+    //    deliveryStep3.StepSequence = 3;
+    //    deliveryStep3.DeliveryType = DeliveryType.Waypoint;
+    //    testDeliveryOrder.DeliveryPlan.DeliverySteps.Add(deliveryStep3);
 
-        var deliveryStep4 = new DeliveryStep(Guid.NewGuid());
-        deliveryStep4.Coordinates = new Coordinates(3000, 4000);
-        deliveryStep4.ProductId = product2.Id;
-        deliveryStep4.AuthorizationKey = "awef123";
-        deliveryStep4.StepSequence = 4;
-        deliveryStep4.DeliveryType = DeliveryType.HandOver;
-        testDeliveryOrder.DeliveryPlan.DeliverySteps.Add(deliveryStep4);
+    //    var deliveryStep4 = new DeliveryStep(Guid.NewGuid());
+    //    deliveryStep4.Coordinates = new Coordinates(3000, 4000);
+    //    deliveryStep4.ProductId = product2.Id;
+    //    deliveryStep4.AuthorizationKey = "awef123";
+    //    deliveryStep4.StepSequence = 4;
+    //    deliveryStep4.DeliveryType = DeliveryType.HandOver;
+    //    testDeliveryOrder.DeliveryPlan.DeliverySteps.Add(deliveryStep4);
 
-        return new DeliveryOrderDto(testDeliveryOrder, stockItems);
-    }
+    //    return new DeliveryOrderDto(testDeliveryOrder, stockItems);
+    //}
 
     private DeliveryOrderDto MakeTestDeliveryOrder2()
     {
