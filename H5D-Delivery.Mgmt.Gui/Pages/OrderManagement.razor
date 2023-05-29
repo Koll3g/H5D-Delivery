@@ -9,6 +9,8 @@
 @using H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory
 @using H5D_Delivery.Mgmt.Backend.Order.Domain.History
 @using H5D_Delivery.Mgmt.Backend.Order.Persistence
+@using H5D_Delivery.Mgmt.Backend.Stock.Domain
+@using Microsoft.AspNetCore.Mvc.Formatters
 
 
 
@@ -17,8 +19,6 @@
 <div>
     <button class="btn btn-primary" @onclick="AddOrder">Add Order</button>
     <button class="btn btn-primary" @onclick="SaveOrder">Save Order</button>
-    <button class="btn btn-primary" @onclick="TestDelivery">Test Delivery</button>
-    
 </div>
 
 <!-- Produkt-Auswahlfeld -->
@@ -147,6 +147,9 @@
     }
     </tbody>
 </table>*@
+
+<button class="btn btn-primary" @onclick="AddOrdersForDeliveryTest">AddOrdersForDeliveryTest</button>
+<p>Only use this button if there are customers at each address and 4 different products in stock</p>
 
 
 @code {
@@ -278,13 +281,55 @@ public OrderManagement()
     {
         errorMessage = ex.Message;
     }
+
 }
 
-
-    private void TestDelivery()
+    private void AddOrdersForDeliveryTest()
     {
-        var deliveryService = new DeliveryService(new DeliveryOrderFactoryZbw(new DeliveryPlanFactoryZbw(new DeliveryTimerZbw(), new RouteOptimizerZbw(), new WaypointGeneratorZbw()), new OrderPrioritizerRobotInvoked()), new OrderRepository(new OrderContext()));
-        deliveryService.GenerateDeliveryOrder();
+        try
+        {
+            var stockItems = IocSetup.Instance.Container.Resolve<StockService>().GetAll()?.ToList();
+            var product1 = stockItems.Find(x => x.StorageLocation == StorageLocation.A1).Product;
+            var product2 = stockItems.Find(x => x.StorageLocation == StorageLocation.A2).Product;
+            var product3 = stockItems.Find(x => x.StorageLocation == StorageLocation.A3).Product;
+            var product4 = stockItems.Find(x => x.StorageLocation == StorageLocation.A4).Product;
+
+            var customer1 = _customers.First(x => x.Address == "Zbw-Strasse 1");
+            var customer2 = _customers.First(x => x.Address == "Zbw-Strasse 2");
+            var customer3 = _customers.First(x => x.Address == "Zbw-Strasse 3");
+            var customer4 = _customers.First(x => x.Address == "Zbw-Strasse 4");
+
+            //var dateTime1 = DateTime.Now + new TimeSpan(0, 15, 0);
+            //var dateTime2 = dateTime1 + new TimeSpan(0, 15, 0);
+            //var dateTime3 = dateTime2 + new TimeSpan(0, 15, 0);
+            //var dateTime4 = dateTime3 + new TimeSpan(0, 15, 0);
+
+            var dateTime1 = DateTime.Now;
+            var dateTime2 = DateTime.Now;
+            var dateTime3 = DateTime.Now;
+            var dateTime4 = DateTime.Now;
+
+            var deliveryWindow = new TimeSpan(1, 0, 0);
+
+            var order1 = new Order(Guid.NewGuid(), product1.Id, customer1.Id, 1, dateTime1, dateTime1 + deliveryWindow, Priority.Normal, DeliveryType.Deposit);
+            var order2 = new Order(Guid.NewGuid(), product2.Id, customer2.Id, 1, dateTime2, dateTime2 + deliveryWindow, Priority.Normal, DeliveryType.HandOver);
+            var order3 = new Order(Guid.NewGuid(), product3.Id, customer3.Id, 1, dateTime3, dateTime3 + deliveryWindow, Priority.Normal, DeliveryType.Deposit);
+            var order4 = new Order(Guid.NewGuid(), product4.Id, customer4.Id, 1, dateTime4, dateTime4 + deliveryWindow, Priority.Normal, DeliveryType.HandOver);
+
+            _orderService.Create(order1);
+            _orderService.Create(order2);
+            _orderService.Create(order3);
+            _orderService.Create(order4);
+
+            var deliveryOrder = IocSetup.Instance.Container.Resolve<DeliveryOrderFactory>().GenerateDeliveryOrder(_orders);
+            var test = deliveryOrder;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
+    
 
 }
