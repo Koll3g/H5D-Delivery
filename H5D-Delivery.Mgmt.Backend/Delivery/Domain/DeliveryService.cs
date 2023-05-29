@@ -24,7 +24,6 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
             var orders = _orderRepository.GetAll();
 
             var deliveryOrder = _deliveryOrderFactory.GenerateDeliveryOrder(orders);
-            var test = deliveryOrder;
         }
     }
 }

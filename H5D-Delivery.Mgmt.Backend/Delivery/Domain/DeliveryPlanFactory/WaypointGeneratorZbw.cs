@@ -22,6 +22,8 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory
                 AddWaypointsBeforeAndAfter(step);
             }
 
+            NumberDeliverySteps();
+
             deliveryPlan.DeliverySteps = _deliverySteps;
             _deliverySteps.Clear();
         }
