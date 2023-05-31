@@ -50,7 +50,7 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
             }
         }
 
-        public static bool operator ==(Coordinates left, Coordinates right)
+        public static bool operator ==(Coordinates? left, Coordinates? right)
         {
             if (ReferenceEquals(left, right))
                 return true;
@@ -59,7 +59,7 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
             return left.Equals(right);
         }
 
-        public static bool operator !=(Coordinates left, Coordinates right)
+        public static bool operator !=(Coordinates? left, Coordinates? right)
         {
             return !(left == right);
         }

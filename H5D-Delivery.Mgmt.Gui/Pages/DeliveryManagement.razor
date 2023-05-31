@@ -1,0 +1,122 @@
+﻿@page "/deliveryManagement"
+@using H5D_Delivery.Mgmt.Backend.Shared.IoC
+@using Autofac
+@using H5D_Delivery.Mgmt.Backend.Delivery.Domain
+@using H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryOrderFactory
+@using H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory
+@using H5D_Delivery.Mgmt.Backend.Order.Domain
+@using System.Reflection.Metadata
+
+<div id="map" style="position: relative; width: 940px; height: 500px; border: 1px solid black; overflow: visible;">
+    <div style="position: absolute; left: 0px; top: 200px; width: 140px; height: 200px; background-color: grey; border: 1px solid black">
+        <p>Verteilzentrum</p>
+    </div>
+    <div style="position: absolute; left: 200px; top: 0px; width: 180px; height: 200px; background-color: grey; border: 1px solid black">
+        <p>Kunde 1</p>
+    </div>
+    <div style="position: absolute; left: 380px; top: 0px; width: 180px; height: 200px; background-color: grey; border: 1px solid black">
+        <p>Kunde 2</p>
+    </div>
+    <div style="position: absolute; left: 560px; top: 0px; width: 180px; height: 200px; background-color: grey; border: 1px solid black">
+        <p>Kunde 3</p>
+    </div>
+    <div style="position: absolute; left: 800px; top: 200px; width: 140px; height: 200px; background-color: grey; border: 1px solid black">
+        <p>Kunde 4</p>
+    </div>
+    @*    @foreach (var step in _deliverySteps)
+    {
+        <div style="position: absolute; left: @(step.Coordinates.X/5+50)px; top: @(-1*step.Coordinates.Y/5+300)px; width: 20px; height: 20px; background-color: red">@step.StepSequence</div>
+    }*@
+    
+    @foreach(var waypoint in WaypointCoordinates.AllWaypoints)
+    {
+        <div style="position: absolute; left: @(waypoint.X/5+50)px; top: @(-1*waypoint.Y/5+300)px; height: 20px; min-width: 20px; background-color: red">@_waypointText[waypoint.ToString()]</div>
+    }
+</div>
+
+@*@bind="_waypointText[waypoint.ToString()]"*@
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>StepSequence</th>
+        <th>Coordinates</th>
+        <th>PlannedDeliveryTime</th>
+        <th>DeliveryType</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var step in _deliverySteps)
+    {
+        <tr>
+            <td>@step.StepSequence</td>
+            <td>@step.Coordinates</td>
+            <td>@step.PlannedDeliveryTime</td>
+            <td>@step.DeliveryType</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<button onclick="@Test">Test</button>
+
+
+
+
+<style>
+    .delivery-step {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: blue;
+        border-radius: 50%;
+        /* Add other styles as desired */
+    }
+
+    .step-label {
+        position: absolute;
+        font-size: 12px;
+        color: white;
+        /* Add other styles as desired */
+    }
+</style>
+
+@code {
+
+    private DeliveryOrder _deliveryOrder;
+    private List<DeliveryStep> _deliverySteps = new List<DeliveryStep>();
+
+    private Dictionary<string, string> _waypointText = new Dictionary<string, string>();
+
+    public DeliveryManagement()
+    {
+        foreach (Coordinates coord in WaypointCoordinates.AllWaypoints)
+        {
+            _waypointText.Add(coord.ToString(), string.Empty);
+        }
+    }
+
+    private void Test()
+    {
+        var orders = IocSetup.Instance.Container.Resolve<OrderService>().GetAll().ToList();
+        _deliveryOrder = IocSetup.Instance.Container.Resolve<DeliveryOrderFactory>().GenerateDeliveryOrder(orders);
+        _deliverySteps = _deliveryOrder.DeliveryPlan.DeliverySteps;
+        VisualizeSteps();
+    }
+
+    private void VisualizeSteps()
+    {
+        foreach (var step in _deliverySteps)
+        {
+            var text = _waypointText[step.Coordinates.ToString()];
+            if (text == string.Empty)
+            {
+                _waypointText[step.Coordinates.ToString()] = step.StepSequence.ToString();
+            }
+            else
+            {
+                _waypointText[step.Coordinates.ToString()] += $",{step.StepSequence}";
+            }
+        }
+    }
+}

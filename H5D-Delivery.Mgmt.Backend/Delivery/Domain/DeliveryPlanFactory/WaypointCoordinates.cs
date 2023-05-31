@@ -20,5 +20,19 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory
         public static Coordinates WaypointParkposition => new Coordinates(1100, -800);
 
         public static Coordinates Empty => new Coordinates(0, 0);
+
+        public static List<Coordinates> AllWaypoints => new List<Coordinates>()
+        {
+            DistributionCenter,
+            ZbwStrasse1,
+            ZbwStrasse2,
+            ZbwStrasse3,
+            ZbwStrasse4,
+            WaypointStrasse1AndDistributionCenter,
+            WaypointStrasse2,
+            WaypointStrasse3And4,
+            Parkposition,
+            WaypointParkposition
+        };
     }
 }

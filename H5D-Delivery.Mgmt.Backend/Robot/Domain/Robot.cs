@@ -69,6 +69,18 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
             private set => SetProperty(ref _errorMessage, value);
         }
 
+        private Coordinates _currentPosition;
+
+        [NotMapped]
+        public Coordinates CurrentPosition
+        {
+            get => _currentPosition;
+            private set => SetProperty(ref _currentPosition, value);
+        }
+
+        [NotMapped]
+        public bool VisualizePosition { get; set; } = false;
+
         public string Name { get; set; }
 
         public DateTime LastContact { get; set; }
@@ -81,6 +93,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
 
             _batteryCharge = BatteryCharge.Empty;
             _errorMessage = ErrorMessage.Empty;
+            _currentPosition = Coordinates.Empty;
 
             var clientName = "RobotBackend-" + Guid.NewGuid();
             _robotComm = new RobotComm(id, clientName);
@@ -96,6 +109,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
             _robotComm.CurrentDeliveryStepReceivedEvent += CurrentDeliveryStepUpdateHandler;
             _robotComm.DeliveryDoneReceivedEvent += DeliveryDoneUpdateHandler;
             _robotComm.ErrorMessageReceivedEvent += ErrorMessageUpdateHandler;
+            _robotComm.CurrentPositionReceivedEvent += CurrentPositionReceivedUpdateHandler;
         }
 
         public void BatteryChargePctUpdateHandler(object? sender, BatteryCharge batteryCharge)
@@ -127,10 +141,10 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
             CurrentDeliveryId = id;
         }
 
-        public void CurrentDeliveryStepUpdateHandler(object? sender, int step)
+        public void CurrentDeliveryStepUpdateHandler(object? sender, CurrentDeliveryStep step)
         {
             LastContact = DateTime.Now;
-            CurrentDeliveryStep = step;
+            CurrentDeliveryStep = step.DeliveryStep;
         }
 
         public void DeliveryDoneUpdateHandler(object? sender, int deliveryDone)
@@ -154,6 +168,12 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
             {
                 Console.WriteLine(ex);
             }
+        }
+
+        public void CurrentPositionReceivedUpdateHandler(object? sender, Coordinates position)
+        {
+            LastContact = DateTime.Now;
+            CurrentPosition = position;
         }
 
         public void RequestStatusUpdate()

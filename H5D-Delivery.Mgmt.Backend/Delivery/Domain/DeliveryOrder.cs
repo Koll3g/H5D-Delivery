@@ -11,7 +11,10 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
     {
         public List<Order.Domain.Order> Orders { get; set; } = new List<Order.Domain.Order>();
 
+        public Guid DeliveryPlanId { get; set; }
         public DeliveryPlan DeliveryPlan { get; set; } = new DeliveryPlan(Guid.Empty);
+
+        public Guid AssignedRobotId { get; set; }
 
         public DeliveryOrder(Guid id) : base(id)
         {

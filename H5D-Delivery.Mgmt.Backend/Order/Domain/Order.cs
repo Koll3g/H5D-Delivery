@@ -14,13 +14,14 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain
 
         public DateTime EarliestDeliveryTime { get; set; }
         public DateTime LatestDeliveryTime { get; set; }
+        public string AuthorizationKey { get; set; }
 
         public Priority Priority { get; set; }
         public DeliveryType DeliveryType { get; set; }
 
         public OrderStatus Status { get; set; }
 
-        public Order(Guid id, Product.Domain.Product product, Customer.Domain.Customer customer, uint amount, DateTime earliestDeliveryTime, DateTime latestDeliveryTime, Priority priority, DeliveryType deliveryType, OrderStatus status = OrderStatus.Active) : base(id)
+        public Order(Guid id, Product.Domain.Product product, Customer.Domain.Customer customer, uint amount, DateTime earliestDeliveryTime, DateTime latestDeliveryTime, Priority priority, DeliveryType deliveryType, OrderStatus status = OrderStatus.Active, string authorizationKey = "") : base(id)
         {
             Product = product;
             ProductId = product.Id;
@@ -32,10 +33,11 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain
             Priority = priority;
             DeliveryType = deliveryType;
             Status = status;
+            AuthorizationKey = authorizationKey;
         }
 
         #pragma warning disable CS8618
-        public Order(Guid id, Guid productId, Guid customerId, uint amount, DateTime earliestDeliveryTime, DateTime latestDeliveryTime, Priority priority, DeliveryType deliveryType, OrderStatus status = OrderStatus.Active) : base(id)
+        public Order(Guid id, Guid productId, Guid customerId, uint amount, DateTime earliestDeliveryTime, DateTime latestDeliveryTime, Priority priority, DeliveryType deliveryType, OrderStatus status = OrderStatus.Active, string authorizationKey = "") : base(id)
         #pragma warning restore CS8618
         {
             ProductId = productId;
@@ -46,6 +48,7 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain
             Priority = priority;
             DeliveryType = deliveryType;
             Status = status;
+            AuthorizationKey = authorizationKey;
         }
     }
 }

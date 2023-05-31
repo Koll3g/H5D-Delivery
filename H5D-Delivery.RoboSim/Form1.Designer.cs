@@ -47,8 +47,15 @@
             label3 = new Label();
             label4 = new Label();
             label5 = new Label();
+            Num_Xpos = new NumericUpDown();
+            Num_Ypos = new NumericUpDown();
+            label6 = new Label();
+            label7 = new Label();
+            Btn_PublishPos = new Button();
             ((System.ComponentModel.ISupportInitialize)Num_BatteryPct).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Num_UpdateCurrentDeliveryStep).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)Num_Xpos).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)Num_Ypos).BeginInit();
             SuspendLayout();
             // 
             // Connect
@@ -225,11 +232,65 @@
             label5.TabIndex = 19;
             label5.Text = "Select Robot:";
             // 
+            // Num_Xpos
+            // 
+            Num_Xpos.Increment = new decimal(new int[] { 100, 0, 0, 0 });
+            Num_Xpos.Location = new Point(56, 342);
+            Num_Xpos.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            Num_Xpos.Minimum = new decimal(new int[] { 10000, 0, 0, int.MinValue });
+            Num_Xpos.Name = "Num_Xpos";
+            Num_Xpos.Size = new Size(85, 23);
+            Num_Xpos.TabIndex = 20;
+            // 
+            // Num_Ypos
+            // 
+            Num_Ypos.Increment = new decimal(new int[] { 100, 0, 0, 0 });
+            Num_Ypos.Location = new Point(56, 373);
+            Num_Ypos.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            Num_Ypos.Minimum = new decimal(new int[] { 10000, 0, 0, int.MinValue });
+            Num_Ypos.Name = "Num_Ypos";
+            Num_Ypos.Size = new Size(85, 23);
+            Num_Ypos.TabIndex = 21;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(12, 344);
+            label6.Name = "label6";
+            label6.Size = new Size(38, 15);
+            label6.TabIndex = 22;
+            label6.Text = "X-Pos";
+            label6.Click += label6_Click;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(12, 375);
+            label7.Name = "label7";
+            label7.Size = new Size(38, 15);
+            label7.TabIndex = 23;
+            label7.Text = "Y-Pos";
+            // 
+            // Btn_PublishPos
+            // 
+            Btn_PublishPos.Location = new Point(147, 355);
+            Btn_PublishPos.Name = "Btn_PublishPos";
+            Btn_PublishPos.Size = new Size(75, 23);
+            Btn_PublishPos.TabIndex = 24;
+            Btn_PublishPos.Text = "PublishPosition";
+            Btn_PublishPos.UseVisualStyleBackColor = true;
+            Btn_PublishPos.Click += Btn_PublishPos_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 764);
+            Controls.Add(Btn_PublishPos);
+            Controls.Add(label7);
+            Controls.Add(label6);
+            Controls.Add(Num_Ypos);
+            Controls.Add(Num_Xpos);
             Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(label3);
@@ -254,6 +315,8 @@
             Load += Form1_Load_1;
             ((System.ComponentModel.ISupportInitialize)Num_BatteryPct).EndInit();
             ((System.ComponentModel.ISupportInitialize)Num_UpdateCurrentDeliveryStep).EndInit();
+            ((System.ComponentModel.ISupportInitialize)Num_Xpos).EndInit();
+            ((System.ComponentModel.ISupportInitialize)Num_Ypos).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -279,5 +342,10 @@
         private Label label3;
         private Label label4;
         private Label label5;
+        private NumericUpDown Num_Xpos;
+        private NumericUpDown Num_Ypos;
+        private Label label6;
+        private Label label7;
+        private Button Btn_PublishPos;
     }
 }
