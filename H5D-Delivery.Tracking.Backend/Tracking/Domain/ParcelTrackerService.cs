@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using H5D_Delivery.Tracking.Backend.Tracking.Exceptions;
+﻿using H5D_Delivery.Tracking.Backend.Tracking.Exceptions;
 
 namespace H5D_Delivery.Tracking.Backend.Tracking.Domain
 {

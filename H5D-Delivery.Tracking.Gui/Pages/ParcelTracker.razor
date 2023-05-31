@@ -37,6 +37,19 @@
             return;
         }
 
+
+        bool isAuthorized = _parcelTrackerService.IsAuthorized(name, customerId);
+
+        if (isAuthorized)
+        {
+            // Navigiere zur nächsten Seite
+            NavigationManager.NavigateTo("/parcelTrackerP2");
+        }
+        else
+        {
+            // Zeige eine Fehlermeldung an oder tue etwas anderes, um den Benutzer darüber zu informieren, dass die Autorisierung fehlgeschlagen ist
+        }
+
         //_parcelTrackerService.IsAuthorized();
         //_parcelTrackerService.GetOrderHistory(name, orderId);
     }
