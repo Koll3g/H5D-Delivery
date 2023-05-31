@@ -4,17 +4,49 @@
 @using Autofac
 
 <PageTitle>ParcelTracker</PageTitle>
+<h3>Eingabe</h3>
+<div>
+    <label for="name">Name:</label>
+    <input id="name" @bind="name" />
+</div>
+<div>
+    <label for="customerId">Kunden ID:</label>
+    <input id="customerId" @bind="customerId" />
+</div>
 
+<button @onclick="HandleLoginClick">Logging</button>
+
+@inject NavigationManager NavigationManager
 
 @code {
     private readonly ParcelTrackerService _parcelTrackerService;
+    private string name;
+    private string customerId;
 
     public ParcelTracker()
     {
-        //Funktioniert momentan nur mit name = "Hans" und orderId = "7c5c7e6e-2635-469c-abeb-f6c137ce6579"
         _parcelTrackerService = IocSetup.Instance.Container.Resolve<ParcelTrackerService>();
+    }
 
-        //_parcelTrackerService.IsAuthorized();
-        //_parcelTrackerService.GetOrderHistory();
+    private async Task HandleLoginClick()
+    {
+        // Überprüfe, ob Name und Kunden-ID eingegeben wurden
+        if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(customerId))
+        {
+            // Zeige eine Fehlermeldung an oder tue etwas anderes, um den Benutzer darauf hinzuweisen, dass beide Felder ausgefüllt sein müssen
+            return;
+        }
+
+        bool isAuthorized = _parcelTrackerService.IsAuthorized(name, customerId);
+
+        if (isAuthorized)
+        {
+            // Navigiere zur nächsten Seite
+            NavigationManager.NavigateTo("/parcelTrackerP2");
+        }
+        else
+        {
+            // Zeige eine Fehlermeldung an oder tue etwas anderes, um den Benutzer darüber zu informieren, dass die Autorisierung fehlgeschlagen ist
+        }
     }
 }

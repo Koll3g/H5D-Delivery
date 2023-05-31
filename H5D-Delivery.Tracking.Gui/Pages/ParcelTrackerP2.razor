@@ -1,0 +1,63 @@
+﻿@page "/parcelTrackerP2"
+@using H5D_Delivery.Tracking.Backend.Tracking.Domain
+@using H5D_Delivery.Tracking.Backend.Shared.IoC
+@using Autofac
+
+<PageTitle>ParcelTracker</PageTitle>
+<h3>Next Page</h3>
+<p>This is the next page after logging in.</p>
+
+<div>
+    <h4>Order History</h4>
+    @if (orderHistory != null && orderHistory.Any())
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in orderHistory)
+                {
+                    <tr>
+                        <td>@item.OrderId</td>
+                        <td>@item.DateTime.ToShortDateString()</td>
+                        <td>@item.Status</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No order history available.</p>
+    }
+</div>
+
+@code {
+    private List<OrderHistory> orderHistory;
+
+    protected override void OnInitialized()
+    {
+        // Mock-Daten für die Bestellhistorie
+        orderHistory = new List<OrderHistory>
+        {
+            new OrderHistory(Guid.NewGuid())
+            {
+                OrderId = new Guid("7c5c7e6e-2635-469c-abeb-f6c137ce6579"),
+                DateTime = new DateTime(2023, 05, 19, 12, 0, 0),
+                Status = OrderStatus.Active
+            },
+            new OrderHistory(Guid.NewGuid())
+            {
+                OrderId = new Guid("7c5c7e6e-2635-469c-abeb-f6c137ce6579"),
+                DateTime = new DateTime(2023, 05, 19, 13, 0, 0),
+                Status = OrderStatus.PlannedForDelivery
+            },
+            // Weitere Mock-Daten hinzufügen, falls erforderlich
+        };
+    }
+}
