@@ -3,7 +3,9 @@
 @using Autofac
 @using H5D_Delivery.Mgmt.Backend.Delivery.Domain
 @using H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryOrderFactory
+@using H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory
 @using H5D_Delivery.Mgmt.Backend.Order.Domain
+@using System.Reflection.Metadata
 
 <div id="map" style="position: relative; width: 940px; height: 500px; border: 1px solid black; overflow: visible;">
     <div style="position: absolute; left: 0px; top: 200px; width: 140px; height: 200px; background-color: grey; border: 1px solid black">
@@ -21,11 +23,18 @@
     <div style="position: absolute; left: 800px; top: 200px; width: 140px; height: 200px; background-color: grey; border: 1px solid black">
         <p>Kunde 4</p>
     </div>
-    @foreach (var step in _deliverySteps)
+    @*    @foreach (var step in _deliverySteps)
     {
         <div style="position: absolute; left: @(step.Coordinates.X/5+50)px; top: @(-1*step.Coordinates.Y/5+300)px; width: 20px; height: 20px; background-color: red">@step.StepSequence</div>
+    }*@
+    
+    @foreach(var waypoint in WaypointCoordinates.AllWaypoints)
+    {
+        <div style="position: absolute; left: @(waypoint.X/5+50)px; top: @(-1*waypoint.Y/5+300)px; height: 20px; min-width: 20px; background-color: red">@_waypointText[waypoint.ToString()]</div>
     }
 </div>
+
+@*@bind="_waypointText[waypoint.ToString()]"*@
 
 <table class="table">
     <thead>
@@ -77,11 +86,37 @@
     private DeliveryOrder _deliveryOrder;
     private List<DeliveryStep> _deliverySteps = new List<DeliveryStep>();
 
+    private Dictionary<string, string> _waypointText = new Dictionary<string, string>();
+
+    public DeliveryManagement()
+    {
+        foreach (Coordinates coord in WaypointCoordinates.AllWaypoints)
+        {
+            _waypointText.Add(coord.ToString(), string.Empty);
+        }
+    }
 
     private void Test()
     {
         var orders = IocSetup.Instance.Container.Resolve<OrderService>().GetAll().ToList();
         _deliveryOrder = IocSetup.Instance.Container.Resolve<DeliveryOrderFactory>().GenerateDeliveryOrder(orders);
         _deliverySteps = _deliveryOrder.DeliveryPlan.DeliverySteps;
+        VisualizeSteps();
+    }
+
+    private void VisualizeSteps()
+    {
+        foreach (var step in _deliverySteps)
+        {
+            var text = _waypointText[step.Coordinates.ToString()];
+            if (text == string.Empty)
+            {
+                _waypointText[step.Coordinates.ToString()] = step.StepSequence.ToString();
+            }
+            else
+            {
+                _waypointText[step.Coordinates.ToString()] += $",{step.StepSequence}";
+            }
+        }
     }
 }
