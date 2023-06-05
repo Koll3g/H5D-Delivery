@@ -67,7 +67,7 @@ namespace H5D_Delivery.Mgmt.Backend.Shared.IoC
 
             containerBuilder.RegisterType<OrderRepository>().As<IOrderRepository>();
             containerBuilder.RegisterType<OrderContext>().As<OrderContext>();
-            containerBuilder.RegisterType<OrderService>().As<OrderService>();
+            containerBuilder.RegisterType<OrderService>().As<OrderService>().SingleInstance();
 
             containerBuilder.RegisterType<BatteryChargeRepository>().As<IBatteryChargeRepository>();
             containerBuilder.RegisterType<BatteryChargeContext>().As<BatteryChargeContext>();
@@ -85,7 +85,7 @@ namespace H5D_Delivery.Mgmt.Backend.Shared.IoC
 
             containerBuilder.RegisterType<OrderHistoryRepository>().As<IOrderHistoryRepository>();
             containerBuilder.RegisterType<OrderHistoryContext>().As<OrderHistoryContext>();
-            containerBuilder.RegisterType<OrderHistoryService>().As<OrderHistoryService>();
+            containerBuilder.RegisterType<OrderHistoryService>().As<OrderHistoryService>().SingleInstance();
 
             containerBuilder.RegisterType<DeliveryOrderFactoryZbw>().As<DeliveryOrderFactory>();
             containerBuilder.RegisterType<DeliveryPlanFactoryZbw>().As<DeliveryPlanFactory>();
@@ -96,7 +96,7 @@ namespace H5D_Delivery.Mgmt.Backend.Shared.IoC
 
             containerBuilder.RegisterType<DeliveryContext>().As<DeliveryContext>();
             containerBuilder.RegisterType<DeliveryRepository>().As<IDeliveryRepository>();
-            containerBuilder.RegisterType<DeliveryService>().As<DeliveryService>();
+            containerBuilder.RegisterType<DeliveryService>().As<DeliveryService>().SingleInstance();
 
             Container = containerBuilder.Build();
         }

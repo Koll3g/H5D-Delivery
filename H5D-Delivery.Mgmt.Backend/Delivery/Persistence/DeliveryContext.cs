@@ -34,6 +34,10 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Persistence
             deliveryOrder.Navigation(x => x.Orders).AutoInclude();
             plan.Navigation(x => x.DeliverySteps).AutoInclude();
 
+            var order = modelBuilder.Entity<Order.Domain.Order>();
+            order.Navigation(x => x.Customer).AutoInclude();
+            order.Navigation(x => x.Product).AutoInclude();
+
             deliveryOrder.ToTable("DeliveryOrder");
             plan.ToTable("DeliveryPlan");
             step.ToTable("DeliveryStep");

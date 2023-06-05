@@ -39,5 +39,16 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain.History
         {
             _orderHistoryRepository.Create(orderHistory);
         }
+
+        public void Create(Order order)
+        {
+            var orderHistory = new OrderHistory(Guid.NewGuid())
+            {
+                DateTime = DateTime.Now,
+                OrderId = order.Id,
+                Status = order.Status,
+            };
+            Create(orderHistory);
+        }
     }
 }

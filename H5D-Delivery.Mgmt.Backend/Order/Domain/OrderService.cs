@@ -6,12 +6,12 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain
     public class OrderService
     {
         private readonly IOrderRepository _orderRepository;
-        private readonly IOrderHistoryRepository _orderHistoryRepository;
+        private readonly OrderHistoryService _orderHistoryService;
 
-        public OrderService(IOrderRepository orderRepository, IOrderHistoryRepository orderHistoryRepository)
+        public OrderService(IOrderRepository orderRepository, OrderHistoryService orderHistoryService)
         {
             _orderRepository = orderRepository;
-            _orderHistoryRepository = orderHistoryRepository;
+            _orderHistoryService = orderHistoryService;
         }
 
         public IEnumerable<Order>? GetAll()
@@ -31,11 +31,25 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain
                 return;
             }
             _orderRepository.Update(order);
+            try
+            {
+                _orderHistoryService.Create(order);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         public void Delete(Guid id)
         {
             _orderRepository.Delete(id);
+        }
+
+        public void UpdateOrderStatus(Order order, OrderStatus orderStatus)
+        {
+            order.Status = orderStatus;
+            Update(order);
         }
 
         public void Create(Order order)
@@ -48,12 +62,7 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain
 
             try
             {
-                _orderHistoryRepository.Create(new OrderHistory(Guid.NewGuid())
-                {
-                    DateTime = DateTime.Now,
-                    Status = OrderStatus.Active,
-                    OrderId = order.Id
-                });
+                _orderHistoryService.Create(order);
             }
             catch (Exception ex)
             {

@@ -54,5 +54,10 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain
             Status = status;
             AuthorizationKey = authorizationKey;
         }
+
+        public override string ToString()
+        {
+            return $"{Amount}x {Product.Name} for {Customer.Name} at {Customer.Address}";
+        }
     }
 }

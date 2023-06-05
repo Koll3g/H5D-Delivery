@@ -29,7 +29,7 @@
     }
     </tbody>
 </table>
-<h3>Battery Charges for Robot @_robots.First().Id</h3>
+<h3>Specific Battery Charges</h3>
 <table class="table">
     <thead>
     <tr>
@@ -102,23 +102,31 @@
 
     private void LoadData()
     {
-        var history = _batteryChargeService.GetXNewest(10);
-        if (history != null)
+        try
         {
-            _batteryChargeHistory = history;
+            var history = _batteryChargeService.GetXNewest(10);
+            if (history != null)
+            {
+                _batteryChargeHistory = history;
+            }
+
+            var historySpecific = _batteryChargeService.GetXNewestForSpecificRobot(_robots.First().Id, 10);
+            if (historySpecific != null)
+            {
+                _batteryChargeHistorySpecific = historySpecific;
+            }
+
+            var errorHistory = _errorService.GetXNewest(10);
+            if (errorHistory != null)
+            {
+                _errorMessageHistory = errorHistory;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
         }
 
-        var historySpecific = _batteryChargeService.GetXNewestForSpecificRobot(_robots.First().Id, 10);
-        if (historySpecific != null)
-        {
-            _batteryChargeHistorySpecific = historySpecific;
-        }
-
-        var errorHistory = _errorService.GetXNewest(10);
-        if (errorHistory != null)
-        {
-            _errorMessageHistory = errorHistory;
-        }
     }
 
     private void PropertyChangedSubscription()

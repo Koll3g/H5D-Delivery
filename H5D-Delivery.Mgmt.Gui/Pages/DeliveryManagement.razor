@@ -13,7 +13,7 @@
     <thead>
         <tr>
             <th>Id</th>
-            <th>Plan Id</th>
+            <th>Orders</th>
             <th>DeliveryStep Count</th>
             <th>AssignedRobotId</th>
             <th>Actions</th>
@@ -24,7 +24,7 @@
         {
             <tr>
                 <td>@deliveryOrder.Id</td>
-                <td>@deliveryOrder.DeliveryPlanId</td>
+                <td>@ListOrders(deliveryOrder.Orders)</td>
                 <td>@deliveryOrder.DeliveryPlan.DeliverySteps.Count</td>
                 <td>@deliveryOrder.AssignedRobotId</td>
                 <td>
@@ -159,5 +159,15 @@
         {
             _waypointText[valuePair.Key] = string.Empty;
         }
+    }
+
+    private string ListOrders(List<Order> orders)
+    {
+        var text = string.Empty;
+        foreach (var order in orders)
+        {
+            text += $"{order} | ";
+        }
+        return text;
     }
 }
