@@ -7,51 +7,82 @@
 @using H5D_Delivery.Mgmt.Backend.Order.Domain
 @using System.Reflection.Metadata
 
-<div id="map" style="position: relative; width: 940px; height: 500px; border: 1px solid black; overflow: visible;">
-    <div style="position: absolute; left: 0px; top: 200px; width: 140px; height: 200px; background-color: grey; border: 1px solid black">
-        <p>Verteilzentrum</p>
-    </div>
-    <div style="position: absolute; left: 200px; top: 0px; width: 180px; height: 200px; background-color: grey; border: 1px solid black">
-        <p>Kunde 1</p>
-    </div>
-    <div style="position: absolute; left: 380px; top: 0px; width: 180px; height: 200px; background-color: grey; border: 1px solid black">
-        <p>Kunde 2</p>
-    </div>
-    <div style="position: absolute; left: 560px; top: 0px; width: 180px; height: 200px; background-color: grey; border: 1px solid black">
-        <p>Kunde 3</p>
-    </div>
-    <div style="position: absolute; left: 800px; top: 200px; width: 140px; height: 200px; background-color: grey; border: 1px solid black">
-        <p>Kunde 4</p>
-    </div>
-    @foreach(var waypoint in WaypointCoordinates.AllWaypoints)
-    {
-        <div style="position: absolute; left: @(waypoint.X/5+50)px; top: @(-1*waypoint.Y/5+300)px; height: 20px; min-width: 20px; background-color: red">@_waypointText[waypoint.ToString()]</div>
-    }
-</div>
-
+<h3>Delivery Orders</h3>
+<button @onclick="_deliveryService.GenerateDeliveryOrder">GenerateDeliveryOrder</button>
 <table class="table">
     <thead>
-    <tr>
-        <th>StepSequence</th>
-        <th>Coordinates</th>
-        <th>PlannedDeliveryTime</th>
-        <th>DeliveryType</th>
-    </tr>
+        <tr>
+            <th>Id</th>
+            <th>Plan Id</th>
+            <th>DeliveryStep Count</th>
+            <th>AssignedRobotId</th>
+            <th>Actions</th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var step in _deliverySteps)
-    {
-        <tr>
-            <td>@step.StepSequence</td>
-            <td>@step.Coordinates</td>
-            <td>@step.PlannedDeliveryTime</td>
-            <td>@step.DeliveryType</td>
-        </tr>
-    }
+        @foreach (var deliveryOrder in _deliveryOrders)
+        {
+            <tr>
+                <td>@deliveryOrder.Id</td>
+                <td>@deliveryOrder.DeliveryPlanId</td>
+                <td>@deliveryOrder.DeliveryPlan.DeliverySteps.Count</td>
+                <td>@deliveryOrder.AssignedRobotId</td>
+                <td>
+                    <button @onclick="() => ShowDeliverySteps(deliveryOrder)">Show DeliverySteps</button>
+                    <button @onclick="() => _deliveryService.Delete(deliveryOrder.Id)">Delete</button>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
-<button onclick="@Test">Test</button>
+@if (_deliveryStepsShown)
+{
+    <h4>Delivery Steps for @_deliveryStepsForId</h4>
+    <div id="map" style="position: relative; width: 940px; height: 500px; border: 1px solid black; overflow: visible;">
+        <div style="position: absolute; left: 0px; top: 200px; width: 140px; height: 200px; background-color: grey; border: 1px solid black">
+            <p>Verteilzentrum</p>
+        </div>
+        <div style="position: absolute; left: 200px; top: 0px; width: 180px; height: 200px; background-color: grey; border: 1px solid black">
+            <p>Kunde 1</p>
+        </div>
+        <div style="position: absolute; left: 380px; top: 0px; width: 180px; height: 200px; background-color: grey; border: 1px solid black">
+            <p>Kunde 2</p>
+        </div>
+        <div style="position: absolute; left: 560px; top: 0px; width: 180px; height: 200px; background-color: grey; border: 1px solid black">
+            <p>Kunde 3</p>
+        </div>
+        <div style="position: absolute; left: 800px; top: 200px; width: 140px; height: 200px; background-color: grey; border: 1px solid black">
+            <p>Kunde 4</p>
+        </div>
+        @foreach(var waypoint in WaypointCoordinates.AllWaypoints)
+        {
+            <div style="position: absolute; left: @(waypoint.X/5+50)px; top: @(-1*waypoint.Y/5+300)px; height: 20px; min-width: 20px; background-color: red">@_waypointText[waypoint.ToString()]</div>
+        }
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>StepSequence</th>
+            <th>Coordinates</th>
+            <th>PlannedDeliveryTime</th>
+            <th>DeliveryType</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var step in _deliverySteps)
+        {
+            <tr>
+                <td>@step.StepSequence</td>
+                <td>@step.Coordinates</td>
+                <td>@step.PlannedDeliveryTime</td>
+                <td>@step.DeliveryType</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
 
 <style>
     .delivery-step {
@@ -73,8 +104,10 @@
 
 @code {
 
-    private DeliveryOrder _deliveryOrder;
+    private IEnumerable<DeliveryOrder> _deliveryOrders = new List<DeliveryOrder>();
     private List<DeliveryStep> _deliverySteps = new List<DeliveryStep>();
+    private Guid _deliveryStepsForId;
+    private bool _deliveryStepsShown;
 
     private Dictionary<string, string> _waypointText = new Dictionary<string, string>();
 
@@ -87,20 +120,25 @@
         {
             _waypointText.Add(coord.ToString(), string.Empty);
         }
+
+        var deliveryOrders = _deliveryService.GetAll();
+        if (deliveryOrders != null)
+        {
+            _deliveryOrders = deliveryOrders;
+        }
     }
 
-    private void Test()
+    private void ShowDeliverySteps(DeliveryOrder deliveryOrder)
     {
-        //var orders = IocSetup.Instance.Container.Resolve<OrderService>().GetAll().ToList();
-        //_deliveryOrder = IocSetup.Instance.Container.Resolve<DeliveryOrderFactory>().GenerateDeliveryOrder(orders);
-
-        _deliveryService.GenerateDeliveryOrder();
-        _deliverySteps = _deliveryOrder.DeliveryPlan.DeliverySteps;
+        _deliveryStepsForId = deliveryOrder.Id;
+        _deliveryStepsShown = true;
+        _deliverySteps = deliveryOrder.DeliveryPlan.DeliverySteps.OrderBy(x => x.StepSequence).ToList();
         VisualizeSteps();
     }
 
     private void VisualizeSteps()
     {
+        ClearVisualizationSteps();
         foreach (var step in _deliverySteps)
         {
             var text = _waypointText[step.Coordinates.ToString()];
@@ -112,6 +150,14 @@
             {
                 _waypointText[step.Coordinates.ToString()] += $",{step.StepSequence}";
             }
+        }
+    }
+
+    private void ClearVisualizationSteps()
+    {
+        foreach (var valuePair in _waypointText)
+        {
+            _waypointText[valuePair.Key] = string.Empty;
         }
     }
 }

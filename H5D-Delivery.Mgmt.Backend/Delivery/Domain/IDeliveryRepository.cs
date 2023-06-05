@@ -9,5 +9,6 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
 {
     public interface IDeliveryRepository : IRepositoryBase<DeliveryOrder>
     {
+        public void CreateWithContext(DeliveryOrder deliveryOrder);
     }
 }

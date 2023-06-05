@@ -30,8 +30,17 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
             }
 
             var deliveryOrder = _deliveryOrderFactory.GenerateDeliveryOrder(orders);
-            _deliveryRepository.Create(deliveryOrder);
+            _deliveryRepository.CreateWithContext(deliveryOrder);
+        }
 
+        public IEnumerable<DeliveryOrder>? GetAll()
+        {
+            return _deliveryRepository.GetAll();
+        }
+
+        public void Delete(Guid id)
+        {
+            _deliveryRepository.Delete(id);
         }
     }
 }

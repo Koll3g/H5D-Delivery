@@ -17,15 +17,15 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Persistence
             base.OnModelCreating(modelBuilder);
 
             var deliveryOrder = modelBuilder.Entity<DeliveryOrder>();
-            deliveryOrder.ToTable("DeliveryOrder");
-            deliveryOrder.HasKey(x => x.Id);
-            deliveryOrder.Property(x => x.AssignedRobotId);
+            //deliveryOrder.ToTable("DeliveryOrder");
+            //deliveryOrder.HasKey(x => x.Id);
+            //deliveryOrder.Property(x => x.AssignedRobotId);
 
-            deliveryOrder.HasMany(x => x.Orders).WithOne().HasForeignKey(x => x.DeliveryOrderId);
-            deliveryOrder.HasOne(x => x.DeliveryPlan).WithMany().HasForeignKey(x => x.Id);
+            //deliveryOrder.HasMany(x => x.Orders).WithOne().HasForeignKey(x => x.DeliveryOrderId);
+            //deliveryOrder.HasOne(x => x.DeliveryPlan).WithMany().HasForeignKey(x => x.Id);
 
             var plan = modelBuilder.Entity<DeliveryPlan>();
-            plan.HasMany(x => x.DeliverySteps).WithOne().HasForeignKey(x => x.DeliveryPlanId);
+            //plan.HasMany(x => x.DeliverySteps).WithOne().HasForeignKey(x => x.DeliveryPlanId);
 
             var step = modelBuilder.Entity<DeliveryStep>();
             step.OwnsOne(x => x.Coordinates);
