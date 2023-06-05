@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
         public Guid DeliveryPlanId { get; set; }
         public DeliveryPlan DeliveryPlan { get; set; } = new DeliveryPlan(Guid.Empty);
 
-        public Guid AssignedRobotId { get; set; }
+        public Guid? AssignedRobotId { get; set; }
 
         public DeliveryOrder(Guid id) : base(id)
         {

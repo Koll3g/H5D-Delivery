@@ -23,18 +23,11 @@
     <div style="position: absolute; left: 800px; top: 200px; width: 140px; height: 200px; background-color: grey; border: 1px solid black">
         <p>Kunde 4</p>
     </div>
-    @*    @foreach (var step in _deliverySteps)
-    {
-        <div style="position: absolute; left: @(step.Coordinates.X/5+50)px; top: @(-1*step.Coordinates.Y/5+300)px; width: 20px; height: 20px; background-color: red">@step.StepSequence</div>
-    }*@
-    
     @foreach(var waypoint in WaypointCoordinates.AllWaypoints)
     {
         <div style="position: absolute; left: @(waypoint.X/5+50)px; top: @(-1*waypoint.Y/5+300)px; height: 20px; min-width: 20px; background-color: red">@_waypointText[waypoint.ToString()]</div>
     }
 </div>
-
-@*@bind="_waypointText[waypoint.ToString()]"*@
 
 <table class="table">
     <thead>
@@ -59,9 +52,6 @@
 </table>
 
 <button onclick="@Test">Test</button>
-
-
-
 
 <style>
     .delivery-step {
@@ -88,8 +78,11 @@
 
     private Dictionary<string, string> _waypointText = new Dictionary<string, string>();
 
+    private readonly DeliveryService _deliveryService;
+
     public DeliveryManagement()
     {
+        _deliveryService = IocSetup.Instance.Container.Resolve<DeliveryService>();
         foreach (Coordinates coord in WaypointCoordinates.AllWaypoints)
         {
             _waypointText.Add(coord.ToString(), string.Empty);
@@ -98,8 +91,10 @@
 
     private void Test()
     {
-        var orders = IocSetup.Instance.Container.Resolve<OrderService>().GetAll().ToList();
-        _deliveryOrder = IocSetup.Instance.Container.Resolve<DeliveryOrderFactory>().GenerateDeliveryOrder(orders);
+        //var orders = IocSetup.Instance.Container.Resolve<OrderService>().GetAll().ToList();
+        //_deliveryOrder = IocSetup.Instance.Container.Resolve<DeliveryOrderFactory>().GenerateDeliveryOrder(orders);
+
+        _deliveryService.GenerateDeliveryOrder();
         _deliverySteps = _deliveryOrder.DeliveryPlan.DeliverySteps;
         VisualizeSteps();
     }

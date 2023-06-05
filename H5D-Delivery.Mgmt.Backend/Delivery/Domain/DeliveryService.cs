@@ -12,18 +12,26 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
     {
         private readonly DeliveryOrderFactory.DeliveryOrderFactory _deliveryOrderFactory;
         private readonly IOrderRepository _orderRepository;
+        private readonly IDeliveryRepository _deliveryRepository;
 
-        public DeliveryService(DeliveryOrderFactory.DeliveryOrderFactory deliveryOrderFactory, IOrderRepository orderRepository)
+        public DeliveryService(DeliveryOrderFactory.DeliveryOrderFactory deliveryOrderFactory, IDeliveryRepository deliveryRepository, IOrderRepository orderRepository)
         {
             _deliveryOrderFactory = deliveryOrderFactory;
+            _deliveryRepository = deliveryRepository;
             _orderRepository = orderRepository;
         }
 
         public void GenerateDeliveryOrder()
         {
-            var orders = _orderRepository.GetAll()?.ToList();
+            var orders = _orderRepository.GetAll();
+            if (orders == null)
+            {
+                return;
+            }
 
             var deliveryOrder = _deliveryOrderFactory.GenerateDeliveryOrder(orders);
+            _deliveryRepository.Create(deliveryOrder);
+
         }
     }
 }
