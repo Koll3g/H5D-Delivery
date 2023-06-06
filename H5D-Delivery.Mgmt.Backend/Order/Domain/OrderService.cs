@@ -73,6 +73,11 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain
             }
         }
 
+        public IEnumerable<OrderHistory>? GetOrderHistory(Guid orderId)
+        {
+            return _orderHistoryService.GetAllForSpecificOrder(orderId);
+        }
+
         public List<Order>? GetAllOrdersForDeliveryId(Guid deliveryOrderId)
         {
             try

@@ -91,7 +91,7 @@
     <thead>
     <tr>
         <th>Id</th>
-       @* <th>Id Product</th>*@
+        @* <th>Id Product</th>*@
         <th>Product Name</th>
         @*<th>Id Customer</th>*@
         <th>Customer Name</th>
@@ -100,8 +100,8 @@
         <th>Latest Delivery</th>
         <th>Priority</th>
         <th>Status</th> <!-- Neues Feld für Status -->
-       <th>Delivery Type</th> <!-- Neues Feld für Delivery Type -->
-       <th>DeliveryOrderId</th>
+        <th>Delivery Type</th> <!-- Neues Feld für Delivery Type -->
+        <th>DeliveryOrderId</th>
         <th>Action</th>
     </tr>
     </thead>
@@ -110,35 +110,60 @@
     {
         <tr>
             <td>@order.Id</td>
-           @* <td>@order.Product.Id</td>*@
+            @* <td>@order.Product.Id</td>*@
             <td>@order.Product.Name</td>
-           @* <td>@order.Customer.Id</td>*@
+            @* <td>@order.Customer.Id</td>*@
             <td>@order.Customer.Name</td>
             <td>@order.Amount</td>
             <td>@order.EarliestDeliveryTime</td>
             <td>@order.LatestDeliveryTime</td>
             <td>@order.Priority</td>
             <td>@order.Status</td> <!-- Neues Feld für Status -->
-           <td>@order.DeliveryType</td> <!-- Neues Feld für Delivery Type -->
-           <td>
-               @if (order.DeliveryOrderId != null)
-               {
-                   @order.DeliveryOrderId
-               }
-               else
-               {
-                   @NoDeliveryOrderId
-               }
-           </td>
+            <td>@order.DeliveryType</td> <!-- Neues Feld für Delivery Type -->
+            <td>
+                @if (order.DeliveryOrderId != null)
+                {
+                    @order.DeliveryOrderId
+                }
+                else
+                {
+                    @NoDeliveryOrderId
+                }
+            </td>
             <td>
                 <button class="btn btn-primary" @onclick="() => EditOrder(order)">Edit</button> 
                 <button class="btn btn-danger" @onclick="() => DeleteOrder(order)">Delete</button>
+                <button class="btn btn-primary" @onclick="() => ShowOrderHistory(order)">Show History</button>
             </td>
 
         </tr>
     }
     </tbody>
 </table>
+
+@if (_orderHistorySpecific != null)
+{
+    <h4>Order History for "@_orderHistoryTitle"</h4>
+    <button @onclick="() => _orderHistorySpecific = null">Hide</button>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>DateTime</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in _orderHistorySpecific)
+            {
+                <tr>
+                    <td>@item.DateTime</td>
+                    <td>@item.Status.ToString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 <div class="row">
     <div class="col-md-12">
@@ -153,6 +178,8 @@
 @code {
     private readonly OrderService _orderService;
     private IEnumerable<Order> _orders = new List<Order>();
+    private IEnumerable<OrderHistory>? _orderHistorySpecific;
+    private string _orderHistoryTitle = string.Empty;
 
     private readonly ProductService _productService;
     private IEnumerable<Product> _products = new List<Product>();
@@ -193,6 +220,11 @@
         GetAllOrders();
     }
 
+    private void ShowOrderHistory(Order order)
+    {
+        _orderHistoryTitle = $"{order} (Id: {order.Id})";
+        _orderHistorySpecific = _orderService.GetOrderHistory(order.Id)?.OrderBy(x => x.DateTime);
+    }
 
     public void GetAllOrders()
     {
