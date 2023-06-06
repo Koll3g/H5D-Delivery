@@ -100,7 +100,8 @@
         <th>Latest Delivery</th>
         <th>Priority</th>
         <th>Status</th> <!-- Neues Feld für Status -->
-        <th>Delivery Type</th> <!-- Neues Feld für Delivery Type -->
+       <th>Delivery Type</th> <!-- Neues Feld für Delivery Type -->
+       <th>DeliveryOrderId</th>
         <th>Action</th>
     </tr>
     </thead>
@@ -118,7 +119,17 @@
             <td>@order.LatestDeliveryTime</td>
             <td>@order.Priority</td>
             <td>@order.Status</td> <!-- Neues Feld für Status -->
-            <td>@order.DeliveryType</td> <!-- Neues Feld für Delivery Type -->
+           <td>@order.DeliveryType</td> <!-- Neues Feld für Delivery Type -->
+           <td>
+               @if (order.DeliveryOrderId != null)
+               {
+                   @order.DeliveryOrderId
+               }
+               else
+               {
+                   @NoDeliveryOrderId
+               }
+           </td>
             <td>
                 <button class="btn btn-primary" @onclick="() => EditOrder(order)">Edit</button> 
                 <button class="btn btn-danger" @onclick="() => DeleteOrder(order)">Delete</button>
@@ -137,6 +148,7 @@
 
 <button class="btn btn-primary" @onclick="AddOrdersForDeliveryTest">AddOrdersForDeliveryTest</button>
 <p>Only use this button if there are customers at each address and 4 different products in stock</p>
+<button @onclick="() => _orders = _orderService.GetAll()">Reload Orders from Db</button>
 
 
 @code {
@@ -167,6 +179,8 @@
     private bool isEditing = false;
 
     private DeliveryType _selectedDeliveryType = DeliveryType.Deposit; // Initialer DeliveryType
+
+        private const string NoDeliveryOrderId = "No Delivery assigned yet";
 
     public OrderManagement()
     {

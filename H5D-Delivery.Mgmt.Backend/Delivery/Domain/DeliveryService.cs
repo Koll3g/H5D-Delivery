@@ -44,11 +44,19 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
 
             foreach (var order in deliveryOrder.Orders)
             {
+                order.DeliveryOrderId = deliveryOrder.Id;
+                order.Status = OrderStatus.PlannedForDelivery;
+                //_orderService.Update(order);
+                //_orderHistoryService.Create(order);
                 _orderService.UpdateOrderStatus(order.Id, OrderStatus.PlannedForDelivery);
-                _orderService.AddDeliveryId(order.Id, deliveryOrder.Id);
             }
 
             _deliveryRepository.Create(deliveryOrder);
+
+            foreach (var order in deliveryOrder.Orders)
+            {
+                _orderService.AddDeliveryId(order.Id, deliveryOrder.Id);
+            }
         }
 
         public IEnumerable<DeliveryOrder>? GetAll()

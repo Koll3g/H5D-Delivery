@@ -30,6 +30,10 @@ namespace H5D_Delivery.Mgmt.Backend.Shared.Persistence
 
         public void Update(T dbItem)
         {
+            if (_dbContext.DbSet == null)
+            {
+                var test = 1;
+            }
             _dbContext.DbSet?.Update(dbItem);
             _dbContext.SaveChanges();
         }
