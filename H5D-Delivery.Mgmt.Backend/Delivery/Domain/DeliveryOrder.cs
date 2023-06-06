@@ -10,6 +10,7 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
 {
     public class DeliveryOrder : DbItem
     {
+        [NotMapped]
         public List<Order.Domain.Order> Orders { get; set; } = new List<Order.Domain.Order>();
 
         public Guid DeliveryPlanId { get; set; }

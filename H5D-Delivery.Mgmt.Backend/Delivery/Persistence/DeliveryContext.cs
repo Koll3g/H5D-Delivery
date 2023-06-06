@@ -31,7 +31,7 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Persistence
             step.OwnsOne(x => x.Coordinates);
 
             deliveryOrder.Navigation(x => x.DeliveryPlan).AutoInclude();
-            deliveryOrder.Navigation(x => x.Orders).AutoInclude();
+            //deliveryOrder.Navigation(x => x.Orders).AutoInclude();
             plan.Navigation(x => x.DeliverySteps).AutoInclude();
 
             var order = modelBuilder.Entity<Order.Domain.Order>();

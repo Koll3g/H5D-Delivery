@@ -48,19 +48,26 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
                 _orderService.AddDeliveryId(order.Id, deliveryOrder.Id);
             }
 
-            _deliveryRepository.CreateWithContext(deliveryOrder);
+            _deliveryRepository.Create(deliveryOrder);
         }
 
         public IEnumerable<DeliveryOrder>? GetAll()
         {
             var deliveryOrders = _deliveryRepository.GetAll();
-            //if (deliveryOrders != null)
-            //{
-            //    foreach (var deliveryOrder in deliveryOrders)
-            //    {
-            //        deliveryOrder.Orders = _orderService.GetAllOrdersForDeliveryId(deliveryOrder.Id);
-            //    }
-            //}
+            if (deliveryOrders != null)
+            {
+                foreach (var deliveryOrder in deliveryOrders)
+                {
+                    try
+                    {
+                        deliveryOrder.Orders = _orderService.GetAllOrdersForDeliveryId(deliveryOrder.Id);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.ToString());
+                    }
+                }
+            }
 
             return deliveryOrders;
         }

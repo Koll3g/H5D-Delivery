@@ -31,14 +31,6 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain
                 return;
             }
             _orderRepository.Update(order);
-            try
-            {
-                _orderHistoryService.Create(order);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
         }
 
         public void Delete(Guid id)
@@ -55,6 +47,7 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain
                 {
                     order.Status = orderStatus;
                     Update(order);
+                    _orderHistoryService.Create(order);
                 }
             }
             catch (Exception e)

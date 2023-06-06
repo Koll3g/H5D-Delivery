@@ -13,8 +13,6 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
     {
         public int StepSequence { get; set; }
         public DeliveryType DeliveryType { get; set; }
-
-        [ForeignKey("DeliveryPlanId")]
         public Guid DeliveryPlanId { get; set; }
         public string AuthorizationKey { get; set; } = string.Empty;
         public Guid? ProductId { get; set; }
