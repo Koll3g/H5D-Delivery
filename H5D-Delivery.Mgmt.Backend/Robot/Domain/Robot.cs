@@ -158,18 +158,6 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
         {
             LastContact = DateTime.Now;
             CurrentDeliveryId = id;
-
-            //ToDo: Mark orders as being delivered
-            var orderService = IocSetup.Instance.Container.Resolve<OrderService>();
-            var ordersBeingDelivered = orderService.GetAllOrdersForDeliveryId(id);
-            if (ordersBeingDelivered == null)
-            {
-                return;
-            }
-            foreach (var order in ordersBeingDelivered)
-            {
-                orderService.UpdateOrderStatus(order.Id, OrderStatus.BeingDelivered);
-            }
         }
 
         public void CurrentDeliveryStepUpdateHandler(object? sender, CurrentDeliveryStep step)
@@ -188,7 +176,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
 
         private void UpdateDeliveryStatus(DeliveryOrder deliveryOrder, CurrentDeliveryStep currentDeliveryStep, DeliveryService deliveryService)
         {
-            if (currentDeliveryStep.DeliveryStep == 0)
+            if (currentDeliveryStep.DeliveryStep <= 1)
             {
                 return;
             }
@@ -201,6 +189,19 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
                 var orderId = deliveryOrder.Orders.First(x => x.ProductId == previousDeliveryStep.ProductId).Id;
                 var orderService = IocSetup.Instance.Container.Resolve<OrderService>();
                 orderService.UpdateOrderStatus(orderId, OrderStatus.Delivered);
+            }
+            else if (previousDeliveryStep.DeliveryType is DeliveryType.DistributionCenter)
+            {
+                var orderService = IocSetup.Instance.Container.Resolve<OrderService>();
+                var ordersBeingDelivered = orderService.GetAllOrdersForDeliveryId(deliveryOrder.Id);
+                if (ordersBeingDelivered == null)
+                {
+                    return;
+                }
+                foreach (var order in ordersBeingDelivered)
+                {
+                    orderService.UpdateOrderStatus(order.Id, OrderStatus.BeingDelivered);
+                }
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,7 +38,11 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain.History
 
         public void Create(OrderHistory orderHistory)
         {
-            _orderHistoryRepository.Create(orderHistory);
+            var orderHistoryEntries = GetAllForSpecificOrder(orderHistory.OrderId);
+            if (orderHistoryEntries == null || orderHistoryEntries.All(oh => oh.Status != orderHistory.Status))
+            {
+                _orderHistoryRepository.Create(orderHistory);
+            }
         }
 
         public void Create(Order order)

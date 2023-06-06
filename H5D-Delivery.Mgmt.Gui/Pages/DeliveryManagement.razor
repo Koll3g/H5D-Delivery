@@ -8,6 +8,7 @@
 @using System.Reflection.Metadata
 
 <h3>Delivery Orders</h3>
+<button @onclick="() => InvokeAsync(StateHasChanged)">Refresh</button>
 <button @onclick="GenerateTestDelivery">GenerateDeliveryOrder (Testing only)</button>
 <table class="table">
     <thead>
