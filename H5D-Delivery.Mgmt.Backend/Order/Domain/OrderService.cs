@@ -46,10 +46,55 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain
             _orderRepository.Delete(id);
         }
 
-        public void UpdateOrderStatus(Order order, OrderStatus orderStatus)
+        public void UpdateOrderStatus(Guid orderId, OrderStatus orderStatus)
         {
-            order.Status = orderStatus;
-            Update(order);
+            try
+            {
+                var order = Get(orderId);
+                if (order != null)
+                {
+                    order.Status = orderStatus;
+                    Update(order);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public void AddDeliveryId(Guid orderId, Guid deliveryOrderId)
+        {
+            try
+            {
+                var order = Get(orderId);
+                if (order != null)
+                {
+                    order.DeliveryOrderId = deliveryOrderId;
+                    Update(order);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public List<Order>? GetAllOrdersForDeliveryId(Guid deliveryOrderId)
+        {
+            try
+            {
+                var orders = _orderRepository.GetAll()?
+                    .Where(o => o.DeliveryOrderId == deliveryOrderId)
+                    .ToList();
+
+                return orders;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
         }
 
         public void Create(Order order)

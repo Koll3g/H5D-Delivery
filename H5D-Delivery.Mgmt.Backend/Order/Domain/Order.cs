@@ -23,7 +23,7 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain
         public OrderStatus Status { get; set; }
 
         public Guid? DeliveryOrderId { get; set; }
-        public DeliveryOrder? DeliveryOrder { get; set; }
+        //public DeliveryOrder? DeliveryOrder { get; set; }
 
         public Order(Guid id, Product.Domain.Product product, Customer.Domain.Customer customer, uint amount, DateTime earliestDeliveryTime, DateTime latestDeliveryTime, Priority priority, DeliveryType deliveryType, OrderStatus status = OrderStatus.Active, string authorizationKey = "") : base(id)
         {

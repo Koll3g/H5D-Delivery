@@ -44,7 +44,8 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
 
             foreach (var order in deliveryOrder.Orders)
             {
-                _orderService.UpdateOrderStatus(order, OrderStatus.PlannedForDelivery);
+                _orderService.UpdateOrderStatus(order.Id, OrderStatus.PlannedForDelivery);
+                _orderService.AddDeliveryId(order.Id, deliveryOrder.Id);
             }
 
             _deliveryRepository.CreateWithContext(deliveryOrder);
@@ -52,7 +53,16 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
 
         public IEnumerable<DeliveryOrder>? GetAll()
         {
-            return _deliveryRepository.GetAll();
+            var deliveryOrders = _deliveryRepository.GetAll();
+            //if (deliveryOrders != null)
+            //{
+            //    foreach (var deliveryOrder in deliveryOrders)
+            //    {
+            //        deliveryOrder.Orders = _orderService.GetAllOrdersForDeliveryId(deliveryOrder.Id);
+            //    }
+            //}
+
+            return deliveryOrders;
         }
 
         public void Delete(Guid id)
