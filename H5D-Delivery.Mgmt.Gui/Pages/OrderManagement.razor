@@ -148,7 +148,6 @@
 
 <button class="btn btn-primary" @onclick="AddOrdersForDeliveryTest">AddOrdersForDeliveryTest</button>
 <p>Only use this button if there are customers at each address and 4 different products in stock</p>
-<button @onclick="() => _orders = _orderService.GetAll()">Reload Orders from Db</button>
 
 
 @code {
@@ -184,14 +183,14 @@
 
     public OrderManagement()
     {
-    var iocContainer = IocSetup.Instance.Container;
-    _customerService = iocContainer.Resolve<CustomerService>();
-    _productService = iocContainer.Resolve<ProductService>();
-    _orderService = iocContainer.Resolve<OrderService>();
-    _products = _productService.GetAll();
-    _customers = _customerService.GetAll();
-    
-    GetAllOrders();
+        var iocContainer = IocSetup.Instance.Container;
+        _customerService = iocContainer.Resolve<CustomerService>();
+        _productService = iocContainer.Resolve<ProductService>();
+        _orderService = iocContainer.Resolve<OrderService>();
+        _products = _productService.GetAll();
+        _customers = _customerService.GetAll();
+        
+        GetAllOrders();
     }
 
 
@@ -200,7 +199,7 @@
         var orders = _orderService.GetAll();
         if (orders != null)
         {
-            _orders = orders;
+            _orders = orders.OrderBy(x => x.Status).ThenBy(x => x.LatestDeliveryTime);
         }
     }
 

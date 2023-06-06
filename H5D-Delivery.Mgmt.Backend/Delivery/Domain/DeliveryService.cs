@@ -48,7 +48,7 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
                 order.Status = OrderStatus.PlannedForDelivery;
                 //_orderService.Update(order);
                 //_orderHistoryService.Create(order);
-                _orderService.UpdateOrderStatus(order.Id, OrderStatus.PlannedForDelivery);
+                //_orderService.UpdateOrderStatus(order.Id, OrderStatus.PlannedForDelivery);
             }
 
             _deliveryRepository.Create(deliveryOrder);
@@ -56,6 +56,7 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
             foreach (var order in deliveryOrder.Orders)
             {
                 _orderService.AddDeliveryId(order.Id, deliveryOrder.Id);
+                _orderService.UpdateOrderStatus(order.Id, OrderStatus.PlannedForDelivery);
             }
         }
 
