@@ -26,18 +26,18 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
             _orderHistoryService = orderHistoryService;
         }
 
-        public void GenerateDeliveryOrder()
+        public DeliveryOrder? GenerateDeliveryOrder()
         {
             var orders = _orderService.GetAll()?.ToList();
             if (orders == null)
             {
-                return;
+                return null;
             }
 
             var activeOrders = orders.Where(o => o.Status == OrderStatus.Active).ToList();
             if (activeOrders.Count == 0)
             {
-                return;
+                return null;
             }
 
             var deliveryOrder = _deliveryOrderFactory.GenerateDeliveryOrder(activeOrders);
@@ -46,9 +46,6 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
             {
                 order.DeliveryOrderId = deliveryOrder.Id;
                 order.Status = OrderStatus.PlannedForDelivery;
-                //_orderService.Update(order);
-                //_orderHistoryService.Create(order);
-                //_orderService.UpdateOrderStatus(order.Id, OrderStatus.PlannedForDelivery);
             }
 
             _deliveryRepository.Create(deliveryOrder);
@@ -58,6 +55,28 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain
                 _orderService.AddDeliveryId(order.Id, deliveryOrder.Id);
                 _orderService.UpdateOrderStatus(order.Id, OrderStatus.PlannedForDelivery);
             }
+
+            return deliveryOrder;
+        }
+
+        public void Update(DeliveryOrder deliveryOrder)
+        {
+            _deliveryRepository.Update(deliveryOrder);
+        }
+
+        public DeliveryOrder? Get(Guid id)
+        {
+            var deliveryOrder = _deliveryRepository.Get(id);
+            try
+            {
+                deliveryOrder.Orders = _orderService.GetAllOrdersForDeliveryId(deliveryOrder.Id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+            return deliveryOrder;
         }
 
         public IEnumerable<DeliveryOrder>? GetAll()

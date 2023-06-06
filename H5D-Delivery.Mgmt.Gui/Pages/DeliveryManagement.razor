@@ -8,7 +8,7 @@
 @using System.Reflection.Metadata
 
 <h3>Delivery Orders</h3>
-<button @onclick="_deliveryService.GenerateDeliveryOrder">GenerateDeliveryOrder (Testing only)</button>
+<button @onclick="GenerateTestDelivery">GenerateDeliveryOrder (Testing only)</button>
 <table class="table">
     <thead>
         <tr>
@@ -66,8 +66,9 @@
         <tr>
             <th>StepSequence</th>
             <th>Coordinates</th>
-            <th>PlannedDeliveryTime</th>
             <th>DeliveryType</th>
+            <th>PlannedDeliveryTime</th>
+            <th>RealDeliveryTime</th>
         </tr>
         </thead>
         <tbody>
@@ -76,8 +77,9 @@
             <tr>
                 <td>@step.StepSequence</td>
                 <td>@step.Coordinates</td>
-                <td>@step.PlannedDeliveryTime</td>
                 <td>@step.DeliveryType</td>
+                <td>@step.PlannedDeliveryTime</td>
+                <td>@step.RealDeliveryTime</td>
             </tr>
         }
         </tbody>
@@ -127,6 +129,11 @@
         {
             _deliveryOrders = deliveryOrders;
         }
+    }
+
+    private void GenerateTestDelivery()
+    {
+        _ = _deliveryService.GenerateDeliveryOrder();
     }
 
     private void ShowDeliverySteps(DeliveryOrder deliveryOrder)
