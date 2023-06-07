@@ -13,14 +13,14 @@ namespace H5D_Delivery.Tracking.Backend.Tracking.Domain
         
         public bool IsAuthorized(string name, string orderId)
         {
-            //return FakeIsAuthorized(name, orderId);
-            return RealIsAuthorized(name, orderId);
+            return FakeIsAuthorized(name, orderId);
+            //return RealIsAuthorized(name, orderId);
         }
 
         public IEnumerable<OrderHistory>? GetOrderHistory(string name, string orderId)
         {
-            //return FakeGetOrderHistory(name, orderId);
-            return RealOrderHistory(name, orderId);
+            return FakeGetOrderHistory(name, orderId);
+            //return RealOrderHistory(name, orderId);
         }
 
         private IEnumerable<OrderHistory>? RealOrderHistory(string name, string orderId)
