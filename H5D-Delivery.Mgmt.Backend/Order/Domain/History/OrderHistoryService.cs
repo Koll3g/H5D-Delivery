@@ -52,6 +52,7 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain.History
                 DateTime = DateTime.Now,
                 OrderId = order.Id,
                 Status = order.Status,
+                CustomerName = order.Customer.Name,
             };
             Create(orderHistory);
         }

@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using H5D_Delivery.Tracking.Backend.Tracking.Domain;
+using H5D_Delivery.Tracking.Backend.Tracking.Persistence;
 
 namespace H5D_Delivery.Tracking.Backend.Shared.IoC
 {
@@ -35,6 +36,8 @@ namespace H5D_Delivery.Tracking.Backend.Shared.IoC
 
             // Register your dependencies here
             containerBuilder.RegisterType<ParcelTrackerService>().As<ParcelTrackerService>();
+            containerBuilder.RegisterType<OrderHistoryRepository>().As<IOrderHistoryRepository>();
+            containerBuilder.RegisterType<OrderHistoryContext>().As<OrderHistoryContext>();
 
             Container = containerBuilder.Build();
         }

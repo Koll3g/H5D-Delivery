@@ -4,14 +4,45 @@ namespace H5D_Delivery.Tracking.Backend.Tracking.Domain
 {
     public class ParcelTrackerService
     {
+        private readonly IOrderHistoryRepository _orderHistoryRepository;
+
+        public ParcelTrackerService(IOrderHistoryRepository orderHistoryRepository)
+        {
+            _orderHistoryRepository = orderHistoryRepository;
+        }
+        
         public bool IsAuthorized(string name, string orderId)
         {
-            return FakeIsAuthorized(name, orderId);
+            //return FakeIsAuthorized(name, orderId);
+            return RealIsAuthorized(name, orderId);
         }
 
-        public IEnumerable<OrderHistory> GetOrderHistory(string name, string orderId)
+        public IEnumerable<OrderHistory>? GetOrderHistory(string name, string orderId)
         {
-            return FakeGetOrderHistory(name, orderId);
+            //return FakeGetOrderHistory(name, orderId);
+            return RealOrderHistory(name, orderId);
+        }
+
+        private IEnumerable<OrderHistory>? RealOrderHistory(string name, string orderId)
+        {
+            if (!IsAuthorized(name, orderId))
+            {
+                throw new NotAuthorizedException("Name and OrderId do not match or OrderId was not found in Database");
+            }
+            return _orderHistoryRepository.GetAllForOrderId(new Guid(orderId));
+        }
+
+        private bool RealIsAuthorized(string name, string orderId)
+        {
+            var isAuthorized = _orderHistoryRepository.IsAuthorized(name, new Guid(orderId));
+            if (isAuthorized == null)
+            {
+                return false;
+            }
+            else
+            {
+                return (bool)isAuthorized;
+            }
         }
 
         private bool FakeIsAuthorized(string name, string orderId)
@@ -20,7 +51,7 @@ namespace H5D_Delivery.Tracking.Backend.Tracking.Domain
         }
 
 
-        private IEnumerable<OrderHistory> FakeGetOrderHistory(string name, string orderId)
+        private IEnumerable<OrderHistory>? FakeGetOrderHistory(string name, string orderId)
         {
             if (!IsAuthorized(name, orderId))
             {

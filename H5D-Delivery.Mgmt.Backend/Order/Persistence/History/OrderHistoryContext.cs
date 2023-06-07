@@ -17,6 +17,7 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Persistence.History
             item.HasKey(x => x.Id);
             item.Property(x => x.DateTime);
             item.Property(x => x.Status);
+            item.Property(x => x.CustomerName);
 
             item.ToTable("OrderHistory");
 
