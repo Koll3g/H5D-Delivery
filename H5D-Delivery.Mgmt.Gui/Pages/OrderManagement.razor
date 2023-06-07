@@ -4,18 +4,10 @@
 @using Autofac
 @using H5D_Delivery.Mgmt.Backend.Customer.Domain
 @using H5D_Delivery.Mgmt.Backend.Product.Domain
-@using H5D_Delivery.Mgmt.Backend.Delivery.Domain
-@using H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryOrderFactory
-@using H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory
 @using H5D_Delivery.Mgmt.Backend.Order.Domain.History
-@using H5D_Delivery.Mgmt.Backend.Order.Persistence
 @using H5D_Delivery.Mgmt.Backend.Stock.Domain
-@using Microsoft.AspNetCore.Mvc.Formatters
-
-
 
 <h3>Orders</h3>
-<button @onclick="() => InvokeAsync(StateHasChanged)">Refresh</button>
 <div>
     <button class="btn btn-primary" @onclick="AddOrder">Add Order</button>
    @if (isEditing)
@@ -78,14 +70,16 @@
 
 <!-- Priority-Auswahlfeld -->
 <div>
-      <p>Selected Priority: @_selectedPriority</p>
+    <p>Selected Priority: @_selectedPriority</p>
     <label for="priority">Priority</label>
     <select id="priority" @bind="_selectedPriority">
         <option value="High">High</option>
         <option value="Normal">Normal</option>
         <option value="Low">Low</option>
     </select>
-    </div>
+</div>
+
+<button class="btn btn-secondary" @onclick="() => InvokeAsync(StateHasChanged)">Refresh</button>
 
 <table class="table">
     <thead>
@@ -133,7 +127,7 @@
             <td>
                 <button class="btn btn-primary" @onclick="() => EditOrder(order)">Edit</button> 
                 <button class="btn btn-danger" @onclick="() => DeleteOrder(order)">Delete</button>
-                <button class="btn btn-primary" @onclick="() => ShowOrderHistory(order)">Show History</button>
+                <button class="btn btn-secondary" @onclick="() => ShowOrderHistory(order)">Show History</button>
             </td>
 
         </tr>
@@ -144,7 +138,7 @@
 @if (_orderHistorySpecific != null)
 {
     <h4>Order History for "@_orderHistoryTitle"</h4>
-    <button @onclick="() => _orderHistorySpecific = null">Hide</button>
+    <button class="btn btn-secondary" @onclick="() => _orderHistorySpecific = null">Hide</button>
 
     <table class="table">
         <thead>
@@ -171,7 +165,7 @@
     </div>
 </div>
 
-<button class="btn btn-primary" @onclick="AddOrdersForDeliveryTest">AddOrdersForDeliveryTest</button>
+<button class="btn btn-secondary" @onclick="AddOrdersForDeliveryTest">AddOrdersForDeliveryTest</button>
 <p>Only use this button if there are customers at each address and 4 different products in stock</p>
 
 

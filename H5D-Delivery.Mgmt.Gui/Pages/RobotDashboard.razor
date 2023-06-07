@@ -10,6 +10,8 @@
 @using H5D_Delivery.Mgmt.Backend.Customer.Domain
 @using H5D_Delivery.Mgmt.Backend.Delivery.Comm
 @using H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryOrderFactory
+@using H5D_Delivery.Mgmt.Backend.Robot.Domain.Battery
+@using H5D_Delivery.Mgmt.Backend.Robot.Domain.Error
 @using H5D_Delivery.Mgmt.Backend.Stock.Domain
 @using Microsoft.VisualBasic
 
@@ -37,7 +39,7 @@
             <td>@robot.Id</td>
             <td>
                 <input type="text" @bind="robot.Name"/>
-                <button @onclick="robot.UpdateDb">Save</button>
+                    <button class="btn btn-secondary" @onclick="robot.UpdateDb">Save</button>
             </td>
             <td>@robot.BatteryCharge?.BatteryChargePct %</td>
             <td>@robot.GiveMeAnOrder</td>
@@ -47,10 +49,12 @@
             <td>@robot.CurrentPosition</td>
             <td>@robot.ErrorMessage</td>
             <td>
-                <button @onclick="robot.RequestStatusUpdate">RequestStatusUpdate</button>
-                <button @onclick="robot.RequestReturnToBase">RequestReturnToBase</button>
-                <button @onclick="() => robot.GiveDeliveryOrder(MakeTestDeliveryOrder2())">SendDeliveryOrder</button>
-                <button @onclick="() => robot.VisualizePosition = !robot.VisualizePosition">@GetButtonText(robot.VisualizePosition)</button>
+                <button class="btn btn-primary" @onclick="robot.RequestStatusUpdate">Request StatusUpdate</button>
+                <button class="btn btn-danger" @onclick="robot.RequestReturnToBase">Request ReturnToBase</button>
+                @*<button class="btn btn-primary" @onclick="() => robot.GiveDeliveryOrder(MakeTestDeliveryOrder2())">SendDeliveryOrder</button>*@
+                <button class="btn btn-primary" @onclick="() => robot.VisualizePosition = !robot.VisualizePosition">@GetButtonText(robot.VisualizePosition)</button>
+                <button class="btn btn-secondary" @onclick="() => ShowBatteryChargeHistory(robot)">Show BatteryHistory</button>
+                    <button class="btn btn-secondary" @onclick="() => ShowErrorHistory(robot)">Show ErrorHistory</button>
             </td>
             <td>@robot.LastContact</td>
         </tr>
@@ -59,6 +63,7 @@
 </table>
 @if (_robots.Any(r => r.VisualizePosition))
 {
+    <h4>Live Map</h4>
     <div id="map" style="position: relative; width: 940px; height: 500px; border: 1px solid black; overflow: visible;">
         <div style="position: absolute; left: 0px; top: 200px; width: 140px; height: 200px; background-color: lightgray; border: 1px solid black">
             <p>Verteilzentrum</p>
@@ -88,6 +93,58 @@
     </div>
 }
 
+@if (_specificBatteryCharge != null)
+{
+    <h4>@_robotTitle</h4>
+    <button class="btn btn-secondary" @onclick="() => _specificBatteryCharge = null">Hide</button>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>DateTime</th>
+            <th>Battery Charge [%]</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in _specificBatteryCharge)
+        {
+            <tr>
+                <td>@item.DateTime</td>
+                <td>@item.BatteryChargePct</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@if (_specificErrorMessage != null)
+{
+    <h4>@_robotTitleError</h4>
+    <button class="btn btn-secondary" @onclick="() => _specificErrorMessage = null">Hide</button>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>DateTime</th>
+                <th>ErrorType</th>
+                <th>DeliveryStep</th>
+                <th>DeliveryId</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in _specificErrorMessage)
+            {
+                <tr>
+                    <td>@item.DateTime</td>
+                    <td>@item.ErrorType</td>
+                    <td>@item.DeliveryStep</td>
+                    <td>@item.DeliveryId</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
 <style>
     .grid-container {
         display: grid;
@@ -112,11 +169,21 @@
     private IEnumerable<Robot> _robots;
     private readonly RobotListener _robotListener;
 
+    private IEnumerable<BatteryCharge>? _specificBatteryCharge;
+    private IEnumerable<ErrorMessage>? _specificErrorMessage;
+    private string _robotTitle = string.Empty;
+    private string _robotTitleError = string.Empty;
+
+    private readonly BatteryService _batteryChargeService;
+    private readonly ErrorService _errorService;
 
     public RobotDashboard()
     {
         _robotListener = IocSetup.Instance.Container.Resolve<RobotListener>();
         _robots = _robotListener.ActiveRobots;
+
+        _batteryChargeService = IocSetup.Instance.Container.Resolve<BatteryService>();
+        _errorService = IocSetup.Instance.Container.Resolve<ErrorService>();
 
         PropertyChangedSubscription();
         RequestUpdatesForAllRobots();
@@ -135,70 +202,24 @@
         }
     }
 
-    //TESTING ONLY
-    //private DeliveryOrderDto MakeTestDeliveryOrder()
-    //{
-    //    var testDeliveryOrder = new DeliveryOrder(Guid.NewGuid());
-    //    testDeliveryOrder.Orders = new List<Order>();
-    //    var stockItems = new List<StockItem>();
-
-    //    var product = new Product(Guid.NewGuid(), "Messer");
-    //    var stockItem = new StockItem(Guid.NewGuid(), product, 50, StorageLocation.A1);
-    //    stockItems.Add(stockItem);
-
-    //    var product2 = new Product(Guid.NewGuid(), "Gabel");
-    //    var stockItem2 = new StockItem(Guid.NewGuid(), product2, 50, StorageLocation.A2);
-    //    stockItems.Add(stockItem2);
-
-    //    var customer = new Customer(Guid.NewGuid(), "Hans", "Zbw-Strasse 4", "hans@gmail.com", "123456");
-    //    var customer2 = new Customer(Guid.NewGuid(), "Max", "Zbw-Strasse 3", "max@gmail.com", "123456");
-
-    //    var order = new Order(Guid.NewGuid(), product, customer, 1, new DateTime(2023, 07, 20, 12, 0, 0), new DateTime(2023, 07, 20, 13, 0, 0), Priority.Normal, DeliveryType.Deposit, OrderStatus.Active);
-    //    var order2 = new Order(Guid.NewGuid(), product2, customer2, 1, new DateTime(2023, 07, 20, 13, 0, 0), new DateTime(2023, 07, 20, 14, 0, 0), Priority.Normal, DeliveryType.HandOver, OrderStatus.Active);
-
-    //    testDeliveryOrder.Orders.Add(order);
-    //    testDeliveryOrder.Orders.Add(order2);
-
-    //    testDeliveryOrder.DeliveryPlan = new DeliveryPlan(Guid.NewGuid());
-    //    testDeliveryOrder.DeliveryPlan.DeliverySteps = new List<DeliveryStep>();
-
-    //    var deliveryStep1 = new DeliveryStep(Guid.NewGuid());
-    //    deliveryStep1.Coordinates = new Coordinates(500, 500);
-    //    deliveryStep1.StepSequence = 1;
-    //    deliveryStep1.DeliveryType = DeliveryType.Waypoint;
-    //    testDeliveryOrder.DeliveryPlan.DeliverySteps.Add(deliveryStep1);
-
-    //    var deliveryStep2 = new DeliveryStep(Guid.NewGuid());
-    //    deliveryStep2.Coordinates = new Coordinates(1000, 2000);
-    //    deliveryStep2.ProductId = product.Id;
-    //    deliveryStep2.AuthorizationKey = "aefawef";
-    //    deliveryStep2.StepSequence = 2;
-    //    deliveryStep2.DeliveryType = DeliveryType.Deposit;
-    //    testDeliveryOrder.DeliveryPlan.DeliverySteps.Add(deliveryStep2);
-
-    //    var deliveryStep3 = new DeliveryStep(Guid.NewGuid());
-    //    deliveryStep3.Coordinates = new Coordinates(2000, 3000);
-    //    deliveryStep3.StepSequence = 3;
-    //    deliveryStep3.DeliveryType = DeliveryType.Waypoint;
-    //    testDeliveryOrder.DeliveryPlan.DeliverySteps.Add(deliveryStep3);
-
-    //    var deliveryStep4 = new DeliveryStep(Guid.NewGuid());
-    //    deliveryStep4.Coordinates = new Coordinates(3000, 4000);
-    //    deliveryStep4.ProductId = product2.Id;
-    //    deliveryStep4.AuthorizationKey = "awef123";
-    //    deliveryStep4.StepSequence = 4;
-    //    deliveryStep4.DeliveryType = DeliveryType.HandOver;
-    //    testDeliveryOrder.DeliveryPlan.DeliverySteps.Add(deliveryStep4);
-
-    //    return new DeliveryOrderDto(testDeliveryOrder, stockItems);
-    //}
-
     private DeliveryOrderDto MakeTestDeliveryOrder2()
     {
         var orders = IocSetup.Instance.Container.Resolve<OrderService>().GetAll().ToList();
         var deliveryOrder = IocSetup.Instance.Container.Resolve<DeliveryOrderFactory>().GenerateDeliveryOrder(orders);
         var stockItems = IocSetup.Instance.Container.Resolve<StockService>().GetAll().ToList();
         return new DeliveryOrderDto(deliveryOrder, stockItems);
+    }
+
+    private void ShowBatteryChargeHistory(Robot robot)
+    {
+        _robotTitle = $"10 Newest BatteryCharge Entries for {robot.Name} (Id: {robot.Id})";
+        _specificBatteryCharge = _batteryChargeService.GetXNewestForSpecificRobot(robot.Id, 10);
+    }
+
+    private void ShowErrorHistory(Robot robot)
+    {
+        _robotTitleError = $"10 Newest ErrorMessage Entries for {robot.Name} (Id: {robot.Id})";
+        _specificErrorMessage = _errorService.GetXNewestForSpecificRobot(robot.Id, 10);
     }
 
     private void PropertyChangedSubscription()

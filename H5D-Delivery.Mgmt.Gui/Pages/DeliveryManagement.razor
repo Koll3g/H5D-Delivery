@@ -8,8 +8,8 @@
 @using System.Reflection.Metadata
 
 <h3>Delivery Orders</h3>
-<button @onclick="() => InvokeAsync(StateHasChanged)">Refresh</button>
-<button @onclick="GenerateTestDelivery">GenerateDeliveryOrder (Testing only)</button>
+<button class="btn btn-secondary" @onclick="() => InvokeAsync(StateHasChanged)">Refresh</button>
+<button class="btn btn-secondary" @onclick="GenerateTestDelivery">GenerateDeliveryOrder (Testing only)</button>
 <table class="table">
     <thead>
         <tr>
@@ -29,8 +29,8 @@
                 <td>@deliveryOrder.DeliveryPlan.DeliverySteps.Count</td>
                 <td>@deliveryOrder.AssignedRobotId</td>
                 <td>
-                    <button @onclick="() => ShowDeliverySteps(deliveryOrder)">Show DeliverySteps</button>
-                    <button @onclick="() => _deliveryService.Delete(deliveryOrder.Id)">Delete</button>
+                    <button class="btn btn-primary" @onclick="() => ShowDeliverySteps(deliveryOrder)">Show DeliverySteps</button>
+                    <button class="btn btn-danger" @onclick="() => _deliveryService.Delete(deliveryOrder.Id)">Delete</button>
                 </td>
             </tr>
         }
@@ -40,7 +40,7 @@
 @if (_deliveryStepsShown)
 {
     <h4>Delivery Steps for @_deliveryStepsForId</h4>
-    <button @onclick="() => _deliveryStepsShown = false">Hide</button>
+    <button class="btn btn-primary" @onclick="() => _deliveryStepsShown = false">Hide</button>
     <div id="map" style="position: relative; width: 940px; height: 500px; border: 1px solid black; overflow: visible;">
         <div style="position: absolute; left: 0px; top: 200px; width: 140px; height: 200px; background-color: grey; border: 1px solid black">
             <p>Verteilzentrum</p>
