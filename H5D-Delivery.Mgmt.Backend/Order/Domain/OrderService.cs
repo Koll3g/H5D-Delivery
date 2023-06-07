@@ -6,12 +6,12 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain
     public class OrderService
     {
         private readonly IOrderRepository _orderRepository;
-        private readonly IOrderHistoryRepository _orderHistoryRepository;
+        private readonly OrderHistoryService _orderHistoryService;
 
-        public OrderService(IOrderRepository orderRepository, IOrderHistoryRepository orderHistoryRepository)
+        public OrderService(IOrderRepository orderRepository, OrderHistoryService orderHistoryService)
         {
             _orderRepository = orderRepository;
-            _orderHistoryRepository = orderHistoryRepository;
+            _orderHistoryService = orderHistoryService;
         }
 
         public IEnumerable<Order>? GetAll()
@@ -38,6 +38,63 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain
             _orderRepository.Delete(id);
         }
 
+        public void UpdateOrderStatus(Guid orderId, OrderStatus orderStatus)
+        {
+            try
+            {
+                var order = Get(orderId);
+                if (order != null)
+                {
+                    order.Status = orderStatus;
+                    Update(order);
+                    _orderHistoryService.Create(order);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public void AddDeliveryId(Guid orderId, Guid deliveryOrderId)
+        {
+            try
+            {
+                var order = Get(orderId);
+                if (order != null)
+                {
+                    order.DeliveryOrderId = deliveryOrderId;
+                    Update(order);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public IEnumerable<OrderHistory>? GetOrderHistory(Guid orderId)
+        {
+            return _orderHistoryService.GetAllForSpecificOrder(orderId);
+        }
+
+        public List<Order>? GetAllOrdersForDeliveryId(Guid deliveryOrderId)
+        {
+            try
+            {
+                var orders = _orderRepository.GetAll()?
+                    .Where(o => o.DeliveryOrderId == deliveryOrderId)
+                    .ToList();
+
+                return orders;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+        }
+
         public void Create(Order order)
         {
             if (!IsOrderValid(order))
@@ -48,12 +105,7 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain
 
             try
             {
-                _orderHistoryRepository.Create(new OrderHistory(Guid.NewGuid())
-                {
-                    DateTime = DateTime.Now,
-                    Status = OrderStatus.Active,
-                    OrderId = order.Id
-                });
+                _orderHistoryService.Create(order);
             }
             catch (Exception ex)
             {

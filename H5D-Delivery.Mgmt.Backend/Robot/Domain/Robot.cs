@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Autofac;
 using H5D_Delivery.Mgmt.Backend.Delivery.Comm;
 using H5D_Delivery.Mgmt.Backend.Delivery.Domain;
+using H5D_Delivery.Mgmt.Backend.Order.Domain;
 using H5D_Delivery.Mgmt.Backend.Robot.Comm;
 using H5D_Delivery.Mgmt.Backend.Robot.Domain.Battery;
 using H5D_Delivery.Mgmt.Backend.Robot.Domain.Error;
@@ -133,6 +134,24 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
         {
             LastContact = DateTime.Now;
             GiveMeAnOrder = giveMeAnOrder;
+
+            //ToDo: if a deliveryorder is already existing for specific robot which is not done yet, send this one
+
+            var deliveryService = IocSetup.Instance.Container.Resolve<DeliveryService>();
+            var deliveryOrder = deliveryService.GenerateDeliveryOrder();
+            if (deliveryOrder == null)
+            {
+                return;
+            }
+            deliveryOrder.AssignedRobotId = Id;
+            deliveryService.Update(deliveryOrder);
+
+            var stockItems = IocSetup.Instance.Container.Resolve<StockService>().GetAll();
+            if (stockItems != null)
+            {
+                var stockItemsList = stockItems.ToList();
+                GiveDeliveryOrder(new DeliveryOrderDto(deliveryOrder, stockItemsList));
+            }
         }
 
         public void CurrentDeliveryIdUpdateHandler(object? sender, Guid id)
@@ -145,6 +164,45 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Domain
         {
             LastContact = DateTime.Now;
             CurrentDeliveryStep = step.DeliveryStep;
+
+            var deliveryService = IocSetup.Instance.Container.Resolve<DeliveryService>();
+            var deliveryOrder = deliveryService.Get(step.DeliveryId);
+            if (deliveryOrder == null)
+            {
+                return;
+            }
+            UpdateDeliveryStatus(deliveryOrder, step, deliveryService);
+        }
+
+        private void UpdateDeliveryStatus(DeliveryOrder deliveryOrder, CurrentDeliveryStep currentDeliveryStep, DeliveryService deliveryService)
+        {
+            if (currentDeliveryStep.DeliveryStep <= 1)
+            {
+                return;
+            }
+            var previousDeliveryStep = deliveryOrder.DeliveryPlan.DeliverySteps.First(x => x.StepSequence == currentDeliveryStep.DeliveryStep - 1);
+            previousDeliveryStep.RealDeliveryTime = DateTime.Now;
+            deliveryService.Update(deliveryOrder);
+
+            if (previousDeliveryStep.DeliveryType is DeliveryType.Deposit or DeliveryType.HandOver)
+            {
+                var orderId = deliveryOrder.Orders.First(x => x.ProductId == previousDeliveryStep.ProductId).Id;
+                var orderService = IocSetup.Instance.Container.Resolve<OrderService>();
+                orderService.UpdateOrderStatus(orderId, OrderStatus.Delivered);
+            }
+            else if (previousDeliveryStep.DeliveryType is DeliveryType.DistributionCenter)
+            {
+                var orderService = IocSetup.Instance.Container.Resolve<OrderService>();
+                var ordersBeingDelivered = orderService.GetAllOrdersForDeliveryId(deliveryOrder.Id);
+                if (ordersBeingDelivered == null)
+                {
+                    return;
+                }
+                foreach (var order in ordersBeingDelivered)
+                {
+                    orderService.UpdateOrderStatus(order.Id, OrderStatus.BeingDelivered);
+                }
+            }
         }
 
         public void DeliveryDoneUpdateHandler(object? sender, int deliveryDone)

@@ -4,18 +4,10 @@
 @using Autofac
 @using H5D_Delivery.Mgmt.Backend.Customer.Domain
 @using H5D_Delivery.Mgmt.Backend.Product.Domain
-@using H5D_Delivery.Mgmt.Backend.Delivery.Domain
-@using H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryOrderFactory
-@using H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory
 @using H5D_Delivery.Mgmt.Backend.Order.Domain.History
-@using H5D_Delivery.Mgmt.Backend.Order.Persistence
 @using H5D_Delivery.Mgmt.Backend.Stock.Domain
-@using Microsoft.AspNetCore.Mvc.Formatters
-
-
 
 <h3>Orders</h3>
-
 <div>
     <button class="btn btn-primary" @onclick="AddOrder">Add Order</button>
    @if (isEditing)
@@ -78,20 +70,22 @@
 
 <!-- Priority-Auswahlfeld -->
 <div>
-      <p>Selected Priority: @_selectedPriority</p>
+    <p>Selected Priority: @_selectedPriority</p>
     <label for="priority">Priority</label>
     <select id="priority" @bind="_selectedPriority">
         <option value="High">High</option>
         <option value="Normal">Normal</option>
         <option value="Low">Low</option>
     </select>
-    </div>
+</div>
+
+<button class="btn btn-secondary" @onclick="() => InvokeAsync(StateHasChanged)">Refresh</button>
 
 <table class="table">
     <thead>
     <tr>
         <th>Id</th>
-       @* <th>Id Product</th>*@
+        @* <th>Id Product</th>*@
         <th>Product Name</th>
         @*<th>Id Customer</th>*@
         <th>Customer Name</th>
@@ -101,6 +95,7 @@
         <th>Priority</th>
         <th>Status</th> <!-- Neues Feld für Status -->
         <th>Delivery Type</th> <!-- Neues Feld für Delivery Type -->
+        <th>DeliveryOrderId</th>
         <th>Action</th>
     </tr>
     </thead>
@@ -109,9 +104,9 @@
     {
         <tr>
             <td>@order.Id</td>
-           @* <td>@order.Product.Id</td>*@
+            @* <td>@order.Product.Id</td>*@
             <td>@order.Product.Name</td>
-           @* <td>@order.Customer.Id</td>*@
+            @* <td>@order.Customer.Id</td>*@
             <td>@order.Customer.Name</td>
             <td>@order.Amount</td>
             <td>@order.EarliestDeliveryTime</td>
@@ -120,8 +115,19 @@
             <td>@order.Status</td> <!-- Neues Feld für Status -->
             <td>@order.DeliveryType</td> <!-- Neues Feld für Delivery Type -->
             <td>
+                @if (order.DeliveryOrderId != null)
+                {
+                    @order.DeliveryOrderId
+                }
+                else
+                {
+                    @NoDeliveryOrderId
+                }
+            </td>
+            <td>
                 <button class="btn btn-primary" @onclick="() => EditOrder(order)">Edit</button> 
                 <button class="btn btn-danger" @onclick="() => DeleteOrder(order)">Delete</button>
+                <button class="btn btn-secondary" @onclick="() => ShowOrderHistory(order)">Show History</button>
             </td>
 
         </tr>
@@ -129,19 +135,45 @@
     </tbody>
 </table>
 
+@if (_orderHistorySpecific != null)
+{
+    <h4>Order History for "@_orderHistoryTitle"</h4>
+    <button class="btn btn-secondary" @onclick="() => _orderHistorySpecific = null">Hide</button>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>DateTime</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in _orderHistorySpecific)
+            {
+                <tr>
+                    <td>@item.DateTime</td>
+                    <td>@item.Status.ToString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
 <div class="row">
     <div class="col-md-12">
         <label id="error" class="form-control">@errorMessage</label>
     </div>
 </div>
 
-<button class="btn btn-primary" @onclick="AddOrdersForDeliveryTest">AddOrdersForDeliveryTest</button>
+<button class="btn btn-secondary" @onclick="AddOrdersForDeliveryTest">AddOrdersForDeliveryTest</button>
 <p>Only use this button if there are customers at each address and 4 different products in stock</p>
 
 
 @code {
     private readonly OrderService _orderService;
     private IEnumerable<Order> _orders = new List<Order>();
+    private IEnumerable<OrderHistory>? _orderHistorySpecific;
+    private string _orderHistoryTitle = string.Empty;
 
     private readonly ProductService _productService;
     private IEnumerable<Product> _products = new List<Product>();
@@ -168,25 +200,32 @@
 
     private DeliveryType _selectedDeliveryType = DeliveryType.Deposit; // Initialer DeliveryType
 
-    public OrderManagement()
-{
-    var iocContainer = IocSetup.Instance.Container;
-    _customerService = iocContainer.Resolve<CustomerService>();
-    _productService = iocContainer.Resolve<ProductService>();
-    _orderService = iocContainer.Resolve<OrderService>();
-    _products = _productService.GetAll();
-    _customers = _customerService.GetAll();
-    
-    GetAllOrders();
-}
+        private const string NoDeliveryOrderId = "No Delivery assigned yet";
 
+    public OrderManagement()
+    {
+        var iocContainer = IocSetup.Instance.Container;
+        _customerService = iocContainer.Resolve<CustomerService>();
+        _productService = iocContainer.Resolve<ProductService>();
+        _orderService = iocContainer.Resolve<OrderService>();
+        _products = _productService.GetAll();
+        _customers = _customerService.GetAll();
+        
+        GetAllOrders();
+    }
+
+    private void ShowOrderHistory(Order order)
+    {
+        _orderHistoryTitle = $"{order} (Id: {order.Id})";
+        _orderHistorySpecific = _orderService.GetOrderHistory(order.Id)?.OrderBy(x => x.DateTime);
+    }
 
     public void GetAllOrders()
     {
         var orders = _orderService.GetAll();
         if (orders != null)
         {
-            _orders = orders;
+            _orders = orders.OrderBy(x => x.Status).ThenBy(x => x.LatestDeliveryTime);
         }
     }
 
@@ -216,10 +255,10 @@
 
 
     private void DeleteOrder(Order order)
-{
-    _orderService.Delete(order.Id);
-    GetAllOrders();
-}
+    {
+        _orderService.Delete(order.Id);
+        GetAllOrders();
+    }
 
 
      private void EditOrder(Order order)
@@ -231,43 +270,44 @@
         isEditing = true;
     }
 
-   private void SaveOrder()
-{
-    try{ 
-    if (_selectedOrder == null) return;
-
-    var updatedProduct = _products.FirstOrDefault(p => p.Id == _selectedProductId);
-    var updatedCustomer = _customers.FirstOrDefault(c => c.Id == _selectedCustomerId);
-
-    if (updatedProduct != null && updatedCustomer != null)
+    private void SaveOrder()
     {
-         _selectedOrder.Amount = orderAmount;
-        _selectedOrder.ProductId = updatedProduct.Id;
-        _selectedOrder.CustomerId = updatedCustomer.Id;
-        _selectedOrder.EarliestDeliveryTime = earliestDelivery;
-        _selectedOrder.LatestDeliveryTime = latestDelivery;
-        _selectedOrder.Priority = Enum.Parse<Priority>(_selectedPriority);
-        _selectedOrder.DeliveryType = DeliveryType.Deposit;
-        _selectedOrder.DeliveryType = _selectedDeliveryType; // Delivery Type aktualisieren
-        _orderService.Update(_selectedOrder);
-        isEditing = false;
-     }
+        try
+        { 
+            if (_selectedOrder == null) return;
 
-    // Clear selected values
-    _selectedProductId = Guid.Empty;
-    _selectedCustomerId = Guid.Empty;
-    _selectedPriority = "";
-     _selectedDeliveryType = DeliveryType.Deposit; // Delivery Type zurücksetzen
-    _selectedOrder = null;
-    GetAllOrders();
-     errorMessage = string.Empty;
-    }
-    catch (Exception ex)
-    {
-        errorMessage = ex.Message;
-    }
+            var updatedProduct = _products.FirstOrDefault(p => p.Id == _selectedProductId);
+            var updatedCustomer = _customers.FirstOrDefault(c => c.Id == _selectedCustomerId);
 
-}
+            if (updatedProduct != null && updatedCustomer != null)
+            {
+                 _selectedOrder.Amount = orderAmount;
+                _selectedOrder.ProductId = updatedProduct.Id;
+                _selectedOrder.CustomerId = updatedCustomer.Id;
+                _selectedOrder.EarliestDeliveryTime = earliestDelivery;
+                _selectedOrder.LatestDeliveryTime = latestDelivery;
+                _selectedOrder.Priority = Enum.Parse<Priority>(_selectedPriority);
+                _selectedOrder.DeliveryType = DeliveryType.Deposit;
+                _selectedOrder.DeliveryType = _selectedDeliveryType; // Delivery Type aktualisieren
+                _orderService.Update(_selectedOrder);
+                isEditing = false;
+            }
+
+            // Clear selected values
+            _selectedProductId = Guid.Empty;
+            _selectedCustomerId = Guid.Empty;
+            _selectedPriority = "";
+             _selectedDeliveryType = DeliveryType.Deposit; // Delivery Type zurücksetzen
+            _selectedOrder = null;
+            GetAllOrders();
+            errorMessage = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+
+    }
 
     private void AddOrdersForDeliveryTest()
     {
@@ -323,7 +363,7 @@
         latestDelivery = DateTime.Now.AddMinutes(15);
         _selectedPriority = "Normal";
          _selectedDeliveryType = DeliveryType.Deposit; // Delivery Type zurücksetzen
-}
+
     }
 }
 

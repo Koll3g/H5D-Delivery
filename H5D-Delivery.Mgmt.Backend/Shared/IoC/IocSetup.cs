@@ -1,8 +1,10 @@
 ﻿using Autofac;
 using H5D_Delivery.Mgmt.Backend.Customer.Persistence;
 using H5D_Delivery.Mgmt.Backend.Customer.Domain;
+using H5D_Delivery.Mgmt.Backend.Delivery.Domain;
 using H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryOrderFactory;
 using H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory;
+using H5D_Delivery.Mgmt.Backend.Delivery.Persistence;
 using H5D_Delivery.Mgmt.Backend.Order.Domain;
 using H5D_Delivery.Mgmt.Backend.Order.Domain.History;
 using H5D_Delivery.Mgmt.Backend.Order.Persistence;
@@ -65,7 +67,7 @@ namespace H5D_Delivery.Mgmt.Backend.Shared.IoC
 
             containerBuilder.RegisterType<OrderRepository>().As<IOrderRepository>();
             containerBuilder.RegisterType<OrderContext>().As<OrderContext>();
-            containerBuilder.RegisterType<OrderService>().As<OrderService>();
+            containerBuilder.RegisterType<OrderService>().As<OrderService>().SingleInstance();
 
             containerBuilder.RegisterType<BatteryChargeRepository>().As<IBatteryChargeRepository>();
             containerBuilder.RegisterType<BatteryChargeContext>().As<BatteryChargeContext>();
@@ -83,7 +85,7 @@ namespace H5D_Delivery.Mgmt.Backend.Shared.IoC
 
             containerBuilder.RegisterType<OrderHistoryRepository>().As<IOrderHistoryRepository>();
             containerBuilder.RegisterType<OrderHistoryContext>().As<OrderHistoryContext>();
-            containerBuilder.RegisterType<OrderHistoryService>().As<OrderHistoryService>();
+            containerBuilder.RegisterType<OrderHistoryService>().As<OrderHistoryService>().SingleInstance();
 
             containerBuilder.RegisterType<DeliveryOrderFactoryZbw>().As<DeliveryOrderFactory>();
             containerBuilder.RegisterType<DeliveryPlanFactoryZbw>().As<DeliveryPlanFactory>();
@@ -91,6 +93,10 @@ namespace H5D_Delivery.Mgmt.Backend.Shared.IoC
             containerBuilder.RegisterType<RouteOptimizerZbw>().As<IRouteOptimizer>();
             containerBuilder.RegisterType<DeliveryTimerZbw>().As<IDeliveryTimer>();
             containerBuilder.RegisterType<OrderPrioritizerRobotInvoked>().As<IOrderPrioritizer>();
+
+            containerBuilder.RegisterType<DeliveryContext>().As<DeliveryContext>();
+            containerBuilder.RegisterType<DeliveryRepository>().As<IDeliveryRepository>();
+            containerBuilder.RegisterType<DeliveryService>().As<DeliveryService>().SingleInstance();
 
             Container = containerBuilder.Build();
         }

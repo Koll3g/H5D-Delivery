@@ -19,6 +19,7 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryOrderFactory
 
             var deliveryPlan = DeliveryPlanFactory.CreateDeliveryPlan(DeliveryOrder.Orders);
             DeliveryOrder.DeliveryPlan = deliveryPlan;
+            DeliveryOrder.DeliveryPlanId = deliveryPlan.Id;
 
             return DeliveryOrder;
         }

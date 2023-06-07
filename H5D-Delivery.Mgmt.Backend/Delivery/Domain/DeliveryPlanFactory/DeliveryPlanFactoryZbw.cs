@@ -9,6 +9,7 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory
 
         public override DeliveryPlan CreateDeliveryPlan(List<Order.Domain.Order> orders)
         {
+            DeliveryPlan = new DeliveryPlan(Guid.NewGuid());
             GenerateDeliverySteps(orders);
             
             RouteOptimizer.OptimizeRoute(DeliveryPlan);
@@ -33,7 +34,8 @@ namespace H5D_Delivery.Mgmt.Backend.Delivery.Domain.DeliveryPlanFactory
                 DeliveryType = order.DeliveryType,
                 ProductId = order.ProductId,
                 Coordinates = GetCoordinatesFromAddress(order.Customer.Address),
-                AuthorizationKey = order.AuthorizationKey
+                AuthorizationKey = order.AuthorizationKey,
+                DeliveryPlanId = DeliveryPlan.Id,
             };
             return deliveryStep;
         }

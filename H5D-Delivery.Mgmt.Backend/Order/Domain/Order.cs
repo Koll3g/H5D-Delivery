@@ -1,4 +1,5 @@
-﻿using H5D_Delivery.Mgmt.Backend.Shared.Persistence;
+﻿using H5D_Delivery.Mgmt.Backend.Delivery.Domain;
+using H5D_Delivery.Mgmt.Backend.Shared.Persistence;
 
 namespace H5D_Delivery.Mgmt.Backend.Order.Domain
 {
@@ -20,6 +21,9 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain
         public DeliveryType DeliveryType { get; set; }
 
         public OrderStatus Status { get; set; }
+
+        public Guid? DeliveryOrderId { get; set; }
+        //public DeliveryOrder? DeliveryOrder { get; set; }
 
         public Order(Guid id, Product.Domain.Product product, Customer.Domain.Customer customer, uint amount, DateTime earliestDeliveryTime, DateTime latestDeliveryTime, Priority priority, DeliveryType deliveryType, OrderStatus status = OrderStatus.Active, string authorizationKey = "") : base(id)
         {
@@ -49,6 +53,11 @@ namespace H5D_Delivery.Mgmt.Backend.Order.Domain
             DeliveryType = deliveryType;
             Status = status;
             AuthorizationKey = authorizationKey;
+        }
+
+        public override string ToString()
+        {
+            return $"{Amount}x {Product.Name} for {Customer.Name} at {Customer.Address}";
         }
     }
 }

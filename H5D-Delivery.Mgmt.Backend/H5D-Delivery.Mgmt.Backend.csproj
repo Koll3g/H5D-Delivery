@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="Migrations\Delivery\" />
     <Folder Include="Migrations\Robot\" />
   </ItemGroup>
 
