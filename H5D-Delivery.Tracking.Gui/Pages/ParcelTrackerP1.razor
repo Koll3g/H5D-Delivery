@@ -1,0 +1,56 @@
+﻿@page "/parcelTrackerX"
+@using H5D_Delivery.Tracking.Backend.Tracking.Domain
+@using H5D_Delivery.Tracking.Backend.Shared.IoC
+@using Autofac
+
+<PageTitle>ParcelTracker</PageTitle>
+<h3>High5Dynamics Parcel Tracker</h3>
+<div>
+    <label for="name">Name:</label>
+    <input id="name" @bind="name" />
+</div>
+<div>
+    <label for="customerId">Kunden ID:</label>
+    <input id="customerId" @bind="customerId" />
+</div>
+
+<button @onclick="HandleLoginClick">Logging</button>
+
+@inject NavigationManager NavigationManager
+
+@code {
+    private readonly ParcelTrackerService _parcelTrackerService;
+    private string name;
+    private string customerId;
+
+    public ParcelTrackerP1()
+    {
+        _parcelTrackerService = IocSetup.Instance.Container.Resolve<ParcelTrackerService>();
+    }
+
+    private async Task HandleLoginClick()
+    {
+        // Überprüfe, ob Name und Kunden-ID eingegeben wurden
+        if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(customerId))
+        {
+            // Zeige eine Fehlermeldung an oder tue etwas anderes, um den Benutzer darauf hinzuweisen, dass beide Felder ausgefüllt sein müssen
+            return;
+        }
+
+
+        bool isAuthorized = _parcelTrackerService.IsAuthorized(name, customerId);
+
+        if (isAuthorized)
+        {
+            // Navigiere zur nächsten Seite
+            NavigationManager.NavigateTo("/parcelTrackerP2");
+        }
+        else
+        {
+            // Zeige eine Fehlermeldung an oder tue etwas anderes, um den Benutzer darüber zu informieren, dass die Autorisierung fehlgeschlagen ist
+        }
+
+        //_parcelTrackerService.IsAuthorized();
+        //_parcelTrackerService.GetOrderHistory(name, orderId);
+    }
+}

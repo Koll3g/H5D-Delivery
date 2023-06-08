@@ -10,6 +10,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\image\Bild1.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\image\Bild1.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
   </ItemGroup>
 
