@@ -16,7 +16,7 @@ namespace H5D_Delivery.Tracking.Backend.Tracking.Persistence
                     "Data Source = localhost,1433; ; Database=H5D-Db;User Id=sa; Password=H@a123456789;TrustServerCertificate=True";
 #else
                 string connection =
-                    "Data Source = 10.5.0.21,1433; ; Database=H5D-Db;User Id=sa; Password=H@a123456789;TrustServerCertificate=True";
+                    "Data Source = 10.1.0.1,1433; ; Database=H5D-Db;User Id=sa; Password=H@a123456789;TrustServerCertificate=True";
 #endif
                 optionsBuilder.UseSqlServer(connection);
                 optionsBuilder.LogTo(Console.WriteLine);

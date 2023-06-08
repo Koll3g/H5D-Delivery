@@ -48,29 +48,36 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
         {
             return Task.Run(() =>
             {
-                var payload = x.ApplicationMessage.ConvertPayloadToString();
-                var topic = x.ApplicationMessage.Topic;
-
-                Match match = Regex.Match(topic, RobotIdPattern);
-
-                if (match.Success)
+                try
                 {
-                    var robotIdString = match.Groups["robotId"].Value;
-                    var robotId = new Guid(robotIdString);
-                    
-                    foreach (var robot in ActiveRobots)
+                    var payload = x.ApplicationMessage.ConvertPayloadToString();
+                    var topic = x.ApplicationMessage.Topic;
+
+                    Match match = Regex.Match(topic, RobotIdPattern);
+
+                    if (match.Success)
                     {
-                        if (robot.Id == robotId)
+                        var robotIdString = match.Groups["robotId"].Value;
+                        var robotId = new Guid(robotIdString);
+
+                        foreach (var robot in ActiveRobots)
                         {
-                            return;
+                            if (robot.Id == robotId)
+                            {
+                                return;
+                            }
                         }
+
+                        var newRobot = new Domain.Robot(robotId, string.Empty, DateTime.Now, Guid.Empty);
+                        _robotService.Create(newRobot);
                     }
 
-                    var newRobot = new Domain.Robot(robotId, string.Empty, DateTime.Now, Guid.Empty);
-                    _robotService.Create(newRobot);
+                    LoadRobotsFromDb();
                 }
-
-                LoadRobotsFromDb();
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
             });
         }
     }

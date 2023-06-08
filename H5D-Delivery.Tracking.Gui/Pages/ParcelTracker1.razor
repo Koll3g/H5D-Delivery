@@ -1,0 +1,91 @@
+﻿@page "/parcelTracker1"
+@using H5D_Delivery.Tracking.Backend.Tracking.Domain
+@using H5D_Delivery.Tracking.Backend.Shared.IoC
+@using Autofac
+
+<PageTitle>ParcelTracker</PageTitle>
+<h3>Eingabe</h3>
+<div>
+    <label for="name">Name:</label>
+    <input id="name" @bind="name" />
+</div>
+<div>
+    <label for="customerId">Bestell-Nr:</label>
+    <input id="customerId" @bind="orderId" />
+</div>
+@if(_orderHistory != null)
+{
+    <h4>Bestellverlauf</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>DateTime</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in _orderHistory)
+            {
+                <tr>
+                    <td>@item.DateTime</td>
+                    <td>@GetOrderStatusDescription(item.Status)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@if(exception != null)
+{
+    <p>@exception</p>
+}
+
+<button @onclick="HandleLoginClick">Track Order</button>
+
+@inject NavigationManager NavigationManager
+
+@code {
+    private readonly ParcelTrackerService _parcelTrackerService;
+    private string name = string.Empty;
+    private string orderId = string.Empty;
+    private string? exception;
+
+    private IEnumerable<OrderHistory>? _orderHistory;
+
+    public ParcelTracker1()
+    {
+        _parcelTrackerService = IocSetup.Instance.Container.Resolve<ParcelTrackerService>();
+    }
+
+    private void HandleLoginClick()
+    {
+        // Überprüfe, ob Name und Kunden-ID eingegeben wurden
+        if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(orderId))
+        {
+            // Zeige eine Fehlermeldung an oder tue etwas anderes, um den Benutzer darauf hinzuweisen, dass beide Felder ausgefüllt sein müssen
+            return;
+        }
+        try
+        {
+            _orderHistory = _parcelTrackerService.GetOrderHistory(name, orderId);
+            exception = null;
+        }
+        catch(Exception ex)
+        {
+            exception = ex.Message;
+        }
+    }
+
+    private string GetOrderStatusDescription(OrderStatus status)
+    {
+        switch (status)
+        {
+            case OrderStatus.Canceled: return "Die Bestellung wurde leider storniert. Bitte wende dich an unseren Kundendienst";
+            case OrderStatus.Active: return "Die Bestellung wurde erfasst und wir bald für die Lieferung eingeplant";
+            case OrderStatus.PlannedForDelivery: return "Die Bestellung wurde einem Roboter zugeteilt und wird bald ausgeliefert";
+            case OrderStatus.BeingDelivered: return "Die Bestellung ist auf dem Roboter und zu dir unterwegs";
+            case OrderStatus.FailedToDeliver: return "Das Paket konnte leider nicht zugestellt werden";
+            case OrderStatus.Delivered: return "Das Paket wurde erfolgreich zugestellt";
+        }
+        return "N/A";
+    }
+}

@@ -26,6 +26,7 @@ namespace H5D_Delivery.Tracking.Backend.Tracking.Persistence
 
         public bool? IsAuthorized(string customerName, Guid orderId)
         {
+            var test = _orderHistoryContext.OrderHistory?.ToList();
             return _orderHistoryContext.OrderHistory?.Any(x => x.CustomerName == customerName && x.OrderId == orderId);
         }
     }

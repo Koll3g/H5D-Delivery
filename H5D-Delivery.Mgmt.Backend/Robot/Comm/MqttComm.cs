@@ -17,7 +17,7 @@ namespace H5D_Delivery.Mgmt.Backend.Robot.Comm
 #if DEBUG
         protected const string BrokerHostName = "localhost";
 #else
-        protected const string BrokerHostName = "10.5.0.21";
+        protected const string BrokerHostName = "10.1.0.1";
 #endif
         protected const int BrokerPort = 1883;
         protected readonly string ClientId;
