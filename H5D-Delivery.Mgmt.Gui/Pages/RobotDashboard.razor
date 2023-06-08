@@ -40,7 +40,7 @@
             <td>@robot.Id</td>
             <td>
                 <input type="text" @bind="robot.Name"/>
-                    <button class="btn btn-secondary" @onclick="robot.UpdateDb">Save</button>
+                    <button @onclick="robot.UpdateDb">Save</button>
             </td>
             <td>@robot.BatteryCharge?.BatteryChargePct %</td>
             <td>@robot.GiveMeAnOrder</td>
@@ -50,12 +50,12 @@
             <td>@robot.CurrentPosition</td>
             <td>@robot.ErrorMessage</td>
             <td>
-                <button class="btn btn-primary" @onclick="robot.RequestStatusUpdate">Request StatusUpdate</button>
-                <button class="btn btn-danger" @onclick="robot.RequestReturnToBase">Request ReturnToBase</button>
+                <button @onclick="robot.RequestStatusUpdate">StatusUpdate</button>
+                <button @onclick="robot.RequestReturnToBase">ReturnToBase</button>
                 @*<button class="btn btn-primary" @onclick="() => robot.GiveDeliveryOrder(MakeTestDeliveryOrder2())">SendDeliveryOrder</button>*@
-                <button class="btn btn-primary" @onclick="() => robot.VisualizePosition = !robot.VisualizePosition">@GetButtonText(robot.VisualizePosition)</button>
-                <button class="btn btn-secondary" @onclick="() => ShowBatteryChargeHistory(robot)">Show BatteryHistory</button>
-                    <button class="btn btn-secondary" @onclick="() => ShowErrorHistory(robot)">Show ErrorHistory</button>
+                <button @onclick="() => robot.VisualizePosition = !robot.VisualizePosition">@GetButtonText(robot.VisualizePosition)</button>
+                <button @onclick="() => ShowBatteryChargeHistory(robot)">BatteryHistory</button>
+                    <button @onclick="() => ShowErrorHistory(robot)">ErrorHistory</button>
             </td>
             <td>@robot.LastContact</td>
         </tr>
