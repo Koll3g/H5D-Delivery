@@ -9,6 +9,8 @@ To install the MQTT Broker Image use following command:
 "docker pull eclipse-mosquitto:1.6.15"
 Afterwards you can run the image from the Docker GUI (set Port to 1883 and give the container a name)
 
+Both mqtt and sql server must run for the application to boot. Make sure that the connection strings are set correctly depending on release and debug build.
+
 When starting with an empty SQL Server Instance, Click through all Gui pages top down to ensure that all tables are created (Customer -> Product -> Stock -> Order -> RobotDashboard)
 
 ## Class Diagram
